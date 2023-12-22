@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-$9v_&fk17f!zp5dyz&8jp*q_emn0ae&apbzdjewo2irbofutrw
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+AUTH_USER_MODEL = "app.User"
 
 # Application definition
 
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'app',
     'my_superadmin',
     'my_admin',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
+import datetime
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")
@@ -40,8 +42,25 @@ INSTALLED_APPS = [
     'app',
     'my_superadmin',
     'my_admin',
+    'rest_framework_simplejwt.token_blacklist', 
     'rest_framework',
 ]
+
+
+FCM_DJANGO_SETTINGS = {
+    "FCM_SERVER_KEY": "AAAAiHcmur4:APA91bHrQvvEwEJyb13lgZDKyR-iBvht-vg1-cBI6WxG9AP3kDwyrxp7eCpadlYqu0awitrUUhEjTGy5CgP2z9XYQ_fRxAIRtYrmsRWzMDXt4JuSYDv98142IrSL1FIZDtFZvpGaIZ83",
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=1),
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

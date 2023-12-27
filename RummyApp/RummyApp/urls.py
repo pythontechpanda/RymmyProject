@@ -24,11 +24,16 @@ from django.conf.urls.static import static
 
 router = DefaultRouter()
 
-# router.register('User', views.UserView, basename='User'),
+router.register('KYC-detail', views.KYCDetailsView, basename='KYC-detail'),
+router.register('WalletAdd', views.WalletAddView, basename='WalletAdd'),
+router.register('WalletAmt', views.WalletAmtView, basename='WalletAmt'),
+router.register('PayByWalletAmount', views.PayByWalletAmountView, basename='PayByWalletAmount'),
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include("my_superadmin.urls")),
+    path('', include(router.urls)),
+    path('super-admin', include("my_superadmin.urls")),
     path('admin-panel/', include("my_admin.urls")),
     path('api/', include("app.urls")),
 ]

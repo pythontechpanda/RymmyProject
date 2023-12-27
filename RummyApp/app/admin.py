@@ -5,3 +5,5 @@ from .models import *
 
 admin.site.register(User)
 admin.site.register(State)
+admin.site.register(KYCDetails)
+

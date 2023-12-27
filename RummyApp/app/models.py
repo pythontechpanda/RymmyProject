@@ -47,3 +47,35 @@ class User(AbstractUser):
         db_table="customer"
    
     
+    
+class KYCDetails(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    pancard = models.CharField(max_length=100, unique=True)
+    aadharcard = models.CharField(max_length=100, unique=True)
+    account_no = models.CharField(max_length=100, unique=True)
+    ifsc_code =  models.CharField(max_length=100)
+    branch_name = models.CharField(max_length=300)
+    is_verified=models.BooleanField(default=False)
+    
+    
+    
+    
+class WalletAdd(models.Model):
+    user=models.ForeignKey(User,on_delete=models.CASCADE)
+    walletamount=models.IntegerField()
+    wallettime=models.DateTimeField(auto_now_add=True)
+    walletstatus=models.BooleanField(default=False)
+
+class WalletAmt(models.Model):
+    walt = models.ForeignKey(WalletAdd,on_delete=models.CASCADE)
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    use_date = models.DateTimeField(auto_now=True)
+    payment_status = models.BooleanField(default=False)
+    amount = models.CharField(max_length=200, null=True)
+    razor_pay_order_id = models.CharField(max_length=100, null=True, blank=True)
+    razor_pay_payment_id = models.CharField(max_length=100, null=True, blank=True)
+    razor_pay_payment_signature = models.CharField(max_length=100, null=True, blank=True)
+
+class PayByWalletAmount(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    amount = models.CharField(max_length=100)

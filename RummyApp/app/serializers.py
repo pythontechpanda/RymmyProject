@@ -77,3 +77,25 @@ class LogoutSerializer(serializers.Serializer):
             RefreshToken(self.token).blacklist()
         except TokenError:
             self.fail('bad_token')
+            
+            
+            
+class KYCDetailsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = KYCDetails
+        fields = ['id','user','pancard','aadharcard','account_no','ifsc_code','branch_name','is_verified']
+        
+class WalletAddSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WalletAdd
+        fields = '__all__'
+
+class WalletAmtSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WalletAmt
+        fields = '__all__'
+
+class PayByWalletAmountSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PayByWalletAmount
+        fields = '__all__'

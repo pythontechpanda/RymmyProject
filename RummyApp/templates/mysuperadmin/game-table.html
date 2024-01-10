@@ -1,0 +1,81 @@
+{% extends "mysuperadmin/index.html" %}
+{% load static %}
+{% block content %}
+
+        <!--**********************************
+            Content body start
+        ***********************************-->
+        <div class="content-body">
+
+            
+            <!-- row -->
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Data Table <a href="/super-admin/game-create/"> | <i class="fa fa-plus color-muted m-r-5 " style="font-size:18px;"></i></a></h4>
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered zero-configuration">
+                                        <thead>
+                                            <tr>
+                                                <th>No of Player</th>
+                                                <th>Players</th>
+                                                <th>Draw Pile</th>
+                                                <th>Discard Pile</th>                                                
+                                                <th>Opration</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for ggm in get_Game %}
+                                            <tr>
+                                                <td>{{ ggm.num_players }}</td>
+                                                <td>{% for ply in ggm.players.all %}
+                                                    {{ ply }},
+                                                    {% endfor %}
+                                                </td>
+                                                <td>{% for drw in ggm.draw_pile.all %}
+                                                    {{ drw }},
+                                                    {% endfor %}
+                                                </td>
+                                                <td>{% for dis in ggm.discard_pile.all %}
+                                                    {{ dis }},
+                                                    {% endfor %}
+                                                </td>
+                                                
+                                                <td>
+                                                    <span>
+                                                        <a href="{% url 'game_edit' id=ggm.id %}" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil color-muted m-r-5"></i> </a> | 
+                                                        <a href="{% url 'game_del' id=ggm.id %}" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash-o color-danger"></i></a>
+                                                    </span>
+                                                </td>
+                                            </tr>      
+                                            {% endfor %}                                      
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th>No of Player</th>
+                                                <th>Players</th>
+                                                <th>Draw Pile</th>
+                                                <th>Discard Pile</th>                                                
+                                                <th>Opration</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- #/ container -->
+        </div>
+        <!--**********************************
+            Content body end
+        ***********************************-->
+        
+        
+
+        
+        {% endblock content %}

@@ -1,0 +1,101 @@
+{% extends "mysuperadmin/index.html" %}
+{% load static %}
+{% block content %}
+
+     <!--**********************************
+            Content body start
+        ***********************************-->
+        <div class="content-body">
+
+            
+            <!-- row -->
+
+            <div class="container-fluid">
+                <div class="row justify-content-center">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="form-validation">
+                                    <form class="form-valide" action="#" method="post">
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="val-username">Wallet 
+                                            </label>
+                                            <div class="col-lg-6">
+                                                <p>{{ get_wallet.user.username }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="val-username">Fullname 
+                                            </label>
+                                            <div class="col-lg-6">
+                                                <p>{{ get_wallet.user.first_name }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="val-email">Date 
+                                            </label>
+                                            <div class="col-lg-6">
+                                                <p>{{ get_wallet.use_date }}</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label"><a href="#">Payment Status</a>  
+                                            </label>
+                                            <div class="col-lg-8">
+                                                <label class="css-control css-control-primary css-checkbox" for="val-terms">
+                                                {% if get_wallet.payment_status == True %}
+                                                <input type="checkbox" class="css-control-input" id="val-terms" name="actv" value="1" checked disabled>
+                                                <input type="text" style="display: none;" id="act-result"  name="actv" value="1" disabled>
+                                                {% elif get_wallet.payment_status == False %}
+                                                <input type="checkbox" class="css-control-input" id="val-terms" name="actv" value="1" disabled></label>
+                                                <input type="text" style="display: none;" id="act-result"  name="actv" value="0" disabled>
+                                                 {% endif %}
+                                                </div>
+                                        </div>
+                                        
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="val-password">Amount 
+                                            </label>
+                                            <div class="col-lg-6">
+                                                <p>{{ get_wallet.amount }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="val-confirm-password">Razor Pay Order Id
+                                            </label>
+                                            <div class="col-lg-6">
+                                                <p>{{ get_wallet.razor_pay_order_id }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="val-skill">Razor Pay Payment Id
+                                            </label>
+                                            <div class="col-lg-6">
+                                                <p>{{ get_wallet.razor_pay_payment_id }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="val-currency">Razor Pay Payment Signature 
+                                            </label>
+                                            <div class="col-lg-6">
+                                                <p>{{ get_wallet.razor_pay_payment_signature }}</p>
+                                            </div>
+                                        </div>
+                                        
+                                        
+                                        
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- #/ container -->
+        </div>
+        <!--**********************************
+            Content body end
+        ***********************************-->
+        
+        {% endblock content %}

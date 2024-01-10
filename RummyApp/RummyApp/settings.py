@@ -18,6 +18,8 @@ import datetime
 BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")
 STATIC_DIR = os.path.join(BASE_DIR, "static")
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
@@ -144,3 +146,16 @@ STATICFILES_DIRS = [STATIC_DIR]
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+razor_pay_key_id= 'rzp_test_yXpKwsLWjkzvBJ'
+key_secret= 'FSYfNos1dKgera8sbDFHkoTd'
+
+
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'     #gmail smtp host name change when its going to live
+EMAIL_PORT = 587         #change when its going to live 465 mostly use live website https://
+EMAIL_HOST_USER = 'pythontechpanda@gmail.com'
+EMAIL_HOST_PASSWORD = 'dlpvutjweufjcqng'
+SITE_ID = 1

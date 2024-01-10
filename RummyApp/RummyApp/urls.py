@@ -28,12 +28,18 @@ router.register('KYC-detail', views.KYCDetailsView, basename='KYC-detail'),
 router.register('WalletAdd', views.WalletAddView, basename='WalletAdd'),
 router.register('WalletAmt', views.WalletAmtView, basename='WalletAmt'),
 router.register('PayByWalletAmount', views.PayByWalletAmountView, basename='PayByWalletAmount'),
-
+# router.register('players', views.PlayerViewSet, basename='players')
+# router.register('cards', views.CardViewSet, basename='cards')
+# router.register('decks', views.DeckViewSet, basename='decks')
+# router.register('rummygames', views.RummyGameViewSet, basename='rummygames')
+router.register('tournament', views.TournamentsView, basename='tournament')
+router.register('withdrawal-request', views.WithdrawalRequestView, basename='withdrawal-request')
+router.register('complete-your-kyc', views.CompleteYourKYCView, basename='complete-your-kyc')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
-    path('super-admin', include("my_superadmin.urls")),
+    path('super-admin/', include("my_superadmin.urls")),
     path('admin-panel/', include("my_admin.urls")),
     path('api/', include("app.urls")),
 ]

@@ -6,4 +6,15 @@ from .models import *
 admin.site.register(User)
 admin.site.register(State)
 admin.site.register(KYCDetails)
-
+admin.site.register(WalletAdd)
+admin.site.register(WalletAmt)
+admin.site.register(PayByWalletAmount)
+# fsf dcas
+admin.site.register(Player)
+admin.site.register(Card)
+admin.site.register(Hand)
+admin.site.register(Game)
+admin.site.register(GameRound)
+admin.site.register(RoundHand)
+admin.site.register(Tournaments)
+admin.site.register(WithdrawRequest)

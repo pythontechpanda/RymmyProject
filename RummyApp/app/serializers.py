@@ -86,6 +86,7 @@ class KYCDetailsSerializer(serializers.ModelSerializer):
         fields = ['id','user','pancard','aadharcard','account_no','ifsc_code','branch_name','is_verified']
         
 class WalletAddSerializer(serializers.ModelSerializer):
+    # user = RegisterSerializer()
     class Meta:
         model = WalletAdd
         fields = '__all__'
@@ -99,3 +100,59 @@ class PayByWalletAmountSerializer(serializers.ModelSerializer):
     class Meta:
         model = PayByWalletAmount
         fields = '__all__'
+        
+        
+class PlayerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Player
+        fields = '__all__'
+
+class CardSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Card
+        fields = '__all__'
+
+# class DeckSerializer(serializers.ModelSerializer):
+#     cards = CardSerializer(many=True)
+
+#     class Meta:
+#         model = Deck
+#         fields = '__all__'
+
+class PlayerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Player
+        fields = '__all__'
+
+class GameSerializer(serializers.ModelSerializer):
+    # deck = DeckSerializer()
+
+    class Meta:
+        model = Game
+        fields = '__all__'
+        
+        
+        
+class TournamentsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tournaments
+        fields = '__all__'
+        
+        
+class WithdrawalRequestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WithdrawalRequest
+        fields = '__all__'
+    
+
+class CompleteYourKYCSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CompleteYourKYC
+        fields = '__all__'
+
+    
+
+# class ReferLinkSenderSerializer(serializers.ModelSerializer):    
+#     class Meta:
+#         model = ReferLinkSender
+#         fields = '__all__'

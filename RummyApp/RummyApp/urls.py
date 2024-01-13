@@ -35,6 +35,8 @@ router.register('PayByWalletAmount', views.PayByWalletAmountView, basename='PayB
 router.register('tournament', views.TournamentsView, basename='tournament')
 router.register('withdrawal-request', views.WithdrawalRequestView, basename='withdrawal-request')
 router.register('complete-your-kyc', views.CompleteYourKYCView, basename='complete-your-kyc')
+router.register('follow', views.FollowView, basename='follow')
+router.register('edit-user-details', views.EditRegisterUserView, basename='edit-user-details')
 
 urlpatterns = [
     path('admin/', admin.site.urls),

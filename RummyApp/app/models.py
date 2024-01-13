@@ -6,7 +6,8 @@ import datetime
 import os
 import string
 import random
-
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 class State(models.Model):
     name  = models.CharField(max_length=300, null=True)
 
@@ -33,8 +34,19 @@ class User(AbstractUser):
     device_registration_id=models.CharField(max_length=500,null=True)
     is_above18=models.BooleanField(default=False)
     is_user = models.BooleanField(default=False)
-    refer_code=models.CharField(max_length=50,default=0)
+    refer_by=models.CharField(max_length=100,default='admin')
+    refer_code=models.CharField(max_length=50, unique=True, default=0,null=True)
+    def save(self, *args, **kwargs):
+        # Generate a random string of characters and numbers
+        random_string = ''.join(random.choices(string.ascii_letters + string.digits, k=6))
+
+        # Create the refer_code using the first 4 characters of the username and the random string
+        self.refer_code = self.username[:4] + random_string
+
+        super().save(*args, **kwargs)
     otp=models.CharField(max_length=50,null=True)
+    join_by_refer = models.CharField(max_length=300, null=True)
+
     
     def tokens(self):
         refresh = RefreshToken.for_user(self)
@@ -45,7 +57,15 @@ class User(AbstractUser):
     
     class Meta:
         db_table="customer"
-   
+
+
+@receiver(post_save, sender=User)
+def generate_refer_code(sender, instance, created, **kwargs):
+    # If the instance is newly created and the refer_code is not set, generate one
+    if created and not instance.refer_code:
+        random_string = ''.join(random.choices(string.ascii_letters + string.digits, k=6))
+        instance.refer_code = instance.username[:4] + random_string
+        instance.save()
 
 def document(request, filename):
     old_filename = filename
@@ -183,7 +203,35 @@ class CompleteYourKYC(models.Model):
     contact = models.CharField(max_length=350, null=True)
     email = models.EmailField(max_length=350, null=True)
     is_verified = models.BooleanField(default=False)
+    
+    
+class HelpAndSupport(models.Model):
+    subject=models.CharField(max_length=50)
+    description=models.TextField()
+    screenshot=models.FileField(upload_to ='helpandsupport', default='helpandsupport/helpandsupport.png')
+    user=models.ForeignKey(User,on_delete=models.CASCADE)
+    is_completed=models.BooleanField(default=False)
+    created_at=models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return self.subject
 
+
+def filepathNotif(request, filename):
+    old_filename = filename
+    timeNow = datetime.datetime.now().strftime('%Y%m%d%H:%M:%S')
+    filename = "%s%s" % (timeNow, old_filename)
+    return os.path.join('notification/', filename)
+class Notification(models.Model):
+    user=models.ForeignKey(User,on_delete=models.CASCADE)
+    title=models.CharField(max_length=100)
+    body=models.TextField()
+    image=models.FileField(upload_to =filepathNotif, default='notification/notification.png')
+    is_completed=models.BooleanField(default=False)
+    read_status=models.BooleanField(default=False)
+    withdraw_req=models.ForeignKey(WithdrawRequest,on_delete=models.CASCADE, null=True)
+    help_req=models.ForeignKey(HelpAndSupport,on_delete=models.CASCADE, null=True)
+    created_at=models.DateTimeField(auto_now=True)
 
     
 # class ReferLinkSender(models.Model):
@@ -192,4 +240,15 @@ class CompleteYourKYC(models.Model):
 #     responses = models.JSONField(default=list, null=True)
 #     created = models.DateTimeField(auto_now_add=True)
 #     user = models.ForeignKey(User,on_delete=models.CASCADE)
+
+
+
+class Follow(models.Model):
+    followed = models.ForeignKey(User, related_name='user_followers', on_delete=models.CASCADE)
+    followed_by = models.ForeignKey(User, related_name='user_follows', on_delete=models.CASCADE)
+    muted = models.BooleanField(default=False)
+    created_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return f"{self.followed_by.username} started following {self.followed.username}"
 

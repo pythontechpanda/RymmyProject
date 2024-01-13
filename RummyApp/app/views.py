@@ -31,6 +31,54 @@ class RegisterView(generics.GenericAPIView):
         return Response(user_data, status=status.HTTP_201_CREATED)
     
     
+    
+class EditRegisterUserView(viewsets.ViewSet):
+    permission_classes = (permissions.IsAuthenticated,)
+    def list(self, request):      # list - get all record
+        stu = User.objects.all()
+        serializer = EditRegisterSerializer(stu, many=True)    # many use for bulk data come 
+        return Response(serializer.data)
+
+
+    def retrieve(self, request, pk=None):
+        id = pk
+        if id is not None:
+            stu = User.objects.get(id=id)
+            serializer = EditRegisterSerializer(stu)
+            return Response(serializer.data)
+
+    # def create(self, request):
+    #     serializer = EditRegisterSerializer(data = request.data)  # form data conviert in json data
+    #     if serializer.is_valid():
+    #         serializer.save()            
+    #         return Response({'msg': 'Data Created'}, status= status.HTTP_201_CREATED)
+    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def update(self, request, pk):
+        id = pk
+        stu = User.objects.get(pk=id)
+        serializer = EditRegisterSerializer(stu, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'msg': 'Complete Data Update'})
+        return Response(serializer.errors)
+
+    def partial_update(self, request, pk):
+        id = pk
+        stu = User.objects.get(pk=id)
+        serializer = EditRegisterSerializer(stu, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'msg': 'Partial Data Update'})
+        return Response(serializer.errors)
+
+    def destroy(self, request, pk):
+        id = pk
+        stu = User.objects.get(pk=id)
+        stu.delete()
+        return Response({'msg': 'Data deleted'})
+    
+    
 # class RegisterView(generics.GenericAPIView):
 #     serializer_class = RegisterSerializer
 
@@ -382,66 +430,124 @@ class GetWalletAmountView(APIView):
 
 
 
-# @api_view(['GET'])
-# def start_game(request, num_players):
-#     if num_players < 2 or num_players > 6:
+
+# class start_game(APIView):
+#     permission_classes = (permissions.IsAuthenticated,)
+#     def get(self,request, num_players):
+#         if num_players < 2 or num_players > 6:
+#             response_data = {
+#                 "message": "Invalid number of players. Allowed range: 2 to 6 players.",
+#             }
+#             return JsonResponse(response_data, status=400)  
+
+#         game = Game.objects.create(num_players=num_players)
+        
+#         gm_players = User.objects.all()[:num_players]  # Limit the number of players to the desired value
+#         players = []
+
+#         for ply in gm_players:
+#             player = Player.objects.create(user=ply)
+#             players.append(player)
+        
+#         game.players.set(players)
+
+#         deck = create_deck()
+#         draw_pile = [Card.objects.create(rank=card['rank'], suit=card['suit']) for card in deck]
+#         game.draw_pile.set(draw_pile)
+        
 #         response_data = {
-#             "message": "Invalid number of players. Allowed range: 2 to 6 players.",
+#             "message": "Game started successfully!",
+#             "num_players": num_players,
+#             "player_names": [player.user.username for player in players],
+#             "draw_pile": [{"rank": card.rank, "suit": card.suit} for card in draw_pile],
 #         }
-#         return JsonResponse(response_data, status=400)  
 
-#     game = Game.objects.create(num_players=num_players)
-    
-#     gm_players = User.objects.all()[:num_players]  # Limit the number of players to the desired value
-#     players = []
-
-#     for ply in gm_players:
-#         player = Player.objects.create(user=ply)
-#         players.append(player)
-    
-#     game.players.set(players)
-
-#     deck = create_deck()
-#     draw_pile = [Card.objects.create(rank=card['rank'], suit=card['suit']) for card in deck]
-#     game.draw_pile.set(draw_pile)
-    
-#     response_data = {
-#         "message": "Game started successfully!",
-#         "num_players": num_players,
-#         "player_names": [player.user.username for player in players],
-#         "draw_pile": [{"rank": card.rank, "suit": card.suit} for card in draw_pile],
-#     }
-
-#     return JsonResponse(response_data)
+#         return JsonResponse(response_data)
 
 
 
-# for game start pass the number of players
+# class start_game(APIView):
+#     permission_classes = (permissions.IsAuthenticated,)
+
+#     def get(self, request, num_players):
+#         if num_players < 2 or num_players > 6:
+#             response_data = {
+#                 "message": "Invalid number of players. Allowed range: 2 to 6 players.",
+#             }
+#             return JsonResponse(response_data, status=400)
+
+#         all_users = list(User.objects.filter(is_user=True))
+        
+#         if len(all_users) < num_players:
+#             response_data = {
+#                 "message": "Not enough users available for the requested number of players.",
+#             }
+#             return JsonResponse(response_data, status=400)
+
+#         selected_users = random.sample(all_users, num_players)
+
+#         game = Game.objects.create(num_players=num_players)
+#         players = []
+
+#         for selected_user in selected_users:
+#             player = Player.objects.create(user=selected_user)
+#             players.append(player)
+
+#         game.players.set(players)
+
+#         deck = create_deck()
+#         draw_pile = [Card.objects.create(rank=card['rank'], suit=card['suit']) for card in deck]
+#         game.draw_pile.set(draw_pile)
+
+#         response_data = {
+#             "message": "Game started successfully!",
+#             "num_players": num_players,
+#             "player_names": [player.user.username for player in players],
+#             "draw_pile": [{"rank": card.rank, "suit": card.suit} for card in draw_pile],
+#         }
+
+#         return JsonResponse(response_data)
+
 
 class start_game(APIView):
     permission_classes = (permissions.IsAuthenticated,)
-    def get(self,request, num_players):
+
+    def get(self, request, num_players):
         if num_players < 2 or num_players > 6:
             response_data = {
                 "message": "Invalid number of players. Allowed range: 2 to 6 players.",
             }
-            return JsonResponse(response_data, status=400)  
+            return JsonResponse(response_data, status=400)
+
+        all_users = list(User.objects.filter(is_user=True))
+        
+        if len(all_users) < num_players:
+            response_data = {
+                "message": "Not enough users available for the requested number of players.",
+            }
+            return JsonResponse(response_data, status=400)
+
+        selected_users = random.sample(all_users, num_players)
 
         game = Game.objects.create(num_players=num_players)
-        
-        gm_players = User.objects.all()[:num_players]  # Limit the number of players to the desired value
         players = []
 
-        for ply in gm_players:
-            player = Player.objects.create(user=ply)
+        for selected_user in selected_users:
+            player = Player.objects.create(user=selected_user)
             players.append(player)
-        
+
         game.players.set(players)
 
-        deck = create_deck()
-        draw_pile = [Card.objects.create(rank=card['rank'], suit=card['suit']) for card in deck]
-        game.draw_pile.set(draw_pile)
+        # Create two decks
+        deck1 = create_deck()
+        deck2 = create_deck()
         
+        # Concatenate the decks
+        combined_deck = deck1 + deck2
+
+        draw_pile = [Card.objects.create(rank=card['rank'], suit=card['suit']) for card in combined_deck]
+        game.draw_pile.set(draw_pile)
+
         response_data = {
             "message": "Game started successfully!",
             "num_players": num_players,
@@ -450,7 +556,6 @@ class start_game(APIView):
         }
 
         return JsonResponse(response_data)
-
 
 
 def create_deck():
@@ -467,18 +572,19 @@ def deal_hands(request, game_id):
     game = Game.objects.get(pk=game_id)
     game_round = GameRound.objects.create(game=game, round_number=1)
     hands_data = {}
-    for _ in range(10):
+    for _ in range(13):
         for player in game.players.all():
             card = game.draw_pile.first()
+            print("player>>>>>>>>>>", player.user.first_name)
             # Check if there is a card available
             if card:
                 game.draw_pile.remove(card)
                 round_hand = RoundHand.objects.create(round=game_round, player=player, card=card)
                 
-                if player.id not in hands_data:
-                    hands_data[player.id] = []
+                if player.user.first_name not in hands_data:
+                    hands_data[player.user.first_name] = []
 
-                hands_data[player.id].append({
+                hands_data[player.user.first_name].append({
                     'card_id': round_hand.card.id,
                     'card_suit': round_hand.card.suit,
                     'card_rank': round_hand.card.rank,
@@ -489,12 +595,14 @@ def deal_hands(request, game_id):
 
     return JsonResponse({"message": "Hands dealt successfully!", "hands_data": hands_data})
 
+
+
 @api_view(['GET'])
 def display_hands(request, game_id):
     game_round = GameRound.objects.filter(game_id=game_id).latest('round_number')
     hands = {}
     for hand in RoundHand.objects.filter(round=game_round):
-        player_name = hand.player.user
+        player_name = hand.player.user.username
         card_info = {'rank': hand.card.rank, 'suit': hand.card.suit}
         if player_name not in hands:
             hands[player_name] = [card_info]
@@ -669,7 +777,84 @@ class CompleteYourKYCView(viewsets.ViewSet):
 
 
 
+
+
+class FollowView(viewsets.ViewSet):
+    permission_classes = (permissions.IsAuthenticated,)
+    def list(self, request):      # list - get all record
+        stu = Follow.objects.all()
+        serializer = FollowSerializer(stu, many=True)    # many use for bulk data come 
+        return Response(serializer.data)
+
+
+    def retrieve(self, request, pk=None):
+        id = pk
+        if id is not None:
+            stu = Follow.objects.get(id=id)
+            serializer = FollowSerializer(stu)
+            return Response(serializer.data)
+
+    def create(self, request):
+        serializer = FollowSerializer(data = request.data)  # form data conviert in json data
+        if serializer.is_valid():
+            serializer.save()
+            
+            return Response({'msg': 'Data Created'}, status= status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def update(self, request, pk):
+        id = pk
+        stu = Follow.objects.get(pk=id)
+        serializer = FollowSerializer(stu, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'msg': 'Complete Data Update'})
+        return Response(serializer.errors)
+
+    def partial_update(self, request, pk):
+        id = pk
+        stu = Follow.objects.get(pk=id)
+        serializer = FollowSerializer(stu, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'msg': 'Partial Data Update'})
+        return Response(serializer.errors)
+
+    def destroy(self, request, pk):
+        id = pk
+        stu = Follow.objects.get(pk=id)
+        stu.delete()
+        return Response({'msg': 'Data deleted'})
     
+    
+    
+class FollowRequestFilterView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    def get(self,request,id):
+         
+        if User.objects.filter(id=id).exists():
+            obj=Follow.objects.filter(followed=id, muted=False)
+            createdserializer = FollowSerializer(obj,many=True)
+
+            return Response({'FollowRequest':createdserializer.data})
+        else:
+            raise AuthenticationFailed('Invalid ID, try again')
+        
+        
+class FollowRequestAcceptFilterView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, id):
+
+        if User.objects.filter(id=id).exists():
+            # Filter Follow objects where followed is the specified user and muted is True
+            obj = Follow.objects.filter(followed=id, muted=True)
+            created_serializer = FollowSerializer(obj, many=True)
+
+            return Response({'FollowRequest': created_serializer.data})
+        else:
+            raise AuthenticationFailed('Invalid ID, try again')
+        
 
 
 # Refer link
@@ -728,3 +913,113 @@ class CompleteYourKYCView(viewsets.ViewSet):
 #         stu = ServeyLinkSenders.objects.get(pk=id)
 #         stu.delete()
 #         return Response({'msg': 'Data deleted'})
+
+
+
+class HomeFilterView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    def get(self,request,id):
+        current_dateTime = datetime.datetime.now()
+        if User.objects.filter(id=id).exists():
+            
+            obj=Tournaments.objects.all()
+            upcoming=[]
+            utc=pytz.UTC
+            for i in obj:
+                upcomingdetail={}
+                start_time = current_dateTime.replace(tzinfo=utc)
+                end_time =i.start_at.replace(tzinfo=utc)
+                if end_time > start_time:
+                    objcount=Tournaments.objects.filter(user_id=i.user.id).count()
+
+                    played_ticket=Game.objects.filter(user_id=i.user.id)
+                    played=[]
+                    for j in played_ticket:
+                        if j.game in played:
+                            pass
+                        else:
+                            played.append(j.game)
+                   
+                    upcomingdetail.update({'game_id':i.id,
+                                           'game_name':i.game_name,
+                                           'message_for_player':i.message_for_player,
+                                           'lobby':i.lobby,
+                                           'ticket_cost':i.ticket_cost,
+                                           'start_at':i.start_at,
+                                           'ticket_request_till':i.ticket_request_till,
+                                           'number_of_ticket':i.number_of_tickets,
+                                           'timer':i.timer,
+                                           'private_code':i.private_code,
+                                        #    'game_counter':i.game_counter,
+                                           'is_completed':i.is_completed,
+                                        #    'created_at':i.created_at,
+                                           'user_id': i.user.id,
+                                            'first_name': i.user.first_name,
+                                            'username': i.user.username,
+                                            'profile_picture':i.user.profile_picture,
+                                            'city':i.user.city.city_name,
+                                            'gender':i.user.gender,
+                                            'date_of_birth':i.user.date_of_birth,
+                                            'mobile_no':i.user.mobile_no,
+                                            'is_verified':i.user.is_verified,
+                                            'is_above18':i.user.is_above18,
+                                            'refer_code':i.user.refer_code,
+                                            'refer_by':i.user.refer_by,
+                                            'my_code':i.user.my_code,
+                                            'played':len(played),
+                                            'created':objcount})
+                    upcoming.append(upcomingdetail)
+            print('upcoming',upcoming)
+            up= UpcomingSerializer(upcoming,many=True)
+
+            live=[]
+            for k in obj:
+                livedetail={}
+                start_time = current_dateTime.replace(tzinfo=utc)
+                end_time =k.start_at.replace(tzinfo=utc)
+                if end_time < start_time and k.is_completed==False:                   
+                    # live.append(k)
+                    obj=NewGame.objects.filter(user_id=k.user.id).count()
+
+                    played_ticket=Ticket.objects.filter(assign_to_id=k.user.id)
+                    played=[]
+                    for j in played_ticket:
+                        if j.game in played:
+                            pass
+                        else:
+                            played.append(j.game)
+                   
+                    livedetail.update({'game_id':k.id,
+                                           'game_name':k.game_name,
+                                           'message_for_player':k.message_for_player,
+                                           'lobby':k.lobby,
+                                           'ticket_cost':k.ticket_cost,
+                                           'start_at':k.start_at,
+                                           'ticket_request_till':k.ticket_request_till,
+                                           'number_of_ticket':k.number_of_tickets,
+                                           'timer':k.timer,
+                                           'private_code':k.private_code,
+                                        #    'game_counter':k.game_counter,
+                                           'is_completed':k.is_completed,
+                                        #    'created_at':k.created_at,
+                                           'user_id': k.user.id,
+                                            'first_name': k.user.first_name,
+                                            'username': k.user.username,
+                                            'profile_picture':k.user.profile_picture,
+                                            'city':k.user.city.city_name,
+                                            'gender':k.user.gender,
+                                            'date_of_birth':k.user.date_of_birth,
+                                            'mobile_no':k.user.mobile_no,
+                                            'is_verified':k.user.is_verified,
+                                            'is_above18':k.user.is_above18,
+                                            'refer_code':k.user.refer_code,
+                                            'refer_by':k.user.refer_by,
+                                            'my_code':k.user.my_code,
+                                            'played':len(played),
+                                            'created':obj})
+                    live.append(livedetail)
+            liveserializer = LiveSerializer(live,many=True)
+            
+            return Response({'Upcoming':up.data,'Live':liveserializer.data})
+        else:
+            raise AuthenticationFailed('Invalid ID, try again')

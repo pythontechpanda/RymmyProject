@@ -15,4 +15,6 @@ urlpatterns = [
     path('deal_hands/<int:game_id>/', views.deal_hands, name='deal_hands'),
     path('display_hands/<int:game_id>/', views.display_hands, name='display_hands'),
     path('draw_card/<int:game_id>/<int:player_id>/', views.draw_card, name='draw_card'),
+    path('follow-request-filter/<int:id>/',views.FollowRequestFilterView.as_view(),name="follow-request-filter"),
+    path('follow-request-accept-filter/<int:id>/',views.FollowRequestAcceptFilterView.as_view(),name="follow-request-accept-filter"),
 ]

@@ -18,7 +18,11 @@ class RegisterSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         return User.objects.create_user(**validated_data)
     
-    
+class EditRegisterSerializer(serializers.ModelSerializer):
+    # password = serializers.CharField(max_length=68, min_length=6, write_only=True)
+    class Meta:
+        model = User
+        fields = ['id','username', 'profile_picture', 'first_name', 'middle_name', 'last_name', 'email','city', 'state', 'refer_code', 'pincode', 'gender','date_of_birth','mobile_no','is_verified', 'is_above18', 'is_user','device_registration_id']
     
 class LoginSerializer(serializers.ModelSerializer):
     # password = serializers.CharField(max_length=68, min_length=6,write_only=True)
@@ -150,6 +154,11 @@ class CompleteYourKYCSerializer(serializers.ModelSerializer):
         model = CompleteYourKYC
         fields = '__all__'
 
+
+class FollowSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Follow
+        fields = '__all__'
     
 
 # class ReferLinkSenderSerializer(serializers.ModelSerializer):    

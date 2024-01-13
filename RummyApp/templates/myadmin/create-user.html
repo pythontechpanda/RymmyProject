@@ -1,0 +1,169 @@
+{% extends "myadmin/index.html" %}
+{% load static %}
+{% block content %}
+
+        <!--**********************************
+            Content body start
+        ***********************************-->
+        <div class="content-body">
+
+            
+            <!-- row -->
+
+            <div class="container-fluid">
+                <div class="row justify-content-center">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="form-validation">
+                                    {% for message in messages  %}            
+                                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert" style="color:#ffffff;">
+                                            <strong style="color:#ffffff;">Message : </strong> {{ message }}
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                    {% endfor %} 
+                                    <form class="form-valide" method="post" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="val-fullname">Full name <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="col-lg-6">
+                                                <input type="text" class="form-control" id="val-fullname" name="fname" placeholder="Enter a full name.." required>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="val-currency">Contact number <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="col-lg-6">
+                                                <input type="number" class="form-control" id="val-currency" name="contact" placeholder="Enter 10 digit contact number" required>
+                                                <p class="error-message" id="contact-error"></p>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="val-username">Username <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="col-lg-6">
+                                                <input type="text" class="form-control" id="val-username" name="uname" placeholder="Enter a username.." readonly>
+                                            </div>
+                                        </div>
+                                        
+
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="val-currency">Password <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="col-lg-6">
+                                                <input type="password" class="form-control" id="val-currency" name="password" placeholder="Enter password" required>
+                                                <p class="error-message" id="contact-error"></p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="val-confirm-password">Date of Birth <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="col-lg-6">
+                                                <input type="date" class="form-control" id="val-confirm-password" name="dob" placeholder="Date of birth.." required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="val-suggestions">Gender <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="col-lg-6">
+                                                <select class="form-control" name="gender">
+                                                    <option valeu="">Please select</option>
+                                                    <option value="male">Male</option>
+                                                    <option value="female">Female</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="val-fullname">Profile Picture<span class="text-danger">*</span>
+                                            </label>
+                                            <div class="col-lg-6">
+                                                <input type="file" class="form-control" id="" name="profile_pic" required>
+                                            </div>
+                                        </div>
+                                        
+                                        
+                                        {% comment %} <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="val-website">Select City <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="col-lg-6">
+                                                <select class="form-control" name="city">
+                                                    <option valeu="">Please select</option>
+                                                    {% for cty in get_city %}
+                                                    <option value="{{ cty.id }}">{{ cty.city_name}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div> {% endcomment %}
+                                        
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label"><a href="#">Is Active</a>  <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="col-lg-8">
+                                                <label class="css-control css-control-primary css-checkbox" for="val-terms">
+                                                    <input type="checkbox" class="css-control-input" id="val-terms" name="actv" value="1">
+                                                    <input type="text" style="display: none;" id="act-result"  name="actv" value="0">
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label"><a href="#">Verified</a>  <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="col-lg-8">
+                                                <label class="css-control css-control-primary css-checkbox" for="val-terms">
+                                                    <input type="checkbox" class="css-control-input" id="val-terms" name="verificat" value="1">
+                                                    <input type="text" style="display: none;" id="ver-result" name="verificat" value="0">
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label"><a href="#">Above 18</a>  <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="col-lg-8">
+                                                <label class="css-control css-control-primary css-checkbox" for="val-terms">
+
+                                                    <input type="checkbox" class="css-control-input" id="val-terms" name="goto" value="1">
+                                                
+                                                    <input type="text" style="display: none;" id="result"  name="goto" value="0">
+                                                </label>
+                                                </div>
+                                        </div>
+
+                                        
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="val-username">Referal Code <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="col-lg-6">
+                                                <input type="text" class="form-control" id="val-username" name="join_by_refer" value={{ request.user.refer_code }} readonly>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <div class="col-lg-8 ml-auto">
+                                                <button type="submit" class="btn btn-primary">Submit</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- #/ container -->
+        </div>
+        <!--**********************************
+            Content body end
+        ***********************************-->
+        
+        
+        {% endblock content %}

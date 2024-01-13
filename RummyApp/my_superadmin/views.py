@@ -19,7 +19,9 @@ def Login(request):
         if user:
             login(request, user)
             if user.is_superuser:
-                return redirect('/super-admin/index/')            
+                return redirect('/super-admin/index/') 
+            if user.is_staff:
+                return redirect('/super-admin/')           
         else:
             messages.error(request, "Username or password incorrect")
             return redirect('/super-admin/')   
@@ -35,8 +37,13 @@ def logout_call(request):
 @login_required(login_url="/super-admin/")
 def DashboardPage(request):
     notify = User.objects.filter(is_superuser=False).count()
+    num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+    num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+    num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+    print("num_notif",num_notif)
+    notification = Notification.objects.filter(is_completed=False, read_status=False)
     
-    return render(request, "mysuperadmin/index.html", {"notify":notify})
+    return render(request, "mysuperadmin/index.html", {"notify":notify,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
 
 
 # def ViewAdminProfile(request, id):
@@ -60,6 +67,7 @@ def UserCreatePage(request):
         vrfy = request.POST["verificat"]
         above = request.POST["goto"]
         profile = request.FILES['profile_pic']
+        pwd = request.POST["password"]
         
         birthdate_obj = datetime.strptime(dob, '%Y-%m-%d')
         today = datetime.today()
@@ -71,7 +79,7 @@ def UserCreatePage(request):
                 messages.error(request, 'Contact number already taken')
                 return redirect('/super-admin/new-user/')
             else:
-                usr = User(first_name=fname, username=uname, is_active=active, profile_picture=profile, mobile_no=contact,date_of_birth=dob, gender=gender, is_verified=vrfy,is_above18=above)
+                usr = User(first_name=fname, username=uname, password=make_password(pwd), is_active=active, profile_picture=profile, mobile_no=contact,date_of_birth=dob, gender=gender, is_verified=vrfy,is_above18=above,is_staff=True)
                 usr.save()
                 return redirect("/super-admin/users-table/")
         else:
@@ -648,3 +656,213 @@ def EditTournaments(request, id):
         getUser = User.objects.filter(is_superuser=False)
         getGame = Game.objects.all()
         return render(request, "mysuperadmin/edit-tournament.html", {'getply':getply,'getUser':getUser,'getGame':getGame})
+    
+    
+    
+    
+    
+@login_required(login_url="/super-admin/")  
+def HelpAndSupportCreate(request):
+    if request.method == 'POST':
+        samtk = request.FILES["screenshot"]
+        nm = request.POST["subject"]
+        desc = request.POST["description"]        
+        usr = request.POST['user']
+        
+        usr = HelpAndSupport(screenshot=samtk, subject=nm, description=desc, user_id=usr, created_at=datetime.now())
+        usr.save()        
+        return redirect("/super-admin/help-support-table/")
+    else:
+        getUser = User.objects.all()
+        return render(request, "mysuperadmin/create-help-support.html",{'getUser':getUser})
+    
+    
+@login_required(login_url="/super-admin/")    
+def HelpAndSupportTablePage(request):
+    get_rule = HelpAndSupport.objects.all()
+    return render(request, "mysuperadmin/help-support-table.html", {'get_rule':get_rule})
+
+@login_required(login_url="/super-admin/")
+def DeleteHelpAndSupport(request, id):
+    cty = HelpAndSupport.objects.get(id=id)
+    cty.delete()
+    return redirect("/super-admin/help-support-table/")
+
+
+@login_required(login_url="/super-admin/")
+def EditHelpAndSupport(request, id):
+    
+    upleid = HelpAndSupport.objects.get(id=id)
+    if request.method == 'POST':
+        nm = request.POST["subject"]
+        desc = request.POST["description"]        
+        usr = request.POST['user']
+        act = request.POST['actv']
+        
+        if len(request.FILES) !=0:
+            if len(upleid.screenshot) > 0:
+                os.remove(upleid.screenshot.path)
+                print(upleid.screenshot.path)
+            upleid.screenshot = request.FILES['screenshot']
+            
+            upleid.save()      
+        uplead = HelpAndSupport.objects.filter(id=id)        
+        uplead.update(subject=nm, description=desc, user_id=usr, is_completed=act)
+        
+        # updated_helpandsupport = HelpAndSupport.objects.get(id=id)
+
+        # print("updated_withdrawal.is_completed", updated_helpandsupport.is_completed)
+
+        # if updated_helpandsupport.is_completed == True:
+        #     tokens = [updated_helpandsupport.user.device_registration_id]
+        #     name = updated_helpandsupport.user.first_name
+        #     uid = updated_helpandsupport.user.id
+        #     # Create a message
+        #     message = messaging.MulticastMessage(
+                
+        #         notification=messaging.Notification(
+        #             title='Help & Support',
+        #             body=f'Hello {name}! \n Your problem has been proceeding',
+        #             image= 'http://127.0.0.1:8000/Tambola/media/notification/notification.png'
+        #         ),
+                
+                
+        #         tokens=tokens,
+        #     )
+            
+        #     response = messaging.send_multicast(message)
+        #     print("++++++++++",message.notification.body)
+        #     my_nitif = Notification(user_id=uid,title=message.notification.title, body=message.notification.body, image=message.notification.image)
+        #     my_nitif.save()
+        messages.success(request, "Help Support updated successfully")
+        return redirect("/super-admin/help-support-table/") 
+    else:
+        getHelp = HelpAndSupport.objects.get(id=id)    
+        getUser = User.objects.all()
+        return render(request, "mysuperadmin/edit-help-support.html", {'getHelp':getHelp,'getUser':getUser})
+    
+    
+    
+    
+    
+@login_required(login_url="/super-admin/")   
+def NotificationCreate(request):
+    if request.method == 'POST':
+        usr = request.POST["user"]
+        ti = request.POST["title"]
+        msg = request.POST["body"]
+        im = request.FILES["image"]        
+        
+        usr = Notification(user_id=usr, title=ti, body=msg, image=im, created_at=datetime.now())
+        usr.save()
+        return redirect("/super-admin/notification-table/")
+    else:
+        getUser = User.objects.all()
+        return render(request, "mysuperadmin/create-notification.html", {'getUser':getUser})
+    
+    
+    
+@login_required(login_url="/super-admin/")    
+def NotificationTablePage(request):
+    get_notif = Notification.objects.all()
+    return render(request, "mysuperadmin/notification-table.html", {'get_notif':get_notif})
+
+
+
+@login_required(login_url="/super-admin/")
+def DeleteNotification(request, id):
+    cty = Notification.objects.get(id=id)
+    cty.delete()
+    return redirect("/super-admin/notification-table/")
+
+
+@login_required(login_url="/super-admin/")
+def EditNotification(request, id):
+    uplead = Notification.objects.filter(id=id)        
+    uplead.update(read_status=True)
+    if request.method == 'POST':
+        usr = request.POST["user"]
+        ti = request.POST["title"]
+        msg = request.POST["body"]
+        act = request.POST["actv"]
+        
+        if len(request.FILES) !=0:
+            if len(upleid.image) > 0:
+                os.remove(upleid.image.path)
+                print(upleid.image.path)
+            upleid.image = request.FILES['image']
+            
+            upleid.save() 
+          
+        uplead = Notification.objects.filter(id=id)        
+        uplead.update(user_id=usr, title=ti, body=msg, is_completed=act, created_at=datetime.now())
+        
+        
+        updated_notification = Notification.objects.get(id=id)
+        print("updated_notification", updated_notification.withdraw_req)
+        
+        
+            
+        print("updated_notification.is_completed", updated_notification.is_completed)
+
+        if updated_notification.is_completed == True:
+            
+            tokens = [updated_notification.user.device_registration_id]
+            name = updated_notification.user.first_name
+            uid = updated_notification.user.id
+            title = updated_notification.title
+            # Create a message
+            if title == "Withdrawal Request":
+                # withdraw request status update
+                updated_withdraw = WithdrawRequest.objects.filter(id=updated_notification.withdraw_req.id)
+                updated_withdraw.update(is_completed=True)
+                print("updated_withdraw>>>>>>>>>")
+                # message = messaging.MulticastMessage(
+                    
+                #     notification=messaging.Notification(
+                #         title=f'{title}',
+                #         body=f'Hello {name}! \n You are request has been successfully proceedings.',
+                #         image= 'http://127.0.0.1:8000/Tambola/media/notification/notification.png'
+                #     ),
+                    
+                    
+                #     tokens=tokens,
+                # )
+                # response = messaging.send_multicast(message)
+                # print("++++++++++",message.notification.body)
+                # my_nitif = Notification(user_id=uid,title=message.notification.title, body=message.notification.body, image=message.notification.image)
+                # my_nitif.save()
+                
+                messages.success(request, "compliment amount updated successfully")
+            elif title == "Help & Support Request":
+                # Help and support status update
+                updated_help = HelpAndSupport.objects.filter(id=updated_notification.help_req.id)
+                updated_help.update(is_completed=True)
+                print("updated_Help & Support>>>>>>>>>")
+                # message = messaging.MulticastMessage(
+                    
+                #     notification=messaging.Notification(
+                #         title=f'{title}',
+                #         body=f'Hello {name}! \n Your problem has been review success.',
+                #         image= 'http://127.0.0.1:8000/Tambola/media/notification/notification.png'
+                #     ),
+                    
+                    
+                #     tokens=tokens,
+                # )
+            
+                # response = messaging.send_multicast(message)
+                # print("++++++++++",message.notification.body)
+                # my_nitif = Notification(user_id=uid,title=message.notification.title, body=message.notification.body, image=message.notification.image)
+                # my_nitif.save()
+                
+                messages.success(request, "compliment amount updated successfully")
+            return redirect("/super-admin/notification-table/")
+        else:
+            pass
+        messages.success(request, "compliment amount updated successfully")
+        return redirect("/super-admin/notification-table/") 
+    else:
+        getNot = Notification.objects.get(id=id)    
+        getUser = User.objects.all()
+        return render(request, "mysuperadmin/edit-notification.html", {'getNot':getNot, 'getUser':getUser})

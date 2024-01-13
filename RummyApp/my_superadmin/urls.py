@@ -62,4 +62,14 @@ urlpatterns = [
     path('tournament-detail/<int:id>/', views.DetailTournaments, name="view_tour"),
     path('tournament-remove/<int:id>/', views.DeleteTournaments, name="tour_del"),
     path('tournament-edit/<int:id>/', views.EditTournaments, name="tour_edit"),
+    
+    path('help-support-rule/', views.HelpAndSupportCreate),
+    path('help-support-table/', views.HelpAndSupportTablePage),
+    path('help-support-remove/<int:id>/', views.DeleteHelpAndSupport, name="help_del"),
+    path('help-support-edit/<int:id>/', views.EditHelpAndSupport, name="help_edit"), 
+    
+    path('notification-create/', views.NotificationCreate),
+    path('notification-table/', views.NotificationTablePage),
+    path('notification-remove/<int:id>/', views.DeleteNotification, name="noiti_del"),
+    path('notification-edit/<int:id>/', views.EditNotification, name="noiti_edit"),
 ]

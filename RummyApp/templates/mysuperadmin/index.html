@@ -8,7 +8,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Tambola</title>
+    <title>Real Rummy Super Admin</title>
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/Asset24x1.png' %}">
     <!-- Pignose Calender -->
@@ -239,8 +239,7 @@
                             <i class="icon-user menu-user"></i><span class="nav-text">User</span>
                         </a>
                         <ul aria-expanded="false">
-                            <li><a href="/super-admin/new-user/">New User</a></li>
-                            <li><a href="/super-admin/users-table/">Show Users</a></li>
+                            <li><a href="/super-admin/users-table/">User</a></li>
                             
                         </ul>
                     </li>
@@ -282,11 +281,10 @@
                             <i class="fa fa-handshake-o"></i><span class="nav-text">Help and Support</span>
                         </a>
                         <ul aria-expanded="false">
-                            <li><a href="/super-admin/help-support-rule/">New Help</a></li>
-                            <li><a href="/super-admin/help-support-table/">Show Help</a></li>
+                            <li><a href="/super-admin/help-support-table/">Help</a></li>
                             
-                            <li><a href="/super-admin/page-create/">New Page</a></li>
-                            <li><a href="/super-admin/page-table/">Show Page</a></li>
+                            {% comment %} <li><a href="/super-admin/page-create/">New Page</a></li>
+                            <li><a href="/super-admin/page-table/">Show Page</a></li> {% endcomment %}
                         </ul>
                     </li>
                     
@@ -300,8 +298,8 @@
                             <li><a href="/super-admin/pay-by-wallet-table/">Pay By Wallet</a></li>
                             <li><a href="/super-admin/withdraw-request-table/">Withdraw Request</a></li>
                             <li><a href="/super-admin/bank-detail-table/">Bank Detail</a></li>
-                            <li><a href="/super-admin/buy-ticket-create/" aria-expanded="false">Buy Ticket</a></li>
-                            <li><a href="/super-admin/buy-ticket-table/" aria-expanded="false">Show Buy Ticket</a></li>
+                            {% comment %} <li><a href="/super-admin/buy-ticket-create/" aria-expanded="false">Buy Ticket</a></li>
+                            <li><a href="/super-admin/buy-ticket-table/" aria-expanded="false">Show Buy Ticket</a></li> {% endcomment %}
                         </ul>
                     </li>
                    
@@ -323,10 +321,10 @@
                         </a>
                         <ul aria-expanded="false">
                             <li><a href="/super-admin/kyc-detail-table/">KYC Detail</a></li>
-                            <li><a href="/super-admin/compliment-create/">Add Compliment</a></li>
+                            {% comment %} <li><a href="/super-admin/compliment-create/">Add Compliment</a></li>
                             <li><a href="/super-admin/compliment-table/">Show Compliment</a></li>
                             <li><a href="/super-admin/claim-rule-create/">Add Claim</a></li>
-                            <li><a href="/super-admin/claim-rule-table/">Show Claim</a></li>
+                            <li><a href="/super-admin/claim-rule-table/">Show Claim</a></li> {% endcomment %}
 
                             <li><a href="/super-admin/notification-table/">Notification</a></li>
                             
@@ -365,12 +363,14 @@
                     <div class="col-lg-3 col-sm-6">
                         <div class="card gradient-1">
                             <div class="card-body">
+                                <a href="/super-admin/help-support-table/">
                                 <h3 class="card-title text-white">Help & Support</h3>
                                 <div class="d-inline-block">
                                     <h2 class="text-white">{{ num_help }}</h2>
                                     <p class="text-white mb-0">{{ request.user.last_login.date }}</p>
                                 </div>
                                 <span class="float-right display-5 opacity-5"><i class="fa fa-headphones"></i></span>
+                            </a>
                             </div>
                         </div>
                     </div>

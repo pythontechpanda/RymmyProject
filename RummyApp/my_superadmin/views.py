@@ -21,7 +21,7 @@ def Login(request):
             if user.is_superuser:
                 return redirect('/super-admin/index/') 
             if user.is_staff:
-                return redirect('/super-admin/')           
+                return redirect('/admin-panel/')           
         else:
             messages.error(request, "Username or password incorrect")
             return redirect('/super-admin/')   
@@ -40,20 +40,32 @@ def DashboardPage(request):
     num_help = HelpAndSupport.objects.filter(is_completed=False).count()
     num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
     num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
-    print("num_notif",num_notif)
     notification = Notification.objects.filter(is_completed=False, read_status=False)
-    
     return render(request, "mysuperadmin/index.html", {"notify":notify,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
 
 
-# def ViewAdminProfile(request, id):
-#     user = User.objects.get(id=id)
-#     return render(request, "admin-profile.html", {'user':user})
+
 
 @login_required(login_url="/super-admin/")
 def UserTablePage(request):
-    get_users = User.objects.filter(is_superuser=False)
-    return render(request, "mysuperadmin/user-table.html", {"get_users":get_users})
+    num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+    num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+    num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+    notification = Notification.objects.filter(is_completed=False, read_status=False)
+    get_users = User.objects.filter(is_superuser=False,is_user=False)
+    return render(request, "mysuperadmin/user-table.html", {"get_users":get_users,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
+
+
+@login_required(login_url="/super-admin/")
+def AdminUserTablePage(request, id):
+    upleid = User.objects.get(id=id)
+    get_users = User.objects.filter(is_superuser=False,is_staff=False,is_user=True,join_by_refer=upleid.refer_code,user_admin=upleid.refer_code)
+    
+    num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+    num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+    num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+    notification = Notification.objects.filter(is_completed=False, read_status=False)
+    return render(request, "mysuperadmin/admin-user-table.html", {"get_users":get_users,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
 
 @login_required(login_url="/super-admin/")
 def UserCreatePage(request):
@@ -86,7 +98,11 @@ def UserCreatePage(request):
             messages.error(request,"You are not Eligible")
             return redirect('/super-admin/new-user/')
     else:
-        return render(request, "mysuperadmin/create-user.html")
+        num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+        num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+        num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+        notification = Notification.objects.filter(is_completed=False, read_status=False)
+        return render(request, "mysuperadmin/create-user.html",{'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
     
         
 
@@ -102,8 +118,11 @@ def DeleteUser(request, id):
 def DetailUser(request, id):
     get_user = User.objects.get(id=id)
     
-    
-    return render(request, "mysuperadmin/app-profile.html", {'get_user':get_user})
+    num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+    num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+    num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+    notification = Notification.objects.filter(is_completed=False, read_status=False)
+    return render(request, "mysuperadmin/app-profile.html", {'get_user':get_user,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
 
 
 
@@ -119,6 +138,8 @@ def EditUser(request, id):
         gender = request.POST["gender"]
         verify = request.POST['verificat']
         yourin = request.POST['goto']
+        sts = request.POST["state"]
+        cty = request.POST["city"]
         
         
         if len(request.FILES) !=0:
@@ -131,12 +152,16 @@ def EditUser(request, id):
         
         uplead = User.objects.filter(id=id)
         
-        uplead.update(first_name=fname, username=uname, is_active=active, mobile_no=contact,date_of_birth=dob, gender=gender, is_verified=verify,is_above18=yourin)
+        uplead.update(first_name=fname, username=uname, is_active=active, mobile_no=contact,date_of_birth=dob, gender=gender, is_verified=verify,is_above18=yourin,state_id=sts,city=cty)
         messages.success(request, f"{fname}, profile updated successfully")
         return redirect("/super-admin/users-table/")
     else:
         getUser = User.objects.get(id=id)    
-        return render(request, "mysuperadmin/edituser.html", {'user':getUser})
+        num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+        num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+        num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+        notification = Notification.objects.filter(is_completed=False, read_status=False)
+        return render(request, "mysuperadmin/edituser.html", {'user':getUser,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
     
     
 @login_required(login_url="/super-admin/") 
@@ -154,8 +179,11 @@ def ForgotPassword(request,id):
         return redirect('/super-admin/')
     else:
         edtad=User.objects.get(id=id)
-        # print(edtad)
-        return render(request,'mysuperadmin/change-password.html',{'edtad':edtad, 'oldpwd':oldpwd})
+        num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+        num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+        num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+        notification = Notification.objects.filter(is_completed=False, read_status=False)
+        return render(request,'mysuperadmin/change-password.html',{'edtad':edtad, 'oldpwd':oldpwd,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
     
     
     
@@ -172,13 +200,21 @@ def StateCreate(request):
             usr.save()
             return redirect("/super-admin/state-table/")
     else:
-        return render(request, "mysuperadmin/create-state.html")
+        num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+        num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+        num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+        notification = Notification.objects.filter(is_completed=False, read_status=False)
+        return render(request, "mysuperadmin/create-state.html", {'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
     
     
 @login_required(login_url="/super-admin/")
 def StateTablePage(request):
     get_state = State.objects.all()
-    return render(request, "mysuperadmin/state-table.html", {'get_state':get_state})
+    num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+    num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+    num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+    notification = Notification.objects.filter(is_completed=False, read_status=False)
+    return render(request, "mysuperadmin/state-table.html", {'get_state':get_state,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
 
 @login_required(login_url="/super-admin/")
 def DeleteState(request, id):
@@ -197,8 +233,12 @@ def EditState(request, id):
         messages.success(request, f"{state}, State name updated successfully")
         return redirect("/super-admin/state-table/") 
     else:
-        getState = State.objects.get(id=id)    
-        return render(request, "mysuperadmin/create-state.html", {'state':getState})
+        getState = State.objects.get(id=id)   
+        num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+        num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+        num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+        notification = Notification.objects.filter(is_completed=False, read_status=False)
+        return render(request, "mysuperadmin/create-state.html", {'state':getState,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
     
     
     
@@ -209,29 +249,36 @@ def KYCDetailsCreate(request):
     
     if request.method == 'POST':
         user = request.POST["user"]
-        pancard = request.FILES["pancard"]
         aadharcard = request.FILES["aadharcard"]
         account_no = request.POST["account_no"]
         ifsc_code = request.POST["ifsc_code"]
         branch_name = request.POST["branch_name"]
         # is_verified = request.POST["is_verified"]
         
-        if KYCDetails.objects.filter(pancard=pancard,aadharcard=aadharcard).exists():
+        if KYCDetails.objects.filter(aadharcard=aadharcard).exists():
             messages.info(request, 'KYC details already taken')
             return redirect('/super-admin/kyc-detail-table/')
         else:
-            usr = KYCDetails(user_id=user,pancard=pancard,aadharcard=aadharcard,account_no=account_no,ifsc_code=ifsc_code,branch_name=branch_name,is_verified=False)
+            usr = KYCDetails(user_id=user,aadharcard=aadharcard,account_no=account_no,ifsc_code=ifsc_code,branch_name=branch_name,is_verified=False)
             usr.save()
             return redirect("/super-admin/kyc-detail-table/")
     else:
         getUser = User.objects.filter(is_superuser=False)
-        return render(request, "mysuperadmin/create-kyc-detail.html", {'getUser':getUser})
+        num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+        num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+        num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+        notification = Notification.objects.filter(is_completed=False, read_status=False)
+        return render(request, "mysuperadmin/create-kyc-detail.html", {'getUser':getUser,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
     
     
 @login_required(login_url="/super-admin/")
 def KYCDetailsTablePage(request):
     get_kyc = KYCDetails.objects.all()
-    return render(request, "mysuperadmin/kyc-detail-table.html", {'get_kyc':get_kyc})
+    num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+    num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+    num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+    notification = Notification.objects.filter(is_completed=False, read_status=False)
+    return render(request, "mysuperadmin/kyc-detail-table.html", {'get_kyc':get_kyc,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
 
 @login_required(login_url="/super-admin/")
 def DeleteKYCDetails(request, id):
@@ -245,7 +292,6 @@ def DeleteKYCDetails(request, id):
 def EditKYCDetailse(request, id):
     if request.method == 'POST':
         user = request.POST["user"]
-        pancard = request.POST["pancard"]
         aadharcard = request.POST["aadharcard"]
         account_no = request.POST["account_no"]
         ifsc_code = request.POST["ifsc_code"]
@@ -253,13 +299,17 @@ def EditKYCDetailse(request, id):
         is_verified = request.POST["actv"]
                 
         uplead = KYCDetails.objects.filter(id=id)        
-        uplead.update(user_id=user,pancard=pancard,aadharcard=aadharcard,account_no=account_no,ifsc_code=ifsc_code,branch_name=branch_name,is_verified=is_verified)
+        uplead.update(user_id=user,aadharcard=aadharcard,account_no=account_no,ifsc_code=ifsc_code,branch_name=branch_name,is_verified=is_verified)
         messages.success(request, f"KYC detail updated successfully")
         return redirect("/super-admin/kyc-detail-table/") 
     else:
         getKyc = KYCDetails.objects.get(id=id)    
         getUser = User.objects.filter(is_superuser=False)
-        return render(request, "mysuperadmin/edit-kyc-detail.html", {'kyc_detail':getKyc, 'getUser':getUser})
+        num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+        num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+        num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+        notification = Notification.objects.filter(is_completed=False, read_status=False)
+        return render(request, "mysuperadmin/edit-kyc-detail.html", {'kyc_detail':getKyc, 'getUser':getUser,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
     
     
     
@@ -282,13 +332,21 @@ def WalletAddCreate(request):
         return redirect("/super-admin/wallet-add-table/")
     else:
         getUser = User.objects.filter(is_superuser=False)
-        return render(request, "mysuperadmin/create-wallet-add.html", {'getUser':getUser})
+        num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+        num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+        num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+        notification = Notification.objects.filter(is_completed=False, read_status=False)
+        return render(request, "mysuperadmin/create-wallet-add.html", {'getUser':getUser,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
     
     
 @login_required(login_url="/super-admin/")   
 def WalletAddTablePage(request):
     get_wallet = WalletAdd.objects.all()
-    return render(request, "mysuperadmin/wallet-add-table.html", {'get_wallet':get_wallet})
+    num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+    num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+    num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+    notification = Notification.objects.filter(is_completed=False, read_status=False)
+    return render(request, "mysuperadmin/wallet-add-table.html", {'get_wallet':get_wallet,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
 
 @login_required(login_url="/super-admin/")
 def DeleteWalletAdd(request, id):
@@ -312,7 +370,11 @@ def EditWalletAdd(request, id):
     else:
         getWallet = WalletAdd.objects.get(id=id)    
         getUser = User.objects.filter(is_superuser=False)
-        return render(request, "mysuperadmin/edit-wallet-add.html", {'getWallet':getWallet, 'getUser':getUser})
+        num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+        num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+        num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+        notification = Notification.objects.filter(is_completed=False, read_status=False)
+        return render(request, "mysuperadmin/edit-wallet-add.html", {'getWallet':getWallet, 'getUser':getUser,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
     
     
 @login_required(login_url="/super-admin/")   
@@ -333,18 +395,30 @@ def WalletAmtCreate(request):
     else:
         getWallet = WalletAdd.objects.all()
         getUser = User.objects.filter(is_superuser=False)
-        return render(request, "mysuperadmin/create-wallet-amount.html", {'getUser':getUser,'getWallet':getWallet})
+        num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+        num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+        num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+        notification = Notification.objects.filter(is_completed=False, read_status=False)
+        return render(request, "mysuperadmin/create-wallet-amount.html", {'getUser':getUser,'getWallet':getWallet,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
     
     
 @login_required(login_url="/super-admin/")    
 def WalletAmtTablePage(request):
     get_wallet = WalletAmt.objects.all()
-    return render(request, "mysuperadmin/wallet-amount-table.html", {'get_wallet':get_wallet})
+    num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+    num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+    num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+    notification = Notification.objects.filter(is_completed=False, read_status=False)
+    return render(request, "mysuperadmin/wallet-amount-table.html", {'get_wallet':get_wallet,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
 
 @login_required(login_url="/super-admin/")
 def DetailWalletAmt(request, id):
     get_wallet = WalletAmt.objects.get(id=id)
-    return render(request, "mysuperadmin/wallet-amount-detail.html", {'get_wallet':get_wallet})
+    num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+    num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+    num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+    notification = Notification.objects.filter(is_completed=False, read_status=False)
+    return render(request, "mysuperadmin/wallet-amount-detail.html", {'get_wallet':get_wallet,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
 
 @login_required(login_url="/super-admin/")
 def DeleteWalletAmt(request, id):
@@ -373,7 +447,11 @@ def EditWalletAmt(request, id):
         getWalletadd = WalletAdd.objects.all()
         getWallet = WalletAmt.objects.get(id=id)    
         getUser = User.objects.filter(is_superuser=False)
-        return render(request, "mysuperadmin/edit-wallet-amount.html", {'getWallet':getWallet, 'getUser':getUser,'getWalletadd':getWalletadd})
+        num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+        num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+        num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+        notification = Notification.objects.filter(is_completed=False, read_status=False)
+        return render(request, "mysuperadmin/edit-wallet-amount.html", {'getWallet':getWallet, 'getUser':getUser,'getWalletadd':getWalletadd,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
     
     
     
@@ -390,13 +468,21 @@ def PayByWalletAmountCreate(request):
         return redirect("/super-admin/pay-by-wallet-table/")
     else:
         getUser = User.objects.filter(is_superuser=False)
-        return render(request, "mysuperadmin/create-payby-wallet.html", {'getUser':getUser})
+        num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+        num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+        num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+        notification = Notification.objects.filter(is_completed=False, read_status=False)
+        return render(request, "mysuperadmin/create-payby-wallet.html", {'getUser':getUser,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
     
     
 @login_required(login_url="/super-admin/")   
 def PayByWalletAmountTablePage(request):
     get_wallet = PayByWalletAmount.objects.all()
-    return render(request, "mysuperadmin/pay-by-wallet-table.html", {'get_wallet':get_wallet})
+    num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+    num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+    num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+    notification = Notification.objects.filter(is_completed=False, read_status=False)
+    return render(request, "mysuperadmin/pay-by-wallet-table.html", {'get_wallet':get_wallet,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
 
 @login_required(login_url="/super-admin/")
 def DeletePayByWalletAmount(request, id):
@@ -419,7 +505,11 @@ def EditPayByWalletAmount(request, id):
     else:
         getWallet = PayByWalletAmount.objects.get(id=id)    
         getUser = User.objects.filter(is_superuser=False)
-        return render(request, "mysuperadmin/edit-pay-by-wallet.html", {'getWallet':getWallet, 'getUser':getUser})
+        num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+        num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+        num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+        notification = Notification.objects.filter(is_completed=False, read_status=False)
+        return render(request, "mysuperadmin/edit-pay-by-wallet.html", {'getWallet':getWallet, 'getUser':getUser,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
     
 
 @login_required(login_url="/super-admin/")   
@@ -434,14 +524,22 @@ def WithdrawRequestCreate(request):
         return redirect("/super-admin/withdraw-request-table/")
     else:
         getUser = User.objects.filter(is_superuser=False)
-        return render(request, "mysuperadmin/create-withdraw-request.html", {'getUser':getUser})
+        num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+        num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+        num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+        notification = Notification.objects.filter(is_completed=False, read_status=False)
+        return render(request, "mysuperadmin/create-withdraw-request.html", {'getUser':getUser,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
     
     
     
 @login_required(login_url="/super-admin/")    
 def WithdrawRequestTablePage(request):
     get_withd = WithdrawRequest.objects.all()
-    return render(request, "mysuperadmin/withdraw-request-table.html", {'get_withd':get_withd})
+    num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+    num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+    num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+    notification = Notification.objects.filter(is_completed=False, read_status=False)
+    return render(request, "mysuperadmin/withdraw-request-table.html", {'get_withd':get_withd,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
 
 
 
@@ -498,7 +596,11 @@ def EditWithdrawRequest(request, id):
     else:
         getWit = WithdrawRequest.objects.get(id=id)    
         getUser = User.objects.filter(is_superuser=False)
-        return render(request, "mysuperadmin/edit-withdraw-request.html", {'getWit':getWit, 'getUser':getUser})
+        num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+        num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+        num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+        notification = Notification.objects.filter(is_completed=False, read_status=False)
+        return render(request, "mysuperadmin/edit-withdraw-request.html", {'getWit':getWit, 'getUser':getUser,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
     
     
     
@@ -514,13 +616,21 @@ def PlayerCreate(request):
         return redirect("/super-admin/pay-by-wallet-table/")
     else:
         getUser = User.objects.filter(is_superuser=False)
+        num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+        num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+        num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+        notification = Notification.objects.filter(is_completed=False, read_status=False)
         return render(request, "mysuperadmin/create-payby-wallet.html", {'getUser':getUser})
     
     
 @login_required(login_url="/super-admin/")   
 def PlayerTablePage(request):
     get_player = Player.objects.all()
-    return render(request, "mysuperadmin/player-table.html", {'get_player':get_player})
+    num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+    num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+    num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+    notification = Notification.objects.filter(is_completed=False, read_status=False)
+    return render(request, "mysuperadmin/player-table.html", {'get_player':get_player,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
 
 @login_required(login_url="/super-admin/")
 def DeletePlayer(request, id):
@@ -542,7 +652,11 @@ def EditPlayer(request, id):
     else:
         getply = Player.objects.get(id=id)    
         getUser = User.objects.filter(is_superuser=False)
-        return render(request, "mysuperadmin/edit-player.html", {'getply':getply, 'getUser':getUser})
+        num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+        num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+        num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+        notification = Notification.objects.filter(is_completed=False, read_status=False)
+        return render(request, "mysuperadmin/edit-player.html", {'getply':getply, 'getUser':getUser,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
     
     
     
@@ -558,14 +672,21 @@ def GameCreate(request):
         return redirect("/super-admin/game-table/")
     else:
         getPly = Player.objects.all()
-        
-        return render(request, "mysuperadmin/create-game.html", {'getPly':getPly})
+        num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+        num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+        num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+        notification = Notification.objects.filter(is_completed=False, read_status=False)
+        return render(request, "mysuperadmin/create-game.html", {'getPly':getPly,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
     
     
 @login_required(login_url="/super-admin/")   
 def GameTablePage(request):
     get_Game = Game.objects.all()
-    return render(request, "mysuperadmin/game-table.html", {'get_Game':get_Game})
+    num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+    num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+    num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+    notification = Notification.objects.filter(is_completed=False, read_status=False)
+    return render(request, "mysuperadmin/game-table.html", {'get_Game':get_Game,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
 
 @login_required(login_url="/super-admin/")
 def DeleteGame(request, id):
@@ -586,7 +707,11 @@ def EditGame(request, id):
     else:
         getply = Game.objects.get(id=id)    
         getUser = User.objects.filter(is_superuser=False)
-        return render(request, "mysuperadmin/edit-game.html", {'getply':getply, 'getUser':getUser})
+        num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+        num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+        num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+        notification = Notification.objects.filter(is_completed=False, read_status=False)
+        return render(request, "mysuperadmin/edit-game.html", {'getply':getply, 'getUser':getUser,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
     
     
     
@@ -612,18 +737,30 @@ def TournamentsCreate(request):
     else:
         getUser = User.objects.filter(is_superuser=False)
         getGame = Game.objects.all()
-        return render(request, "mysuperadmin/create-tournament.html", {'getUser':getUser,'getGame':getGame})
+        num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+        num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+        num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+        notification = Notification.objects.filter(is_completed=False, read_status=False)
+        return render(request, "mysuperadmin/create-tournament.html", {'getUser':getUser,'getGame':getGame,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
     
     
 @login_required(login_url="/super-admin/")   
 def TournamentsTablePage(request):
     get_tournament = Tournaments.objects.all()
-    return render(request, "mysuperadmin/tournament-table.html", {'get_tournament':get_tournament})
+    num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+    num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+    num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+    notification = Notification.objects.filter(is_completed=False, read_status=False)
+    return render(request, "mysuperadmin/tournament-table.html", {'get_tournament':get_tournament,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
 
 @login_required(login_url="/super-admin/")
 def DetailTournaments(request, id):
     get_tourn = Tournaments.objects.get(id=id)
-    return render(request, "mysuperadmin/tournament-detail.html", {'get_tourn':get_tourn})
+    num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+    num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+    num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+    notification = Notification.objects.filter(is_completed=False, read_status=False)
+    return render(request, "mysuperadmin/tournament-detail.html", {'get_tourn':get_tourn,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
 
 
 @login_required(login_url="/super-admin/")
@@ -655,12 +792,13 @@ def EditTournaments(request, id):
         getply = Tournaments.objects.get(id=id)    
         getUser = User.objects.filter(is_superuser=False)
         getGame = Game.objects.all()
-        return render(request, "mysuperadmin/edit-tournament.html", {'getply':getply,'getUser':getUser,'getGame':getGame})
-    
-    
-    
-    
-    
+        num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+        num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+        num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+        notification = Notification.objects.filter(is_completed=False, read_status=False)
+        return render(request, "mysuperadmin/edit-tournament.html", {'getply':getply,'getUser':getUser,'getGame':getGame,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
+        
+        
 @login_required(login_url="/super-admin/")  
 def HelpAndSupportCreate(request):
     if request.method == 'POST':
@@ -674,13 +812,21 @@ def HelpAndSupportCreate(request):
         return redirect("/super-admin/help-support-table/")
     else:
         getUser = User.objects.all()
-        return render(request, "mysuperadmin/create-help-support.html",{'getUser':getUser})
+        num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+        num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+        num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+        notification = Notification.objects.filter(is_completed=False, read_status=False)
+        return render(request, "mysuperadmin/create-help-support.html",{'getUser':getUser,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
     
     
 @login_required(login_url="/super-admin/")    
 def HelpAndSupportTablePage(request):
     get_rule = HelpAndSupport.objects.all()
-    return render(request, "mysuperadmin/help-support-table.html", {'get_rule':get_rule})
+    num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+    num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+    num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+    notification = Notification.objects.filter(is_completed=False, read_status=False)
+    return render(request, "mysuperadmin/help-support-table.html", {'get_rule':get_rule,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
 
 @login_required(login_url="/super-admin/")
 def DeleteHelpAndSupport(request, id):
@@ -739,7 +885,11 @@ def EditHelpAndSupport(request, id):
     else:
         getHelp = HelpAndSupport.objects.get(id=id)    
         getUser = User.objects.all()
-        return render(request, "mysuperadmin/edit-help-support.html", {'getHelp':getHelp,'getUser':getUser})
+        num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+        num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+        num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+        notification = Notification.objects.filter(is_completed=False, read_status=False)
+        return render(request, "mysuperadmin/edit-help-support.html", {'getHelp':getHelp,'getUser':getUser,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
     
     
     
@@ -758,14 +908,22 @@ def NotificationCreate(request):
         return redirect("/super-admin/notification-table/")
     else:
         getUser = User.objects.all()
-        return render(request, "mysuperadmin/create-notification.html", {'getUser':getUser})
+        num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+        num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+        num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+        notification = Notification.objects.filter(is_completed=False, read_status=False)
+        return render(request, "mysuperadmin/create-notification.html", {'getUser':getUser,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
     
     
     
 @login_required(login_url="/super-admin/")    
 def NotificationTablePage(request):
     get_notif = Notification.objects.all()
-    return render(request, "mysuperadmin/notification-table.html", {'get_notif':get_notif})
+    num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+    num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+    num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+    notification = Notification.objects.filter(is_completed=False, read_status=False)
+    return render(request, "mysuperadmin/notification-table.html", {'get_notif':get_notif,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
 
 
 
@@ -865,4 +1023,8 @@ def EditNotification(request, id):
     else:
         getNot = Notification.objects.get(id=id)    
         getUser = User.objects.all()
-        return render(request, "mysuperadmin/edit-notification.html", {'getNot':getNot, 'getUser':getUser})
+        num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+        num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+        num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+        notification = Notification.objects.filter(is_completed=False, read_status=False)
+        return render(request, "mysuperadmin/edit-notification.html", {'getNot':getNot, 'getUser':getUser,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})

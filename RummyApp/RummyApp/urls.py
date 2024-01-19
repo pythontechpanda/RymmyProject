@@ -37,6 +37,12 @@ router.register('withdrawal-request', views.WithdrawalRequestView, basename='wit
 router.register('complete-your-kyc', views.CompleteYourKYCView, basename='complete-your-kyc')
 router.register('follow', views.FollowView, basename='follow')
 router.register('edit-user-details', views.EditRegisterUserView, basename='edit-user-details')
+router.register('refer-link', views.ReferelLinkSenderView, basename='refer-link')
+router.register('Language', views.AddLanguageView, basename='Language')
+router.register('card-detail', views.CardDetailView, basename='card-detail')
+router.register('set-cash-limit', views.SetCashLimitView, basename='set-cash-limit')
+router.register('time-limit', views.TimeLimiteView, basename='time-limit')
+router.register('set-time-limit', views.SetDailtTimeLimitView, basename='set-time-limit')
 
 urlpatterns = [
     path('admin/', admin.site.urls),

@@ -34,7 +34,7 @@ class User(AbstractUser):
     device_registration_id=models.CharField(max_length=500,null=True)
     is_above18=models.BooleanField(default=False)
     is_user = models.BooleanField(default=False)
-    refer_by=models.CharField(max_length=100,default='admin')
+    user_admin=models.CharField(max_length=100)
     refer_code=models.CharField(max_length=50, unique=True, default=0,null=True)
     def save(self, *args, **kwargs):
         # Generate a random string of characters and numbers
@@ -77,7 +77,6 @@ def document(request, filename):
 
 class KYCDetails(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    pancard = models.ImageField(upload_to=document, null=False)
     aadharcard = models.ImageField(upload_to=document, null=False)
     account_no = models.CharField(max_length=100, unique=True)
     ifsc_code =  models.CharField(max_length=100)
@@ -234,12 +233,11 @@ class Notification(models.Model):
     created_at=models.DateTimeField(auto_now=True)
 
     
-# class ReferLinkSender(models.Model):
-#     email = models.EmailField(max_length=300,null=True)
-#     game = models.ForeignKey(SurveyMaker,on_delete=models.CASCADE)
-#     responses = models.JSONField(default=list, null=True)
-#     created = models.DateTimeField(auto_now_add=True)
-#     user = models.ForeignKey(User,on_delete=models.CASCADE)
+class ReferLinkSender(models.Model):
+    email = models.EmailField(max_length=300,null=True)
+    game = models.ForeignKey(Game,on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
 
 
 
@@ -252,3 +250,35 @@ class Follow(models.Model):
     def __str__(self) -> str:
         return f"{self.followed_by.username} started following {self.followed.username}"
 
+
+
+
+
+class AddLanguage(models.Model):
+    language = models.CharField(max_length=100, unique=True)
+    
+    
+class CardDetail(models.Model):
+    card_number = models.CharField(max_length=16)
+    card_holder_name = models.CharField(max_length=255)
+    expiration_date = models.DateField()
+    cvv = models.CharField(max_length=4)
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    created_date = models.DateTimeField(auto_now_add=True)    
+
+    def __str__(self):
+        return self.card_number
+    
+    
+class SetCashLimit(models.Model):
+    min_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    monthly_limit = models.DecimalField(max_digits=10, decimal_places=2)
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    
+    
+class TimeLimite(models.Model):
+    time = models.CharField(max_length=100, unique=True)
+    
+class SetDailtTimeLimit(models.Model):
+    daily_time = models.ForeignKey(TimeLimite, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)

@@ -49,6 +49,7 @@
                                                     {% endif %}
                                                 </td>
                                                 <td>
+                                                    <a href="{% url 'get_player' id=user.id %}" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-group color-muted m-r-5"></i> </a> |
                                                     <a href="{% url 'view_detail_user' id=user.id %}" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-eye color-muted m-r-5"></i> </a> |
                                                     <span><a href="{% url 'user_edit' id=user.id %}" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil color-muted m-r-5"></i> </a> | 
                                                         <a href="{% url 'user_del' id=user.id %}" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash-o color-danger"></i></a></span>

@@ -12,6 +12,7 @@ urlpatterns = [
     path('user-remove/<int:id>/', views.DeleteUser, name="user_del"),
     path('user-edit/<int:id>/', views.EditUser, name="user_edit"),
     path('user-detail/<int:id>/', views.DetailUser, name="view_detail_user"),
+    path('admin-user-get/<int:id>/', views.AdminUserTablePage, name="get_player"),
     
     path('new-state/', views.StateCreate),
     path('state-table/', views.StateTablePage),

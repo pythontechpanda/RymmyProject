@@ -17,4 +17,6 @@ urlpatterns = [
     path('draw_card/<int:game_id>/<int:player_id>/', views.draw_card, name='draw_card'),
     path('follow-request-filter/<int:id>/',views.FollowRequestFilterView.as_view(),name="follow-request-filter"),
     path('follow-request-accept-filter/<int:id>/',views.FollowRequestAcceptFilterView.as_view(),name="follow-request-accept-filter"),
+    path('userfilter/<int:id>/', views.UserFilterView.as_view(), name='userfilter'),
+    
 ]

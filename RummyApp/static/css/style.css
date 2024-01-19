@@ -362,7 +362,7 @@ h1, h2, h3, h4, h5, h6,
   font-family: inherit;
   font-weight: 500;
   line-height: 1.2;
-  color: #222222; }
+  color: #E0C38B; }
 
 h1, .h1 {
   font-size: 2.25rem; }
@@ -6840,7 +6840,7 @@ a.text-dark:hover, a.text-dark:focus {
 
 .color-dark,
 .text-dark {
-  color: #464a53 !important; }
+  color: #E0C38B !important; }
 
 .color-dpink,
 .text-dpink {
@@ -14725,7 +14725,9 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
 
 
 .logo-img{
-  width: 237px;
+  width: 208px;
+  margin-left: 15px;
+  margin-top: 7px;
 }
 
 
@@ -14735,11 +14737,11 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
   padding-top: 10px;
 }
 #played{
-  background: #6FD96F;
-  border-radius: 100px;
+  background: #F4CD2A;
+  border-radius: 100%;
   padding:6px;
-  color:#ffffff;
-  font-size:10px;
+  color:#A20101;
+  font-size:16px;
 }
 
 

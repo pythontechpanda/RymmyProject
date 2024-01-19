@@ -9,7 +9,7 @@ urlpatterns = [
     
     path('new-user/', views.UserCreatePage),
     path('users-table/',views.UserTablePage),
-    path('user-remove/<int:id>/', views.DeleteUser, name="user_del"),
-    path('user-edit/<int:id>/', views.EditUser, name="user_edit"),
-    path('user-detail/<int:id>/', views.DetailUser, name="view_detail_user"),
+    path('user-remove/<int:id>/', views.DeleteUser, name="user_del_by_ad"),
+    path('user-edit/<int:id>/', views.EditUser, name="user_edit_by_ad"),
+    path('user-detail/<int:id>/', views.DetailUser, name="view_detail_user_by_ad"),
 ]

@@ -15,7 +15,7 @@ from RummyApp import settings
 import razorpay
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
-
+from django.core.mail import send_mail
 # Create your views here.
 
 
@@ -29,9 +29,10 @@ class RegisterView(generics.GenericAPIView):
         serializer.save()
         user_data = serializer.data
         return Response(user_data, status=status.HTTP_201_CREATED)
-    
-    
-    
+        
+        
+
+
 class EditRegisterUserView(viewsets.ViewSet):
     permission_classes = (permissions.IsAuthenticated,)
     def list(self, request):      # list - get all record
@@ -79,28 +80,7 @@ class EditRegisterUserView(viewsets.ViewSet):
         return Response({'msg': 'Data deleted'})
     
     
-# class RegisterView(generics.GenericAPIView):
-#     serializer_class = RegisterSerializer
 
-#     def post(self, request):
-#         user_data = request.data.copy()
-
-#         # Generate username based on mobile number and a random string
-#         random_string = ''.join(random.choices(string.ascii_lowercase + string.digits, k=6))
-#         random_string_var =str(random_string)
-        
-#         username = f"{user_data['mobile_no'][:4]}{random_string_var}"
-#         user_data['username'] = username
-
-#         # Set the password the same as the username
-#         user_data['password'] = username
-
-#         serializer = self.serializer_class(data=user_data)
-#         serializer.is_valid(raise_exception=True)
-#         serializer.save()
-#         user_data = serializer.data
-
-#         return Response(user_data, status=status.HTTP_201_CREATED)
 
 
 class LoginAPIView(generics.GenericAPIView):
@@ -857,169 +837,370 @@ class FollowRequestAcceptFilterView(APIView):
         
 
 
-# Refer link
-# class ReferLinkSenderView(viewsets.ViewSet):
-#     def list(self, request):      # list - get all record
-#         stu = ServeyLinkSenders.objects.all()
-#         serializer = ServeyLinkSenderSerializer(stu, many=True)    # many use for bulk data come 
-#         return Response(serializer.data)
+class ReferelLinkSenderView(viewsets.ViewSet):
+    def list(self, request):      # list - get all record
+        stu = ReferLinkSender.objects.all()
+        serializer = ReferLinkSenderSerializer(stu, many=True)    # many use for bulk data come 
+        return Response(serializer.data)
 
 
-#     def retrieve(self, request, pk=None):
-#         id = pk
-#         if id is not None:
-#             stu = ServeyLinkSenders.objects.get(id=id)
-#             serializer = ServeyLinkSenderSerializer(stu)
-#             return Response(serializer.data)
+    def retrieve(self, request, pk=None):
+        id = pk
+        if id is not None:
+            stu = ReferLinkSender.objects.get(id=id)
+            serializer = ReferLinkSenderSerializer(stu)
+            return Response(serializer.data)
 
-#     def create(self, request):
-#         serializer = ServeyLinkSenderSerializer(data = request.data)  # form data conviert in json data
-#         if serializer.is_valid():
-#             serializer.save()
-#             print(serializer.data)
-#             qustionId = serializer.data['servey']
-#             email_address = serializer.data['email']
-#             send_mail(
-#             'Response Mail',
-#             f'Hi  \nI am thrilled to invite you for a Shadev Ai task at our office.\nVia Shadev AI so that we can get know you better. your task schedule is Today.\nhttps://jobteam.hirectjob.in/surveymakeremail/{qustionId} ',
-#             'pythontechpanda@gmail.com',
-#             [email_address],
-#             fail_silently=False,
-#             )
-#             return Response({'msg': 'Data Created','id':serializer.data['id']}, status= status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-#     def update(self, request, pk):
-#         id = pk
-#         stu = ServeyLinkSenders.objects.get(pk=id)
-#         serializer = ServeyLinkSenderSerializer(stu, data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response({'msg': 'Complete Data Update'})
-#         return Response(serializer.errors)
-
-#     def partial_update(self, request, pk):
-#         id = pk
-#         stu = ServeyLinkSenders.objects.get(pk=id)
-#         serializer = ServeyLinkSenderSerializer(stu, data=request.data, partial=True)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response({'msg': 'Partial Data Update'})
-#         return Response(serializer.errors)
-
-#     def destroy(self, request, pk):
-#         id = pk
-#         stu = ServeyLinkSenders.objects.get(pk=id)
-#         stu.delete()
-#         return Response({'msg': 'Data deleted'})
+    def create(self, request):
+        serializer = ReferLinkSenderSerializer(data = request.data)  # form data conviert in json data
+        if serializer.is_valid():
+            serializer.save()
+            print(serializer.data)
+            user = request.user.refer_code            
+            email_address = serializer.data['email']
+            send_mail(
+            'Response Mail',
+            f'Hi  \nI am thrilled to invite you for a Real Rummy task at our office.\nVia Real Rummy so that we can get know you better. your task schedule is Today.\nhttps://realrummy.hirectjob.in/userrefercode/{user} ',
+            'pythontechpanda@gmail.com',
+            [email_address],
+            fail_silently=False,
+            )
+            return Response({'msg': 'Data Created','id':serializer.data['id']}, status= status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+    def update(self, request, pk):
+        id = pk
+        stu = ReferLinkSender.objects.get(pk=id)
+        serializer = ReferLinkSenderSerializer(stu, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'msg': 'Complete Data Update'})
+        return Response(serializer.errors)
 
-class HomeFilterView(APIView):
+    def partial_update(self, request, pk):
+        id = pk
+        stu = ReferLinkSender.objects.get(pk=id)
+        serializer = ReferLinkSenderSerializer(stu, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'msg': 'Partial Data Update'})
+        return Response(serializer.errors)
+
+    def destroy(self, request, pk):
+        id = pk
+        stu = ReferLinkSender.objects.get(pk=id)
+        stu.delete()
+        return Response({'msg': 'Data deleted'})
+    
+    
+    
+class AddLanguageView(viewsets.ViewSet):
     permission_classes = (permissions.IsAuthenticated,)
-    def get(self,request,id):
-        current_dateTime = datetime.datetime.now()
-        if User.objects.filter(id=id).exists():
+    def list(self, request):      # list - get all record
+        stu = AddLanguage.objects.all()
+        serializer = AddLanguageSerializer(stu, many=True)    # many use for bulk data come 
+        return Response(serializer.data)
+
+
+    def retrieve(self, request, pk=None):
+        id = pk
+        if id is not None:
+            stu = AddLanguage.objects.get(id=id)
+            serializer = AddLanguageSerializer(stu)
+            return Response(serializer.data)
+
+    def create(self, request):
+        serializer = AddLanguageSerializer(data = request.data)  # form data conviert in json data
+        if serializer.is_valid():
+            serializer.save()
             
-            obj=Tournaments.objects.all()
-            upcoming=[]
-            utc=pytz.UTC
-            for i in obj:
-                upcomingdetail={}
-                start_time = current_dateTime.replace(tzinfo=utc)
-                end_time =i.start_at.replace(tzinfo=utc)
-                if end_time > start_time:
-                    objcount=Tournaments.objects.filter(user_id=i.user.id).count()
+            return Response({'msg': 'Data Created'}, status= status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-                    played_ticket=Game.objects.filter(user_id=i.user.id)
-                    played=[]
-                    for j in played_ticket:
-                        if j.game in played:
-                            pass
-                        else:
-                            played.append(j.game)
-                   
-                    upcomingdetail.update({'game_id':i.id,
-                                           'game_name':i.game_name,
-                                           'message_for_player':i.message_for_player,
-                                           'lobby':i.lobby,
-                                           'ticket_cost':i.ticket_cost,
-                                           'start_at':i.start_at,
-                                           'ticket_request_till':i.ticket_request_till,
-                                           'number_of_ticket':i.number_of_tickets,
-                                           'timer':i.timer,
-                                           'private_code':i.private_code,
-                                        #    'game_counter':i.game_counter,
-                                           'is_completed':i.is_completed,
-                                        #    'created_at':i.created_at,
-                                           'user_id': i.user.id,
-                                            'first_name': i.user.first_name,
-                                            'username': i.user.username,
-                                            'profile_picture':i.user.profile_picture,
-                                            'city':i.user.city.city_name,
-                                            'gender':i.user.gender,
-                                            'date_of_birth':i.user.date_of_birth,
-                                            'mobile_no':i.user.mobile_no,
-                                            'is_verified':i.user.is_verified,
-                                            'is_above18':i.user.is_above18,
-                                            'refer_code':i.user.refer_code,
-                                            'refer_by':i.user.refer_by,
-                                            'my_code':i.user.my_code,
-                                            'played':len(played),
-                                            'created':objcount})
-                    upcoming.append(upcomingdetail)
-            print('upcoming',upcoming)
-            up= UpcomingSerializer(upcoming,many=True)
+    def update(self, request, pk):
+        id = pk
+        stu = AddLanguage.objects.get(pk=id)
+        serializer = AddLanguageSerializer(stu, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'msg': 'Complete Data Update'})
+        return Response(serializer.errors)
 
-            live=[]
-            for k in obj:
-                livedetail={}
-                start_time = current_dateTime.replace(tzinfo=utc)
-                end_time =k.start_at.replace(tzinfo=utc)
-                if end_time < start_time and k.is_completed==False:                   
-                    # live.append(k)
-                    obj=NewGame.objects.filter(user_id=k.user.id).count()
+    def partial_update(self, request, pk):
+        id = pk
+        stu = AddLanguage.objects.get(pk=id)
+        serializer = AddLanguageSerializer(stu, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'msg': 'Partial Data Update'})
+        return Response(serializer.errors)
 
-                    played_ticket=Ticket.objects.filter(assign_to_id=k.user.id)
-                    played=[]
-                    for j in played_ticket:
-                        if j.game in played:
-                            pass
-                        else:
-                            played.append(j.game)
-                   
-                    livedetail.update({'game_id':k.id,
-                                           'game_name':k.game_name,
-                                           'message_for_player':k.message_for_player,
-                                           'lobby':k.lobby,
-                                           'ticket_cost':k.ticket_cost,
-                                           'start_at':k.start_at,
-                                           'ticket_request_till':k.ticket_request_till,
-                                           'number_of_ticket':k.number_of_tickets,
-                                           'timer':k.timer,
-                                           'private_code':k.private_code,
-                                        #    'game_counter':k.game_counter,
-                                           'is_completed':k.is_completed,
-                                        #    'created_at':k.created_at,
-                                           'user_id': k.user.id,
-                                            'first_name': k.user.first_name,
-                                            'username': k.user.username,
-                                            'profile_picture':k.user.profile_picture,
-                                            'city':k.user.city.city_name,
-                                            'gender':k.user.gender,
-                                            'date_of_birth':k.user.date_of_birth,
-                                            'mobile_no':k.user.mobile_no,
-                                            'is_verified':k.user.is_verified,
-                                            'is_above18':k.user.is_above18,
-                                            'refer_code':k.user.refer_code,
-                                            'refer_by':k.user.refer_by,
-                                            'my_code':k.user.my_code,
-                                            'played':len(played),
-                                            'created':obj})
-                    live.append(livedetail)
-            liveserializer = LiveSerializer(live,many=True)
+    def destroy(self, request, pk):
+        id = pk
+        stu = AddLanguage.objects.get(pk=id)
+        stu.delete()
+        return Response({'msg': 'Data deleted'})
+    
+    
+    
+class CardDetailView(viewsets.ViewSet):
+    permission_classes = (permissions.IsAuthenticated,)
+    def list(self, request):      # list - get all record
+        stu = CardDetail.objects.all()
+        serializer = CardDetailSerializer(stu, many=True)    # many use for bulk data come 
+        return Response(serializer.data)
+
+
+    def retrieve(self, request, pk=None):
+        id = pk
+        if id is not None:
+            stu = CardDetail.objects.get(id=id)
+            serializer = CardDetailSerializer(stu)
+            return Response(serializer.data)
+
+    def create(self, request):
+        serializer = CardDetailSerializer(data = request.data)  # form data conviert in json data
+        if serializer.is_valid():
+            serializer.save()
             
-            return Response({'Upcoming':up.data,'Live':liveserializer.data})
-        else:
+            return Response({'msg': 'Data Created'}, status= status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def update(self, request, pk):
+        id = pk
+        stu = CardDetail.objects.get(pk=id)
+        serializer = CardDetailSerializer(stu, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'msg': 'Complete Data Update'})
+        return Response(serializer.errors)
+
+    def partial_update(self, request, pk):
+        id = pk
+        stu = CardDetail.objects.get(pk=id)
+        serializer = CardDetailSerializer(stu, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'msg': 'Partial Data Update'})
+        return Response(serializer.errors)
+
+    def destroy(self, request, pk):
+        id = pk
+        stu = CardDetail.objects.get(pk=id)
+        stu.delete()
+        return Response({'msg': 'Data deleted'})
+    
+    
+    
+    
+class SetCashLimitView(viewsets.ViewSet):
+    permission_classes = (permissions.IsAuthenticated,)
+    def list(self, request):      # list - get all record
+        stu = SetCashLimit.objects.all()
+        serializer = SetCashLimitSerializer(stu, many=True)    # many use for bulk data come 
+        return Response(serializer.data)
+
+
+    def retrieve(self, request, pk=None):
+        id = pk
+        if id is not None:
+            stu = SetCashLimit.objects.get(id=id)
+            serializer = SetCashLimitSerializer(stu)
+            return Response(serializer.data)
+
+    def create(self, request):
+        serializer = SetCashLimitSerializer(data = request.data)  # form data conviert in json data
+        if serializer.is_valid():
+            serializer.save()
+            
+            return Response({'msg': 'Data Created'}, status= status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def update(self, request, pk):
+        id = pk
+        stu = SetCashLimit.objects.get(pk=id)
+        serializer = SetCashLimitSerializer(stu, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'msg': 'Complete Data Update'})
+        return Response(serializer.errors)
+
+    def partial_update(self, request, pk):
+        id = pk
+        stu = SetCashLimit.objects.get(pk=id)
+        serializer = SetCashLimitSerializer(stu, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'msg': 'Partial Data Update'})
+        return Response(serializer.errors)
+
+    def destroy(self, request, pk):
+        id = pk
+        stu = SetCashLimit.objects.get(pk=id)
+        stu.delete()
+        return Response({'msg': 'Data deleted'})
+    
+    
+class TimeLimiteView(viewsets.ViewSet):
+    permission_classes = (permissions.IsAuthenticated,)
+    def list(self, request):      # list - get all record
+        stu = TimeLimite.objects.all()
+        serializer = TimeLimiteSerializer(stu, many=True)    # many use for bulk data come 
+        return Response(serializer.data)
+
+
+    def retrieve(self, request, pk=None):
+        id = pk
+        if id is not None:
+            stu = TimeLimite.objects.get(id=id)
+            serializer = TimeLimiteSerializer(stu)
+            return Response(serializer.data)
+
+    def create(self, request):
+        serializer = TimeLimiteSerializer(data = request.data)  # form data conviert in json data
+        if serializer.is_valid():
+            serializer.save()
+            
+            return Response({'msg': 'Data Created'}, status= status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def update(self, request, pk):
+        id = pk
+        stu = TimeLimite.objects.get(pk=id)
+        serializer = TimeLimiteSerializer(stu, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'msg': 'Complete Data Update'})
+        return Response(serializer.errors)
+
+    def partial_update(self, request, pk):
+        id = pk
+        stu = TimeLimite.objects.get(pk=id)
+        serializer = TimeLimiteSerializer(stu, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'msg': 'Partial Data Update'})
+        return Response(serializer.errors)
+
+    def destroy(self, request, pk):
+        id = pk
+        stu = TimeLimite.objects.get(pk=id)
+        stu.delete()
+        return Response({'msg': 'Data deleted'})
+
+
+
+class SetDailtTimeLimitView(viewsets.ViewSet):
+    permission_classes = (permissions.IsAuthenticated,)
+    def list(self, request):      # list - get all record
+        stu = SetDailtTimeLimit.objects.all()
+        serializer = SetDailtTimeLimitSerializer(stu, many=True)    # many use for bulk data come 
+        return Response(serializer.data)
+
+
+    def retrieve(self, request, pk=None):
+        id = pk
+        if id is not None:
+            stu = SetDailtTimeLimit.objects.get(id=id)
+            serializer = SetDailtTimeLimitSerializer(stu)
+            return Response(serializer.data)
+
+    def create(self, request):
+        serializer = SetDailtTimeLimitSerializer(data = request.data)  # form data conviert in json data
+        if serializer.is_valid():
+            serializer.save()
+            
+            return Response({'msg': 'Data Created'}, status= status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def update(self, request, pk):
+        id = pk
+        stu = SetDailtTimeLimit.objects.get(pk=id)
+        serializer = SetDailtTimeLimitSerializer(stu, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'msg': 'Complete Data Update'})
+        return Response(serializer.errors)
+
+    def partial_update(self, request, pk):
+        id = pk
+        stu = SetDailtTimeLimit.objects.get(pk=id)
+        serializer = SetDailtTimeLimitSerializer(stu, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'msg': 'Partial Data Update'})
+        return Response(serializer.errors)
+
+    def destroy(self, request, pk):
+        id = pk
+        stu = SetDailtTimeLimit.objects.get(pk=id)
+        stu.delete()
+        return Response({'msg': 'Data deleted'})
+    
+    
+    
+    
+    
+class UserFilterView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, id):
+        try:
+            user = User.objects.get(id=id)
+            kyc_details = KYCDetails.objects.get(user=user)
+            wallet = PayByWalletAmount.objects.get(user=user)
+
+            # Assuming User model has fields like 'username', 'mobile_no', etc.
+            user_data = {
+                'user_id': user.id,
+                'profile_picture': user.profile_picture.url,
+                'username': user.username,
+                'mobile_no': user.mobile_no,
+                'first_name': user.first_name,
+                'middle_name': user.middle_name,
+                'last_name': user.last_name,
+                'date_of_birth': user.date_of_birth,
+                'city': user.city,
+                'state': user.state.name,
+                'pincode': user.pincode,
+                'gender': user.gender,
+                'is_verified': user.is_verified,
+                'is_above18': user.is_above18,
+                'refer_code': user.refer_code,
+                'join_by_refer': user.join_by_refer,
+                'is_user': user.is_user,
+                'user_admin': user.user_admin,
+                'device_registration_id': user.device_registration_id,
+                # 'created': user.created,
+            }
+
+            kyc_details_data = {}
+            kyc_details_data.update({
+                'id': kyc_details.id,
+                'aadharcard': kyc_details.aadharcard.url,
+                'account_no': kyc_details.account_no,
+                'ifsc_code': kyc_details.ifsc_code,
+                'branch_name': kyc_details.branch_name,
+                'is_verified_kyc': kyc_details.is_verified,
+            })
+
+            wallet_data = {}
+            
+            wallet_data.update({
+                'id': wallet.id,
+                'amount': wallet.amount,
+                
+            })
+            # print("wallet_data",wallet_data)
+            # print("kyc_details_data",kyc_details_data)
+            user_data['kyc_details'] = kyc_details_data
+            user_data['wallet_data'] = wallet_data
+
+            serializer = UserFilterSerializer(data=user_data)
+            # serializer.is_valid()
+
+            return Response({'profile': user_data})
+
+        except User.DoesNotExist:
             raise AuthenticationFailed('Invalid ID, try again')

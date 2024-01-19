@@ -1,0 +1,438 @@
+Not Found: /favicon.ico
+Not Found: /super-admin/assets/images/favicon.png
+num_notif 1
+num_notif 1
+Invalid HTTP_HOST header: 'www.realrummy.techpanda.art'. You may need to add 'www.realrummy.techpanda.art' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/http/request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'www.realrummy.techpanda.art'. You may need to add 'www.realrummy.techpanda.art' to ALLOWED_HOSTS.
+Bad Request: /
+Invalid HTTP_HOST header: 'www.realrummy.techpanda.art'. You may need to add 'www.realrummy.techpanda.art' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/http/request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'www.realrummy.techpanda.art'. You may need to add 'www.realrummy.techpanda.art' to ALLOWED_HOSTS.
+Bad Request: /
+Invalid HTTP_HOST header: 'www.realrummy.techpanda.art'. You may need to add 'www.realrummy.techpanda.art' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/http/request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'www.realrummy.techpanda.art'. You may need to add 'www.realrummy.techpanda.art' to ALLOWED_HOSTS.
+Bad Request: /
+Not Found: /favicon.ico
+Not Found: /favicon.ico
+Invalid HTTP_HOST header: 'www.realrummy.techpanda.art'. You may need to add 'www.realrummy.techpanda.art' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/http/request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'www.realrummy.techpanda.art'. You may need to add 'www.realrummy.techpanda.art' to ALLOWED_HOSTS.
+Bad Request: /
+Invalid HTTP_HOST header: 'www.realrummy.techpanda.art'. You may need to add 'www.realrummy.techpanda.art' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/http/request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'www.realrummy.techpanda.art'. You may need to add 'www.realrummy.techpanda.art' to ALLOWED_HOSTS.
+Bad Request: /favicon.ico
+Invalid HTTP_HOST header: 'www.realrummy.techpanda.art'. You may need to add 'www.realrummy.techpanda.art' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/http/request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'www.realrummy.techpanda.art'. You may need to add 'www.realrummy.techpanda.art' to ALLOWED_HOSTS.
+Bad Request: /
+Invalid HTTP_HOST header: 'www.realrummy.techpanda.art'. You may need to add 'www.realrummy.techpanda.art' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/http/request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'www.realrummy.techpanda.art'. You may need to add 'www.realrummy.techpanda.art' to ALLOWED_HOSTS.
+Bad Request: /favicon.ico
+Invalid HTTP_HOST header: 'www.realrummy.techpanda.art'. You may need to add 'www.realrummy.techpanda.art' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/http/request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'www.realrummy.techpanda.art'. You may need to add 'www.realrummy.techpanda.art' to ALLOWED_HOSTS.
+Bad Request: /
+Invalid HTTP_HOST header: 'www.realrummy.techpanda.art'. You may need to add 'www.realrummy.techpanda.art' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/http/request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'www.realrummy.techpanda.art'. You may need to add 'www.realrummy.techpanda.art' to ALLOWED_HOSTS.
+Bad Request: /favicon.ico
+Invalid HTTP_HOST header: 'www.realrummy.techpanda.art'. You may need to add 'www.realrummy.techpanda.art' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/http/request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'www.realrummy.techpanda.art'. You may need to add 'www.realrummy.techpanda.art' to ALLOWED_HOSTS.
+Bad Request: /
+Not Found: /Public/home/js/check.js
+Not Found: /static/admin/javascript/hetong.js
+Invalid HTTP_HOST header: 'www.realrummy.techpanda.art'. You may need to add 'www.realrummy.techpanda.art' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/http/request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'www.realrummy.techpanda.art'. You may need to add 'www.realrummy.techpanda.art' to ALLOWED_HOSTS.
+Bad Request: /static/admin/javascript/hetong.js
+Not Found: /favicon.ico
+Invalid HTTP_HOST header: 'www.realrummy.techpanda.art'. You may need to add 'www.realrummy.techpanda.art' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/http/request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'www.realrummy.techpanda.art'. You may need to add 'www.realrummy.techpanda.art' to ALLOWED_HOSTS.
+Bad Request: /
+Not Found: /robots.txt
+Invalid HTTP_HOST header: 'www.realrummy.techpanda.art'. You may need to add 'www.realrummy.techpanda.art' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/http/request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'www.realrummy.techpanda.art'. You may need to add 'www.realrummy.techpanda.art' to ALLOWED_HOSTS.
+Bad Request: /
+Invalid HTTP_HOST header: 'www.realrummy.techpanda.art'. You may need to add 'www.realrummy.techpanda.art' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/http/request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'www.realrummy.techpanda.art'. You may need to add 'www.realrummy.techpanda.art' to ALLOWED_HOSTS.
+Invalid HTTP_HOST header: 'www.realrummy.techpanda.art'. You may need to add 'www.realrummy.techpanda.art' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/http/request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'www.realrummy.techpanda.art'. You may need to add 'www.realrummy.techpanda.art' to ALLOWED_HOSTS.
+Bad Request: /
+Bad Request: /
+Invalid HTTP_HOST header: 'www.realrummy.techpanda.art'. You may need to add 'www.realrummy.techpanda.art' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/http/request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'www.realrummy.techpanda.art'. You may need to add 'www.realrummy.techpanda.art' to ALLOWED_HOSTS.
+Bad Request: /
+Invalid HTTP_HOST header: 'www.realrummy.techpanda.art'. You may need to add 'www.realrummy.techpanda.art' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/http/request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'www.realrummy.techpanda.art'. You may need to add 'www.realrummy.techpanda.art' to ALLOWED_HOSTS.
+Bad Request: /
+Not Found: /super-admin/assets/images/favicon.png
+Not Found: /favicon.ico
+Not Found: /super-admin/assets/images/favicon.png
+Not Found: /static/icons/material-design-iconic-font/materialdesignicons.css.map
+Not Found: /static/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css.map
+Not Found: /static/plugins/metismenu/css/metisMenu.min.css.map
+Not Found: /static/plugins/chartist/js/chartist.min.js.map
+Not Found: /static/plugins/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js.map
+Not Found: /static/plugins/common/bootstrap-select.js.map
+Not Found: /static/plugins/common/bootstrap-select.js.map
+Not Found: /static/plugins/metismenu/css/metisMenu.min.css.map
+Not Found: /static/icons/material-design-iconic-font/materialdesignicons.css.map
+Not Found: /static/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css.map
+Not Found: /static/plugins/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js.map
+Not Found: /static/plugins/chartist/js/chartist.min.js.map
+Not Found: /static/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css.map
+Not Found: /static/icons/material-design-iconic-font/materialdesignicons.css.map
+Not Found: /static/plugins/metismenu/css/metisMenu.min.css.map
+Not Found: /static/plugins/common/bootstrap-select.js.map
+Not Found: /static/plugins/chartist/js/chartist.min.js.map
+Not Found: /static/plugins/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js.map
+Not Found: /static/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css.map
+Not Found: /static/icons/material-design-iconic-font/materialdesignicons.css.map
+Not Found: /static/plugins/metismenu/css/metisMenu.min.css.map
+Not Found: /static/plugins/common/bootstrap-select.js.map
+Not Found: /static/plugins/chartist/js/chartist.min.js.map
+Not Found: /static/plugins/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js.map
+Not Found: /static/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css.map
+Not Found: /static/icons/material-design-iconic-font/materialdesignicons.css.map
+Not Found: /static/plugins/common/bootstrap-select.js.map
+Not Found: /static/plugins/metismenu/css/metisMenu.min.css.map
+Not Found: /static/plugins/chartist/js/chartist.min.js.map
+Not Found: /static/plugins/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js.map
+Not Found: /static/plugins/common/bootstrap-select.js.map
+Not Found: /static/plugins/chartist/js/chartist.min.js.map
+Not Found: /static/plugins/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js.map
+Not Found: /static/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css.map
+Not Found: /static/plugins/metismenu/css/metisMenu.min.css.map
+Not Found: /static/icons/material-design-iconic-font/materialdesignicons.css.map
+Internal Server Error: /admin-panel/user-detail/12/
+Traceback (most recent call last):
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/contrib/auth/decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "/home3/cmsfylqm/realrummy.techpanda.art/RummyApp/my_admin/views.py", line 106, in DetailUser
+    return render(request, "myadmin/app-profile.html", {'get_user':get_user})
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: myadmin/app-profile.html
+Internal Server Error: /admin-panel/user-detail/19/
+Traceback (most recent call last):
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/contrib/auth/decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "/home3/cmsfylqm/realrummy.techpanda.art/RummyApp/my_admin/views.py", line 106, in DetailUser
+    return render(request, "myadmin/app-profile.html", {'get_user':get_user})
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: myadmin/app-profile.html
+Internal Server Error: /admin-panel/user-detail/17/
+Traceback (most recent call last):
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/contrib/auth/decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "/home3/cmsfylqm/realrummy.techpanda.art/RummyApp/my_admin/views.py", line 106, in DetailUser
+    return render(request, "myadmin/app-profile.html", {'get_user':get_user})
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: myadmin/app-profile.html
+Not Found: /admin-panel/changepassword/2/
+[UID:1281][16055] Child process with pid: 28880 was killed by signal: 15, core dumped: no
+/home3/cmsfylqm/virtualenv/realrummy.techpanda.art/RummyApp/3.10/lib/python3.10/site-packages/django/db/models/fields/__init__.py:1654: RuntimeWarning: DateTimeField Notification.created_at received a naive datetime (2024-01-18 05:53:54.727400) while time zone support is active.
+  warnings.warn(
+updated_notification None
+updated_notification.is_completed True
+OSError: LSAPI: File error
+Not Found: /static/plugins/common/bootstrap-select.js.map
+Not Found: /static/plugins/chartist/js/chartist.min.js.map
+Not Found: /static/plugins/metismenu/css/metisMenu.min.css.map
+Not Found: /static/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css.map
+Not Found: /static/icons/material-design-iconic-font/materialdesignicons.css.map
+Not Found: /static/plugins/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js.map
+Not Found: /static/plugins/metismenu/css/metisMenu.min.css.map
+Not Found: /static/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css.map
+Not Found: /static/icons/material-design-iconic-font/materialdesignicons.css.map
+Not Found: /static/plugins/common/bootstrap-select.js.map
+Not Found: /static/plugins/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js.map
+Not Found: /static/plugins/chartist/js/chartist.min.js.map
+Not Found: /static/plugins/common/bootstrap-select.js.map
+Not Found: /static/plugins/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js.map
+Not Found: /static/icons/material-design-iconic-font/materialdesignicons.css.map
+Not Found: /static/plugins/metismenu/css/metisMenu.min.css.map
+Not Found: /static/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css.map
+Not Found: /static/plugins/chartist/js/chartist.min.js.map
+Not Found: /favicon.ico
+Not Found: /static/plugins/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js.map
+Not Found: /static/plugins/common/bootstrap-select.js.map
+Not Found: /static/plugins/chartist/js/chartist.min.js.map
+Not Found: /static/icons/material-design-iconic-font/materialdesignicons.css.map
+Not Found: /static/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css.map
+Not Found: /static/plugins/metismenu/css/metisMenu.min.css.map
+Not Found: /favicon.ico
+Not Found: /static/icons/material-design-iconic-font/materialdesignicons.css.map
+Not Found: /static/plugins/metismenu/css/metisMenu.min.css.map
+Not Found: /static/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css.map
+Not Found: /static/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css.map
+[UID:1281][16962] Child process with pid: 17586 was killed by signal: 15, core dumped: no
+[UID:1281][16962] Child process with pid: 17598 was killed by signal: 15, core dumped: no
+Not Found: /static/plugins/metismenu/css/metisMenu.min.css.map
+Not Found: /static/plugins/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js.map
+Not Found: /static/plugins/chartist/js/chartist.min.js.map
+Not Found: /static/icons/material-design-iconic-font/materialdesignicons.css.map
+Not Found: /static/plugins/common/bootstrap-select.js.map
+Not Found: /static/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css.map
+Not Found: /static/icons/material-design-iconic-font/materialdesignicons.css.map
+Not Found: /static/plugins/metismenu/css/metisMenu.min.css.map
+Not Found: /static/plugins/common/bootstrap-select.js.map
+Not Found: /static/plugins/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js.map
+Not Found: /static/plugins/chartist/js/chartist.min.js.map
+[UID:1281][16962] Child process with pid: 18308 was killed by signal: 15, core dumped: no
+[UID:1281][16962] Child process with pid: 18362 was killed by signal: 15, core dumped: no
+[UID:1281][16962] Child process with pid: 18368 was killed by signal: 15, core dumped: no
+[UID:1281][16962] Child process with pid: 18371 was killed by signal: 15, core dumped: no
+[UID:1281][16962] Child process with pid: 18375 was killed by signal: 15, core dumped: no
+[UID:1281][16962] Child process with pid: 18377 was killed by signal: 15, core dumped: no
+[UID:1281][16962] Child process with pid: 18381 was killed by signal: 15, core dumped: no
+[UID:1281][16962] Child process with pid: 18383 was killed by signal: 15, core dumped: no
+[UID:1281][16962] Child process with pid: 18388 was killed by signal: 15, core dumped: no
+[UID:1281][16962] Child process with pid: 18390 was killed by signal: 15, core dumped: no
+[UID:1281][16962] Child process with pid: 18391 was killed by signal: 15, core dumped: no
+[UID:1281][16962] Child process with pid: 18395 was killed by signal: 15, core dumped: no
+[UID:1281][16962] Child process with pid: 18397 was killed by signal: 15, core dumped: no
+[UID:1281][16962] Child process with pid: 18400 was killed by signal: 15, core dumped: no
+[UID:1281][16962] Child process with pid: 18405 was killed by signal: 15, core dumped: no
+[UID:1281][16962] Child process with pid: 18411 was killed by signal: 15, core dumped: no
+[UID:1281][16962] Child process with pid: 18412 was killed by signal: 15, core dumped: no
+[UID:1281][16962] Child process with pid: 18413 was killed by signal: 15, core dumped: no
+[UID:1281][16962] Child process with pid: 18417 was killed by signal: 15, core dumped: no
+[UID:1281][16962] Child process with pid: 18418 was killed by signal: 15, core dumped: no
+[UID:1281][16962] Child process with pid: 18423 was killed by signal: 15, core dumped: no
+Not Found: /static/plugins/metismenu/css/metisMenu.min.css.map
+[UID:1281][19194] Child process with pid: 19234 was killed by signal: 15, core dumped: no
+Not Found: /static/plugins/common/bootstrap-select.js.map
+Not Found: /static/plugins/chartist/js/chartist.min.js.map
+Not Found: /static/plugins/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js.map
+Not Found: /static/icons/material-design-iconic-font/materialdesignicons.css.map
+Not Found: /static/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css.map
+Not Found: /static/plugins/metismenu/css/metisMenu.min.css.map
+Not Found: /static/icons/material-design-iconic-font/materialdesignicons.css.map
+Not Found: /static/plugins/common/bootstrap-select.js.map
+Not Found: /static/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css.map
+Not Found: /static/plugins/chartist/js/chartist.min.js.map
+Not Found: /static/plugins/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js.map
+Not Found: /static/plugins/common/bootstrap-select.js.map
+Not Found: /static/icons/material-design-iconic-font/materialdesignicons.css.map
+Not Found: /static/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css.map
+Not Found: /static/plugins/metismenu/css/metisMenu.min.css.map
+Not Found: /static/plugins/chartist/js/chartist.min.js.map
+Not Found: /static/plugins/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js.map
+Not Found: /static/plugins/common/bootstrap-select.js.map
+Not Found: /static/plugins/chartist/js/chartist.min.js.map
+Not Found: /static/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css.map
+Not Found: /static/icons/material-design-iconic-font/materialdesignicons.css.map
+Not Found: /static/plugins/metismenu/css/metisMenu.min.css.map
+Not Found: /static/plugins/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js.map
+Not Found: /static/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css.map
+Not Found: /static/plugins/metismenu/css/metisMenu.min.css.map
+Not Found: /static/plugins/chartist/js/chartist.min.js.map
+Not Found: /static/plugins/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js.map
+Not Found: /static/icons/material-design-iconic-font/materialdesignicons.css.map
+Not Found: /static/plugins/common/bootstrap-select.js.map
+Not Found: /static/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css.map
+Not Found: /static/plugins/metismenu/css/metisMenu.min.css.map
+Not Found: /static/plugins/common/bootstrap-select.js.map
+Not Found: /static/icons/material-design-iconic-font/materialdesignicons.css.map
+Not Found: /static/plugins/chartist/js/chartist.min.js.map
+Not Found: /static/plugins/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js.map
+Not Found: /static/plugins/metismenu/css/metisMenu.min.css.map
+Not Found: /static/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css.map
+Not Found: /static/icons/material-design-iconic-font/materialdesignicons.css.map
+Not Found: /static/plugins/common/bootstrap-select.js.map
+Not Found: /static/plugins/chartist/js/chartist.min.js.map
+Not Found: /static/plugins/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js.map
+Not Found: /static/plugins/common/bootstrap-select.js.map
+Not Found: /static/plugins/chartist/js/chartist.min.js.map
+Not Found: /static/plugins/metismenu/css/metisMenu.min.css.map
+Not Found: /static/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css.map
+Not Found: /static/icons/material-design-iconic-font/materialdesignicons.css.map
+Not Found: /static/plugins/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js.map
+Not Found: /static/plugins/metismenu/css/metisMenu.min.css.map
+Not Found: /static/icons/material-design-iconic-font/materialdesignicons.css.map
+Not Found: /static/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css.map
+Not Found: /static/plugins/chartist/js/chartist.min.js.map
+Not Found: /static/plugins/common/bootstrap-select.js.map
+Not Found: /static/plugins/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js.map
+Not Found: /static/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css.map
+Not Found: /static/plugins/metismenu/css/metisMenu.min.css.map
+Not Found: /static/plugins/common/bootstrap-select.js.map
+Not Found: /static/icons/material-design-iconic-font/materialdesignicons.css.map
+Not Found: /static/plugins/chartist/js/chartist.min.js.map
+Not Found: /static/plugins/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js.map
+Not Found: /super-admin/new-game-rule/
+Not Found: /favicon.ico

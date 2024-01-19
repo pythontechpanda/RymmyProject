@@ -17,12 +17,17 @@ class RegisterSerializer(serializers.ModelSerializer):
         return attrs
     def create(self, validated_data):
         return User.objects.create_user(**validated_data)
-    
+        
+        
+        
 class EditRegisterSerializer(serializers.ModelSerializer):
     # password = serializers.CharField(max_length=68, min_length=6, write_only=True)
     class Meta:
         model = User
         fields = ['id','username', 'profile_picture', 'first_name', 'middle_name', 'last_name', 'email','city', 'state', 'refer_code', 'pincode', 'gender','date_of_birth','mobile_no','is_verified', 'is_above18', 'is_user','device_registration_id']
+    
+    
+    
     
 class LoginSerializer(serializers.ModelSerializer):
     # password = serializers.CharField(max_length=68, min_length=6,write_only=True)
@@ -87,7 +92,7 @@ class LogoutSerializer(serializers.Serializer):
 class KYCDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = KYCDetails
-        fields = ['id','user','pancard','aadharcard','account_no','ifsc_code','branch_name','is_verified']
+        fields = ['id','user','aadharcard','account_no','ifsc_code','branch_name','is_verified']
         
 class WalletAddSerializer(serializers.ModelSerializer):
     # user = RegisterSerializer()
@@ -161,7 +166,79 @@ class FollowSerializer(serializers.ModelSerializer):
         fields = '__all__'
     
 
-# class ReferLinkSenderSerializer(serializers.ModelSerializer):    
-#     class Meta:
-#         model = ReferLinkSender
-#         fields = '__all__'
+class ReferLinkSenderSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = ReferLinkSender
+        fields = ['id','email','game','created','user']
+        
+        
+        
+class AddLanguageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AddLanguage
+        fields = '__all__'
+        
+        
+class CardDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CardDetail
+        fields = '__all__'
+        
+        
+class SetCashLimitSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SetCashLimit
+        fields = '__all__'
+        
+        
+class TimeLimiteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TimeLimite
+        fields = '__all__'
+        
+        
+class SetDailtTimeLimitSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SetDailtTimeLimit
+        fields = '__all__'
+        
+        
+        
+        
+class UserFilterSerializer(serializers.Serializer):
+    aadharcard=serializers.IntegerField()
+    account_no=serializers.ImageField()
+    ifsc_code=serializers.CharField(max_length=255)
+    branch_name=serializers.CharField(max_length=25)
+    is_verified=serializers.CharField(max_length=25)
+    
+    walt=serializers.CharField(max_length=255)
+    use_date=serializers.DateTimeField()
+    payment_status=serializers.BooleanField()
+    amount=serializers.CharField(max_length=255)
+    razor_pay_order_id=serializers.CharField(max_length=255)
+    razor_pay_payment_id=serializers.CharField(max_length=255)
+    razor_pay_payment_signature=serializers.CharField(max_length=255)
+    
+    user_id= serializers.IntegerField()
+    profile_picture= serializers.FileField()
+    username= serializers.CharField(max_length=255)
+    mobile_no=serializers.CharField(max_length=255)
+    first_name=serializers.CharField(max_length=255)
+    middle_name=serializers.CharField(max_length=255)
+    last_name=serializers.CharField(max_length=255)
+    date_of_birth=serializers.CharField(max_length=255)
+    
+    city=serializers.CharField(max_length=255)
+    state=serializers.CharField(max_length=255)
+    pincode=serializers.CharField(max_length=255)   
+    gender=serializers.CharField(max_length=255)
+    is_verified=serializers.BooleanField()
+    is_above18=serializers.BooleanField()
+    refer_code=serializers.CharField(max_length=255)
+    join_by_refer=serializers.CharField(max_length=255)
+    is_user=serializers.CharField(max_length=255)
+    user_admin=serializers.CharField(max_length=255)
+    device_registration_id=serializers.CharField(max_length=255)
+    created=serializers.IntegerField()

@@ -1,0 +1,126 @@
+{% extends "myadmin/index.html" %}
+{% load static %}
+{% block content %}
+
+        <!--**********************************
+            Content body start
+        ***********************************-->
+        <div class="content-body">
+
+            
+            <!-- row -->
+
+            <div class="container-fluid">
+                <div class="row justify-content-center">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="form-validation">
+                                    {% for message in messages  %}            
+                                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert" style="color:#ffffff;">
+                                            <strong style="color:#ffffff;">Message : </strong> {{ message }}
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                    {% endfor %} 
+                                    <form class="form-valide" method="post" enctype="multipart/form-data">
+                                        {% csrf_token %}
+
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="val-website">Select Wallet <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="col-lg-6">
+                                                <select class="form-control" name="walt">
+                                                    <option value="">Please select</option>
+                                                    {% for gwa in getWallet %}
+                                                    <option value="{{ gwa.id }}">{{ gwa.user.username}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="val-website">Select User <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="col-lg-6">
+                                                <select class="form-control" name="user">
+                                                    <option value="">Please select</option>
+                                                    {% for usr in getUser %}
+                                                    <option value="{{ usr.id }}">{{ usr.first_name}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label"><a href="#">Status</a>  <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="col-lg-8">
+                                                <label class="css-control css-control-primary css-checkbox" for="val-terms">
+                                                    <input type="checkbox" class="css-control-input" id="val-terms" name="actv" value="1">
+                                                    <input type="text" style="display: none;" id="act-result"  name="actv" value="0">
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="val">Amount <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="col-lg-6">
+                                                <input type="text" class="form-control" id="val" name="amount" placeholder="Enter amount.." >
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="val">Razor Pay Order id <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="col-lg-6">
+                                                <input type="text" class="form-control" id="val" name="razor_pay_order_id" placeholder="Enter Razor Pay Order id.." >
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="val">Razor Pay Payment Id <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="col-lg-6">
+                                                <input type="text" class="form-control" id="val" name="razor_pay_payment_id" placeholder="Enter Razor Pay Payment Id.." required>
+                                            </div>
+                                        </div>
+                                        
+                                        
+                                        
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="val-suggestions">Razor Pay Payment Signature <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="col-lg-6">
+                                                <input type="text" class="form-control" id="val" name="razor_pay_payment_signature" placeholder="Razor Pay Payment Signature.." required>
+                                            </div>
+                                        </div>
+
+
+                                        
+
+                                        <div class="form-group row">
+                                            <div class="col-lg-8 ml-auto">
+                                                <button type="submit" class="btn btn-primary">Submit</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- #/ container -->
+        </div>
+        <!--**********************************
+            Content body end
+        ***********************************-->
+        
+        
+        {% endblock content %}

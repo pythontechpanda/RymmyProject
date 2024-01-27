@@ -29,7 +29,7 @@
                                             {% for wlt in get_wallet%}
                                             <tr>
                                                 <td>{{ wlt.user.first_name }}</td>
-                                                <td>{{ wlt.walletid}}</td>                                                
+                                                <td>{{ wlt.amount}}</td>                                                
                                                 <td>
                                                     <span>
                                                         <a href="{% url 'wallet_pay_edit' id=wlt.id %}" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil color-muted m-r-5"></i> </a> | 

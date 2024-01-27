@@ -1,0 +1,87 @@
+{% extends "myadmin/index.html" %}
+{% load static %}
+{% block content %}
+
+        <!--**********************************
+            Content body start
+        ***********************************-->
+        <div class="content-body">
+
+            
+            <!-- row -->
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Data Table | <a href="/admin-panel/new-kyc-detail/"><i class="fa fa-plus color-muted m-r-5 " style="font-size:18px;"></i></a></h4>
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered zero-configuration">
+                                        <thead>
+                                            <tr>
+                                                <th>User</th>
+                                                {% comment %} <th>Pan Card</th> {% endcomment %}
+                                                <th>Aadhar Card</th>
+                                                <th>Account No</th>
+                                                <th>IFSC Code</th>
+                                                <th>Branch Name</th>
+                                                <th>is_verified</th>
+                                                <th>Opration</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for kyc in get_kyc%}
+                                            <tr>
+                                                
+                                                <td>{{ kyc.user.first_name }}</td>
+                                                {% comment %} <td><img src="/media/{{ kyc.pancard }}" width="200" alt="pancard"></td> {% endcomment %}
+                                                <td><img src="/media/{{ kyc.aadharcard }}" width="200" alt="aadharcard"></td>
+                                                <td>{{ kyc.account_no}}</td>
+                                                <td>{{ kyc.ifsc_code}}</td>
+                                                <td>{{ kyc.branch_name}}</td>
+                                                <td>
+                                                    {% if kyc.is_verified == True %}
+                                                    <h5>Verified</h5>
+                                                    {% elif kyc.is_verified == False %}
+                                                    <h5>Not Verified</h5>
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    <span>
+                                                        {% comment %} <a href="{% url 'view_detail_kyce' id=kyc.id %}" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-eye color-muted m-r-5"></i> </a> | {% endcomment %}
+                                                        <a href="{% url 'kyc_edit_by_ad' id=kyc.id %}" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil color-muted m-r-5"></i> </a> | 
+                                                        <a href="{% url 'kyc_del_by_ad' id=kyc.id %}" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash-o color-danger"></i></a></span>
+                                                </td>
+                                            </tr>      
+                                            {% endfor %}                                      
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th>User</th>
+                                                {% comment %} <th>Pan Card</th> {% endcomment %}
+                                                <th>Aadhar Card</th>
+                                                <th>Account No</th>
+                                                <th>IFSC Code</th>
+                                                <th>Branch Name</th>
+                                                <th>is_verified</th>
+                                                <th>Opration</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- #/ container -->
+        </div>
+        <!--**********************************
+            Content body end
+        ***********************************-->
+        
+        
+
+        
+        {% endblock content %}

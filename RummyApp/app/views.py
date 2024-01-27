@@ -16,8 +16,13 @@ import razorpay
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from django.core.mail import send_mail
+import string
+import random
 # Create your views here.
 
+def generate_random_string():
+    """Generate a random string of letters and digits."""
+    return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(6))
 
 class RegisterView(generics.GenericAPIView):
     serializer_class = RegisterSerializer
@@ -27,6 +32,22 @@ class RegisterView(generics.GenericAPIView):
         serializer = self.serializer_class(data=user)
         serializer.is_valid(raise_exception=True)
         serializer.save()
+        
+        # here get refer code to getting user_admin
+        get_admin = User.objects.get(refer_code=serializer.data["join_by_refer"])
+        # here get refer by admin code
+        usr_admin = get_admin.user_admin
+        
+        random_string = ''.join(random.choices(string.ascii_letters + string.digits, k=6))
+
+        # Create the refer_code using the first 4 characters of the username and the random string
+        refcode = get_admin.username[:4] + random_string
+        print("refcode", refcode)
+        
+        # now new user which we have register by using refer code there user_admin code update new user user_admin field
+        uplead = User.objects.filter(id=serializer.data["id"])
+        uplead.update(user_admin=usr_admin)
+        
         user_data = serializer.data
         return Response(user_data, status=status.HTTP_201_CREATED)
         
@@ -34,7 +55,7 @@ class RegisterView(generics.GenericAPIView):
 
 
 class EditRegisterUserView(viewsets.ViewSet):
-    permission_classes = (permissions.IsAuthenticated,)
+    # permission_classes = (permissions.IsAuthenticated,)
     def list(self, request):      # list - get all record
         stu = User.objects.all()
         serializer = EditRegisterSerializer(stu, many=True)    # many use for bulk data come 
@@ -810,10 +831,10 @@ class FollowView(viewsets.ViewSet):
     
 class FollowRequestFilterView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
-    def get(self,request,id):
-         
+    def get(self,request,id):         
         if User.objects.filter(id=id).exists():
-            obj=Follow.objects.filter(followed=id, muted=False)
+            obj=Follow.objects.filter(followed_id=id, muted=False)
+            print("obj", obj)
             createdserializer = FollowSerializer(obj,many=True)
 
             return Response({'FollowRequest':createdserializer.data})

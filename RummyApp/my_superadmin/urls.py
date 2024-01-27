@@ -73,4 +73,26 @@ urlpatterns = [
     path('notification-table/', views.NotificationTablePage),
     path('notification-remove/<int:id>/', views.DeleteNotification, name="noiti_del"),
     path('notification-edit/<int:id>/', views.EditNotification, name="noiti_edit"),
+    
+    
+    path('refer-link-create/', views.ReferLinkSenderCreate),
+    path('refer-link-table/', views.ReferLinkSenderTablePage),
+    path('refer-link-remove/<int:id>/', views.DeleteReferLinkSender, name="refer_del"),
+    path('refer-link-edit/<int:id>/', views.ReferLinkSenderEdit, name="refer_edit"),
+    
+    path('follow-create/', views.FollowCreate),
+    path('follow-table/', views.FollowTablePage),
+    path('follow-remove/<int:id>/', views.DeleteFollow, name="flw_del"),
+    path('follow-edit/<int:id>/', views.FollowEdit, name="flw_edit"),
+    
+    
+    path('language-create/', views.AddLanguageCreate),
+    path('language-table/', views.AddLanguageTablePage),
+    path('language-remove/<int:id>/', views.DeleteAddLanguage, name="lang_del"),
+    path('language-edit/<int:id>/', views.AddLanguageEdit, name="lang_edit"),
+    
+    path('card-detail-create/', views.CardDetailCreate),
+    path('card-detail-table/', views.CardDetailTablePage),
+    path('card-detail-remove/<int:id>/', views.DeleteCardDetail, name="card_del"),
+    path('card-detail-edit/<int:id>/', views.CardDetailEdit, name="card_edit"),
 ]

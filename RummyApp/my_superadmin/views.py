@@ -7,6 +7,11 @@ from datetime import datetime
 # Create your views here.
 import os
 from django.contrib.auth.decorators import login_required
+import string
+import random
+from my_admin.models import *
+
+
 
 # Create your views here.
 def Login(request):
@@ -59,7 +64,7 @@ def UserTablePage(request):
 @login_required(login_url="/super-admin/")
 def AdminUserTablePage(request, id):
     upleid = User.objects.get(id=id)
-    get_users = User.objects.filter(is_superuser=False,is_staff=False,is_user=True,join_by_refer=upleid.refer_code,user_admin=upleid.refer_code)
+    get_users = User.objects.filter(is_superuser=False,is_staff=False,is_user=True,user_admin=upleid.refer_code)
     
     num_help = HelpAndSupport.objects.filter(is_completed=False).count()
     num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
@@ -81,6 +86,8 @@ def UserCreatePage(request):
         profile = request.FILES['profile_pic']
         pwd = request.POST["password"]
         
+        
+        
         birthdate_obj = datetime.strptime(dob, '%Y-%m-%d')
         today = datetime.today()
         age = today.year - birthdate_obj.year - ((today.month, today.day) < (birthdate_obj.month, birthdate_obj.day))
@@ -91,8 +98,20 @@ def UserCreatePage(request):
                 messages.error(request, 'Contact number already taken')
                 return redirect('/super-admin/new-user/')
             else:
-                usr = User(first_name=fname, username=uname, password=make_password(pwd), is_active=active, profile_picture=profile, mobile_no=contact,date_of_birth=dob, gender=gender, is_verified=vrfy,is_above18=above,is_staff=True)
+                usr = User(first_name=fname, username=uname, password=make_password(pwd), is_active=active, profile_picture=profile, mobile_no=contact,date_of_birth=dob, gender=gender, is_verified=vrfy,is_above18=above,is_staff=True,user_admin=request.user.refer_code,join_by_refer=request.user.refer_code)
                 usr.save()
+                
+                
+                
+                random_string = ''.join(random.choices(string.ascii_letters + string.digits, k=6))
+
+                # Create the refer_code using the first 4 characters of the username and the random string
+                refcode = usr.username[:4] + random_string
+                
+                # now new user which we have register by using refer code there user_admin code update new user user_admin field
+                uplead = User.objects.filter(id=usr.id)
+                uplead.update(refer_code=refcode)
+                
                 return redirect("/super-admin/users-table/")
         else:
             messages.error(request,"You are not Eligible")
@@ -157,11 +176,12 @@ def EditUser(request, id):
         return redirect("/super-admin/users-table/")
     else:
         getUser = User.objects.get(id=id)    
+        getState = State.objects.all()
         num_help = HelpAndSupport.objects.filter(is_completed=False).count()
         num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
         num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
         notification = Notification.objects.filter(is_completed=False, read_status=False)
-        return render(request, "mysuperadmin/edituser.html", {'user':getUser,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
+        return render(request, "mysuperadmin/edituser.html", {'user':getUser,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif, 'state':getState})
     
     
 @login_required(login_url="/super-admin/") 
@@ -290,16 +310,24 @@ def DeleteKYCDetails(request, id):
 
 @login_required(login_url="/super-admin/")
 def EditKYCDetailse(request, id):
+    upleid = KYCDetails.objects.get(id=id)
     if request.method == 'POST':
         user = request.POST["user"]
-        aadharcard = request.POST["aadharcard"]
         account_no = request.POST["account_no"]
         ifsc_code = request.POST["ifsc_code"]
         branch_name = request.POST["branch_name"]
         is_verified = request.POST["actv"]
+        
+        if len(request.FILES) !=0:
+            if len(upleid.aadharcard) > 0:
+                os.remove(upleid.aadharcard.path)
+                print(upleid.aadharcard.path)
+            upleid.aadharcard = request.FILES['aadharcard']
+            
+            upleid.save()
                 
         uplead = KYCDetails.objects.filter(id=id)        
-        uplead.update(user_id=user,aadharcard=aadharcard,account_no=account_no,ifsc_code=ifsc_code,branch_name=branch_name,is_verified=is_verified)
+        uplead.update(user_id=user,account_no=account_no,ifsc_code=ifsc_code,branch_name=branch_name,is_verified=is_verified)
         messages.success(request, f"KYC detail updated successfully")
         return redirect("/super-admin/kyc-detail-table/") 
     else:
@@ -362,7 +390,6 @@ def EditWalletAdd(request, id):
         mfp = request.POST["walletamount"]     
         rpoi = request.POST["actv"]
         
-          
         uplead = WalletAdd.objects.filter(id=id)        
         uplead.update(user_id=gn, walletamount=mfp, walletstatus=rpoi)
         messages.success(request, "Wallet add updated successfully")
@@ -665,13 +692,17 @@ def EditPlayer(request, id):
 def GameCreate(request):
     if request.method == 'POST':
         gn = request.POST["user"]   
+        point = request.POST["point_value"] 
+        ply = request.POST["no_of_players"] 
+        typ = request.POST["rummy_type"] 
+        act = request.POST["actv"]    
         
         
-        usr = Game(user_id=gn)
+        usr = Game1(user_id=gn,point_value=point,no_of_players=ply,rummy_type=typ,active=act,created_at=datetime.now())
         usr.save()
         return redirect("/super-admin/game-table/")
     else:
-        getPly = Player.objects.all()
+        getUser = User.objects.all()
         num_help = HelpAndSupport.objects.filter(is_completed=False).count()
         num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
         num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
@@ -1028,3 +1059,251 @@ def EditNotification(request, id):
         num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
         notification = Notification.objects.filter(is_completed=False, read_status=False)
         return render(request, "mysuperadmin/edit-notification.html", {'getNot':getNot, 'getUser':getUser,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
+    
+    
+
+
+
+@login_required(login_url="/super-admin/")   
+def ReferLinkSenderCreate(request):
+    if request.method == 'POST':
+        eml = request.POST["email"]
+        gm = request.POST["game"]
+        usr = request.POST["user"]       
+        
+        usr = ReferLinkSender(email=eml, user_id=usr, game_id=gm, created=datetime.now())
+        usr.save()
+        return redirect("/super-admin/refer-link-table/")
+    else:
+        getUser = User.objects.all()
+        getGame = Game.objects.all()
+        num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+        num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+        num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+        notification = Notification.objects.filter(is_completed=False, read_status=False)
+        return render(request, "mysuperadmin/create-refer-link.html", {'getUser':getUser,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif,'getGame':getGame})
+    
+    
+@login_required(login_url="/super-admin/")    
+def ReferLinkSenderTablePage(request):
+    get_refer = ReferLinkSender.objects.all()
+    num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+    num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+    num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+    notification = Notification.objects.filter(is_completed=False, read_status=False)
+    print(get_refer)
+    return render(request, "mysuperadmin/refer-link-table.html", {'get_refer':get_refer,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
+
+
+
+@login_required(login_url="/super-admin/")
+def DeleteReferLinkSender(request, id):
+    ref = ReferLinkSender.objects.get(id=id)
+    ref.delete()
+    return redirect("/super-admin/refer-link-table/")
+
+
+@login_required(login_url="/super-admin/")   
+def ReferLinkSenderEdit(request, id):
+    if request.method == 'POST':
+        eml = request.POST["email"]
+        gm = request.POST["game"]
+        usr = request.POST["user"]       
+        
+        uplead = ReferLinkSender.objects.filter(id=id) 
+        uplead.update(email=eml, user_id=usr, game_id=gm, created=datetime.now())
+        messages.success(request, "Refer link updated successfully")
+        return redirect("/super-admin/refer-link-table/")
+    else:
+        getUser = User.objects.all()
+        getGame = Game.objects.all()
+        ref_link = ReferLinkSender.objects.get(id=id) 
+        num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+        num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+        num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+        notification = Notification.objects.filter(is_completed=False, read_status=False)
+        return render(request, "mysuperadmin/edit-refer-link.html", {'getUser':getUser,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif,'getGame':getGame,'ref_link':ref_link})
+
+
+
+
+@login_required(login_url="/super-admin/")   
+def FollowCreate(request):
+    if request.method == 'POST':
+        flw = request.POST["followed"]
+        flw_by = request.POST["followed_by"]
+        status = request.POST["actv"]       
+        
+        usr = Follow(followed_id=flw, followed_by_id=flw_by, muted=status, created_date=datetime.now())
+        usr.save()
+        return redirect("/super-admin/follow-table/")
+    else:
+        getUser = User.objects.all()
+        num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+        num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+        num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+        notification = Notification.objects.filter(is_completed=False, read_status=False)
+        return render(request, "mysuperadmin/create-follow.html", {'getUser':getUser,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
+
+
+
+@login_required(login_url="/super-admin/")    
+def FollowTablePage(request):
+    get_flow = Follow.objects.all()
+    num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+    num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+    num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+    notification = Notification.objects.filter(is_completed=False, read_status=False)
+    
+    return render(request, "mysuperadmin/follow-table.html", {'get_flow':get_flow,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
+
+
+@login_required(login_url="/super-admin/")
+def DeleteFollow(request, id):
+    flw = Follow.objects.get(id=id)
+    flw.delete()
+    return redirect("/super-admin/follow-table/")
+
+
+@login_required(login_url="/super-admin/")   
+def FollowEdit(request, id):
+    if request.method == 'POST':
+        flw = request.POST["followed"]
+        flw_by = request.POST["followed_by"]
+        status = request.POST["actv"]      
+        
+        uplead = Follow.objects.filter(id=id) 
+        uplead.update(followed_id=flw, followed_by_id=flw_by, muted=status, created_date=datetime.now())
+        messages.success(request, "follow updated successfully")
+        return redirect("/super-admin/follow-table/")
+    else:
+        getUser = User.objects.all()
+        follow = Follow.objects.get(id=id) 
+        num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+        num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+        num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+        notification = Notification.objects.filter(is_completed=False, read_status=False)
+        return render(request, "mysuperadmin/edit-follow.html", {'getUser':getUser,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif,'follow':follow})
+
+
+
+
+
+
+@login_required(login_url="/super-admin/")
+def AddLanguageCreate(request):
+    if request.method == 'POST':
+        lang = request.POST["language"]
+        if AddLanguage.objects.filter(language=lang).exists():
+            messages.info(request, 'Language already taken')
+            return redirect('/super-admin/language-table/')
+        else:   
+            usr = AddLanguage(language=lang)
+            usr.save()
+            return redirect("/super-admin/language-table/")
+    else:
+        num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+        num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+        num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+        notification = Notification.objects.filter(is_completed=False, read_status=False)
+        return render(request, "mysuperadmin/create-language.html", {'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
+    
+    
+@login_required(login_url="/super-admin/")
+def AddLanguageTablePage(request):
+    get_lang = AddLanguage.objects.all()
+    num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+    num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+    num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+    notification = Notification.objects.filter(is_completed=False, read_status=False)
+    return render(request, "mysuperadmin/language-table.html", {'get_lang':get_lang,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
+
+@login_required(login_url="/super-admin/")
+def DeleteAddLanguage(request, id):
+    lang = AddLanguage.objects.get(id=id)
+    lang.delete()
+    return redirect("/super-admin/language-table/")
+
+
+
+@login_required(login_url="/super-admin/")
+def AddLanguageEdit(request, id):
+    if request.method == 'POST':
+        lang = request.POST['language']        
+        uplead = AddLanguage.objects.filter(id=id)        
+        uplead.update(language=lang)
+        messages.success(request, f"{lang}, Language updated successfully")
+        return redirect("/super-admin/language-table/") 
+    else:
+        getLang = AddLanguage.objects.get(id=id)   
+        num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+        num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+        num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+        notification = Notification.objects.filter(is_completed=False, read_status=False)
+        return render(request, "mysuperadmin/create-language.html", {'getLang':getLang,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
+    
+
+
+@login_required(login_url="/super-admin/")   
+def CardDetailCreate(request):
+    if request.method == 'POST':
+        num = request.POST["card_number"]
+        name = request.POST["card_holder_name"]
+        exp_dt = request.POST["expiration_date"]     
+        cv = request.POST["cvv"] 
+        usr = request.POST["user"]   
+        
+        usr = CardDetail(card_number=num, card_holder_name=name, expiration_date=exp_dt, cvv=cv, user_id=usr, created_date=datetime.now())
+        usr.save()
+        return redirect("/super-admin/card-detail-table/")
+    else:
+        getUser = User.objects.all()
+        num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+        num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+        num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+        notification = Notification.objects.filter(is_completed=False, read_status=False)
+        return render(request, "mysuperadmin/create-card-detail.html", {'getUser':getUser,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
+
+
+
+@login_required(login_url="/super-admin/")
+def CardDetailTablePage(request):
+    get_card = CardDetail.objects.all()
+    num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+    num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+    num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+    notification = Notification.objects.filter(is_completed=False, read_status=False)
+    return render(request, "mysuperadmin/card-detail-table.html", {'get_card':get_card,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
+
+
+
+@login_required(login_url="/super-admin/")
+def DeleteCardDetail(request, id):
+    card = CardDetail.objects.get(id=id)
+    card.delete()
+    return redirect("/super-admin/card-detail-table/")
+
+
+@login_required(login_url="/super-admin/")
+def CardDetailEdit(request, id):
+    if request.method == 'POST':
+        num = request.POST["card_number"]
+        name = request.POST["card_holder_name"]
+        exp_dt = request.POST["expiration_date"]     
+        cv = request.POST["cvv"] 
+        usr = request.POST["user"]        
+        uplead = CardDetail.objects.filter(id=id)        
+        uplead.update(card_number=num, card_holder_name=name, expiration_date=exp_dt, cvv=cv, user_id=usr, created_date=datetime.now())
+        messages.success(request, "Card updated successfully")
+        return redirect("/super-admin/card-detail-table/") 
+    else:
+        getCard = CardDetail.objects.get(id=id)   
+        num_help = HelpAndSupport.objects.filter(is_completed=False).count()
+        num_withdraw = WithdrawRequest.objects.filter(is_completed=False).count()
+        num_notif = Notification.objects.filter(is_completed=False, read_status=False).count()
+        notification = Notification.objects.filter(is_completed=False, read_status=False)
+        return render(request, "mysuperadmin/edit-card-detail.html", {'getCard':getCard,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
+    
+    
+    
+

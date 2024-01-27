@@ -82,7 +82,7 @@
                                                     {% else %}
                                                         <option value="{{ user.state.id }}">{{ user.state.name }}</option>
                                                     {% endif %}
-                                                    {% for sta in get_state %}
+                                                    {% for sta in state %}
                                                     <option value="{{ sta.id }}">{{ sta.name}}</option>
                                                     {% endfor %}
                                                 </select>

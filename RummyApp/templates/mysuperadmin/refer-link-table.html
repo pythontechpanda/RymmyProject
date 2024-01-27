@@ -1,0 +1,69 @@
+{% extends "mysuperadmin/index.html" %}
+{% load static %}
+{% block content %}
+
+        <!--**********************************
+            Content body start
+        ***********************************-->
+        <div class="content-body">
+
+            
+            <!-- row -->
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Data Table | <a href="/super-admin/refer-link-create/"><i class="fa fa-plus color-muted m-r-5 " style="font-size:18px;"></i></a></h4>
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered zero-configuration">
+                                        <thead>
+                                            <tr>
+                                                <th>Email</th>
+                                                <th>Game Id</th>
+                                                <th>Create at</th>
+                                                <th>User</th>
+                                                <th>Opration</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for ref in get_refer %}
+                                            <tr>
+                                                <td>{{ ref.email}}</td>
+                                                <td>{{ ref.game.id}}</td>                                                
+                                                <td>{{ ref.created}}</td>
+                                                <td>{{ ref.user.username}}</td>
+                                                <td>
+                                                    <span><a href="{% url 'refer_edit' id=ref.id %}" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil color-muted m-r-5"></i> </a> | 
+                                                        <a href="{% url 'refer_del' id=ref.id %}" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash-o color-danger"></i></a></span>
+                                                </td>
+                                            </tr>      
+                                            {% endfor %}                                      
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Email</th>
+                                                <th>Game Id</th>
+                                                <th>Create at</th>
+                                                <th>User</th>
+                                                <th>Opration</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- #/ container -->
+        </div>
+        <!--**********************************
+            Content body end
+        ***********************************-->
+        
+        
+
+        
+        {% endblock content %}

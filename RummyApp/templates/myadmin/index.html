@@ -55,7 +55,7 @@
         <div class="nav-header">
             <div class="brand-logo">
                 <a href="/admin-panel/index/">
-                    <b class="logo-abbr"><img src="{% static 'images/Asset14x4.png' %}" alt=""> </b>
+                    <b class="logo-abbr"><img src="{% static 'images/Asset1Rp4x.png' %}" alt=""> </b>
                     <span class="logo-compact"><img src="{% static 'images/Asset14x4.png' %}" alt=""></span>
                     <span class="brand-title">
                         <img src="{% static 'images/Asset14x4.png' %}" alt="" class="logo-img">
@@ -225,14 +225,11 @@
         <div class="nk-sidebar">           
             <div class="nk-nav-scroll">
                 <ul class="metismenu" id="menu">
-                    <li class="nav-label">Dashboard</li>
                     <li>
-                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                        <a href="/admin-panel/index/" aria-expanded="false">
                             <i class="icon-speedometer menu-icon"></i><span class="nav-text">Dashboard</span>
                         </a>
-                        <ul aria-expanded="false">
-                            <li><a href="/admin-panel/index/">Home 1</a></li>
-                        </ul>
+                        
                     </li>
                     <li class="mega-menu mega-menu-sm">
                         <a class="has-arrow" href="javascript:void()" aria-expanded="false">
@@ -247,21 +244,20 @@
                             <i class="fa fa-building-o"></i> <span class="nav-text">State</span>
                         </a>
                         <ul aria-expanded="false">
-                            <li><a href="/admin-panel/new-state/">New State</a></li>
-                            <li><a href="/admin-panel/state-table/">Show State</a></li>
+                            <li><a href="/admin-panel/state-table/">State</a></li>
                         </ul>
                     </li>
                     <li>
                         <a class="has-arrow" href="javascript:void()" aria-expanded="false">
                             <i class="fa fa-info-circle"></i><span class="nav-text">About Game</span>
                         </a>
-                        <ul aria-expanded="false">
+                        {% comment %} <ul aria-expanded="false">
                             <li><a href="/admin-panel/new-game-rule/">Game Rule</a></li>
                             <li><a href="/admin-panel/game-rule-table/">Show Game Rule</a></li>
 
                             <li><a href="/admin-panel/rule-in-game/">Rule In Game</a></li>
                             <li><a href="/admin-panel/rule-in-game-table/">Show Rule In Game</a></li>
-                        </ul>
+                        </ul> {% endcomment %}
                     </li>
                     <li>
                         <a class="has-arrow" href="javascript:void()" aria-expanded="false">
@@ -269,10 +265,10 @@
                         </a>
                         <ul aria-expanded="false">
                             <li><a href="/admin-panel/game-table/">Game</a></li>
-
+{% comment %} 
                             <li><a href="/admin-panel/new-leader-board/">Leader Board</a></li>
                             <li><a href="/admin-panel/palyer-table/">Player</a></li>
-                            <li><a href="/admin-panel/get_tournament-table/">Tournament</a></li>
+                            <li><a href="/admin-panel/get_tournament-table/">Tournament</a></li> {% endcomment %}
                         </ul>
                     </li>
                     <li>
@@ -296,13 +292,12 @@
                             <li><a href="/admin-panel/wallet-amount-table/">Wallet Amount</a></li>
                             <li><a href="/admin-panel/pay-by-wallet-table/">Pay By Wallet</a></li>
                             <li><a href="/admin-panel/withdraw-request-table/">Withdraw Request</a></li>
-                            <li><a href="/admin-panel/bank-detail-table/">Bank Detail</a></li>
                             {% comment %} <li><a href="/admin-panel/buy-ticket-create/" aria-expanded="false">Buy Ticket</a></li>
                             <li><a href="/admin-panel/buy-ticket-table/" aria-expanded="false">Show Buy Ticket</a></li> {% endcomment %}
                         </ul>
                     </li>
                    
-                    <li>
+                    {% comment %} <li>
                         <a class="has-arrow" href="javascript:void()" aria-expanded="false">
                             <i class="fa fa-ticket"></i><span class="nav-text">Ticket</span>
                         </a>
@@ -312,7 +307,7 @@
 
                             
                         </ul>
-                    </li>
+                    </li> {% endcomment %}
                    
                     <li>
                         <a class="has-arrow" href="javascript:void()" aria-expanded="false">
@@ -320,23 +315,11 @@
                         </a>
                         <ul aria-expanded="false">
                             <li><a href="/admin-panel/kyc-detail-table/">KYC Detail</a></li>
-                            {% comment %} <li><a href="/admin-panel/compliment-create/">Add Compliment</a></li>
-                            <li><a href="/admin-panel/compliment-table/">Show Compliment</a></li>
-                            <li><a href="/admin-panel/claim-rule-create/">Add Claim</a></li>
-                            <li><a href="/admin-panel/claim-rule-table/">Show Claim</a></li> {% endcomment %}
-
                             <li><a href="/admin-panel/notification-table/">Notification</a></li>
-                            
-                            {% comment %} <li><a href="page-lock.html">Lock Screen</a></li>
-                            <li><a class="has-arrow" href="javascript:void()" aria-expanded="false">Error</a>
-                                <ul aria-expanded="false">
-                                    <li><a href="page-error-404.html">Error 404</a></li>
-                                    <li><a href="page-error-403.html">Error 403</a></li>
-                                    <li><a href="page-error-400.html">Error 400</a></li>
-                                    <li><a href="page-error-500.html">Error 500</a></li>
-                                    <li><a href="page-error-503.html">Error 503</a></li>
-                                </ul>
-                            </li>  {% endcomment %}
+                            <li><a href="/admin-panel/refer-link-table/">Refer Link</a></li>
+                            <li><a href="/admin-panel/follow-table/">Friend Follow</a></li>
+                            <li><a href="/admin-panel/language-table/">Language</a></li>
+                            <li><a href="/admin-panel/card-detail-table/">Card Detail</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -417,137 +400,7 @@
              
             
 
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="active-member">
-                                    <div class="table-responsive">
-                                        <table class="table table-xs mb-0"  id="tblTest">
-                                            <thead>
-                                                <tr>
-                                                    <th>.</th>
-                                                    <th>.</th>
-                                                    <th>.</th>
-                                                    <th>.</th>
-                                                    <th>.</th>
-                                                    <th>.</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>.</td>
-                                                    <td>.</td>
-                                                    <td>
-                                                        <span>United States</span>
-                                                    </td>
-                                                    <td>
-                                                        <div>
-                                                            <div class="progress" style="height: 6px">
-                                                                <div class="progress-bar bg-success" style="width: 50%"></div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td><i class="fa fa-circle-o text-success  mr-2"></i> Paid</td>
-                                                    <td>
-                                                        <span>Last Login</span>
-                                                        <span class="m-0 pl-3">10 sec ago</span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td><img src="{% static 'images/avatar/2.jpg' %}" class=" rounded-circle mr-3" alt="">Walter R.</td>
-                                                    <td>Pixel 2</td>
-                                                    <td><span>Canada</span></td>
-                                                    <td>
-                                                        <div>
-                                                            <div class="progress" style="height: 6px">
-                                                                <div class="progress-bar bg-success" style="width: 50%"></div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td><i class="fa fa-circle-o text-success  mr-2"></i> Paid</td>
-                                                    <td>
-                                                        <span>Last Login</span>
-                                                        <span class="m-0 pl-3">50 sec ago</span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td><img src="{% static 'images/avatar/3.jpg' %}" class=" rounded-circle mr-3" alt="">Andrew D.</td>
-                                                    <td>OnePlus</td>
-                                                    <td><span>Germany</span></td>
-                                                    <td>
-                                                        <div>
-                                                            <div class="progress" style="height: 6px">
-                                                                <div class="progress-bar bg-warning" style="width: 50%"></div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td><i class="fa fa-circle-o text-warning  mr-2"></i> Pending</td>
-                                                    <td>
-                                                        <span>Last Login</span>
-                                                        <span class="m-0 pl-3">10 sec ago</span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td><img src="{% static 'images/avatar/6.jpg' %}" class=" rounded-circle mr-3" alt=""> Megan S.</td>
-                                                    <td>Galaxy</td>
-                                                    <td><span>Japan</span></td>
-                                                    <td>
-                                                        <div>
-                                                            <div class="progress" style="height: 6px">
-                                                                <div class="progress-bar bg-success" style="width: 50%"></div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td><i class="fa fa-circle-o text-success  mr-2"></i> Paid</td>
-                                                    <td>
-                                                        <span>Last Login</span>
-                                                        <span class="m-0 pl-3">10 sec ago</span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td><img src="{% static 'images/avatar/4.jpg' %}" class=" rounded-circle mr-3" alt=""> Doris R.</td>
-                                                    <td>Moto Z2</td>
-                                                    <td><span>England</span></td>
-                                                    <td>
-                                                        <div>
-                                                            <div class="progress" style="height: 6px">
-                                                                <div class="progress-bar bg-success" style="width: 50%"></div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td><i class="fa fa-circle-o text-success  mr-2"></i> Paid</td>
-                                                    <td>
-                                                        <span>Last Login</span>
-                                                        <span class="m-0 pl-3">10 sec ago</span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td><img src="{% static 'images/avatar/5.jpg' %}" class=" rounded-circle mr-3" alt="">Elizabeth W.</td>
-                                                    <td>Notebook Asus</td>
-                                                    <td><span>China</span></td>
-                                                    <td>
-                                                        <div>
-                                                            <div class="progress" style="height: 6px">
-                                                                <div class="progress-bar bg-warning" style="width: 50%"></div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td><i class="fa fa-circle-o text-warning  mr-2"></i> Pending</td>
-                                                    <td>
-                                                        <span>Last Login</span>
-                                                        <span class="m-0 pl-3">10 sec ago</span>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>                        
-                    </div>
-                </div>
-
+              
                 <!--
                 <div class="row">                   
                     <div class="col-xl-3 col-lg-6 col-sm-6 col-xxl-6">
@@ -699,8 +552,8 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-            </div>-->
+                    </div>-->
+            </div>
             <!-- #/ container -->
         </div>
         <!--**********************************

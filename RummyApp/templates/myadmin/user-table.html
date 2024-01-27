@@ -33,7 +33,13 @@
                                                 <td>{{ user.username }}</td>
                                                 <td>{{ user.mobile_no}}</td>
                                                 <td>{{ user.first_name}} {{ user.last_name}}</td>
-                                                <td>{{ user.is_verified }}</td>
+                                                <td>
+                                                    {% if user.is_verified == True %}
+                                                    <h5>Verified</h5>
+                                                    {% elif user.is_verified == False %}
+                                                    <h5>Not Verified</h5>
+                                                    {% endif %}
+                                                </td>
                                                 <td>
                                                     <a href="{% url 'view_detail_user_by_ad' id=user.id %}" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-eye color-muted m-r-5"></i> </a> |
                                                     <span><a href="{% url 'user_edit_by_ad' id=user.id %}" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil color-muted m-r-5"></i> </a> | 

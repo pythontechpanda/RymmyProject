@@ -35,15 +35,7 @@ class User(AbstractUser):
     is_above18=models.BooleanField(default=False)
     is_user = models.BooleanField(default=False)
     user_admin=models.CharField(max_length=100)
-    refer_code=models.CharField(max_length=50, unique=True, default=0,null=True)
-    def save(self, *args, **kwargs):
-        # Generate a random string of characters and numbers
-        random_string = ''.join(random.choices(string.ascii_letters + string.digits, k=6))
-
-        # Create the refer_code using the first 4 characters of the username and the random string
-        self.refer_code = self.username[:4] + random_string
-
-        super().save(*args, **kwargs)
+    refer_code=models.CharField(max_length=50, unique=True)
     otp=models.CharField(max_length=50,null=True)
     join_by_refer = models.CharField(max_length=300, null=True)
 

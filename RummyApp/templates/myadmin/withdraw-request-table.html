@@ -1,0 +1,65 @@
+{% extends "myadmin/index.html" %}
+{% load static %}
+{% block content %}
+
+        <!--**********************************
+            Content body start
+        ***********************************-->
+        <div class="content-body">
+
+            
+            <!-- row -->
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Withdraw Request Table <a href="/admin-panel/withdraw-request-create/"> | <i class="fa fa-plus color-muted m-r-5 " style="font-size:18px;"></i></a></h4>
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered zero-configuration">
+                                        <thead>
+                                            <tr>
+                                                <th>User</th>
+                                                <th>Amount</th>                                                
+                                                <th>Opration</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for clam in get_withd %}
+                                            <tr>
+                                                <td>{{ clam.user.first_name }}</td>
+                                                <td>{{ clam.amount }}</td>                                          
+                                                <td>
+                                                    <span>
+                                                        
+                                                        <a href="{% url 'wtdr_edit_by_ad' id=clam.id %}" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil color-muted m-r-5"></i> </a> | 
+                                                        <a href="{% url 'wtdr_del_by_ad' id=clam.id %}" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash-o color-danger"></i></a></span>
+                                                </td>
+                                            </tr>      
+                                            {% endfor %}                                      
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th>User</th>
+                                                <th>Amount</th>                                                
+                                                <th>Opration</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- #/ container -->
+        </div>
+        <!--**********************************
+            Content body end
+        ***********************************-->
+        
+        
+
+        
+        {% endblock content %}

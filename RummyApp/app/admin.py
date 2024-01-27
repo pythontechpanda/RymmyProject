@@ -20,8 +20,12 @@ admin.site.register(Tournaments)
 admin.site.register(WithdrawRequest)
 admin.site.register(Notification)
 admin.site.register(HelpAndSupport)
+admin.site.register(ReferLinkSender)
+admin.site.register(Follow)
 admin.site.register(AddLanguage)
 admin.site.register(SetCashLimit)
 admin.site.register(CardDetail)
 admin.site.register(SetDailtTimeLimit)
 admin.site.register(TimeLimite)
+
+

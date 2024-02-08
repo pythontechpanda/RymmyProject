@@ -172,7 +172,12 @@ class ReferLinkSenderSerializer(serializers.ModelSerializer):
         model = ReferLinkSender
         fields = ['id','email','game','created','user']
         
-        
+class ReferLinkFilterSenderSerializer(serializers.Serializer):
+    id=serializers.IntegerField()
+    email=serializers.EmailField()
+    game=serializers.PrimaryKeyRelatedField(queryset=Game.objects.all())
+    created=serializers.CharField(max_length=25)
+    
         
 class AddLanguageSerializer(serializers.ModelSerializer):
     class Meta:
@@ -211,16 +216,14 @@ class UserFilterSerializer(serializers.Serializer):
     account_no=serializers.ImageField()
     ifsc_code=serializers.CharField(max_length=255)
     branch_name=serializers.CharField(max_length=25)
-    is_verified=serializers.CharField(max_length=25)
-    
+    is_verified=serializers.CharField(max_length=25)    
     walt=serializers.CharField(max_length=255)
     use_date=serializers.DateTimeField()
     payment_status=serializers.BooleanField()
     amount=serializers.CharField(max_length=255)
     razor_pay_order_id=serializers.CharField(max_length=255)
     razor_pay_payment_id=serializers.CharField(max_length=255)
-    razor_pay_payment_signature=serializers.CharField(max_length=255)
-    
+    razor_pay_payment_signature=serializers.CharField(max_length=255)    
     user_id= serializers.IntegerField()
     profile_picture= serializers.FileField()
     username= serializers.CharField(max_length=255)
@@ -228,8 +231,7 @@ class UserFilterSerializer(serializers.Serializer):
     first_name=serializers.CharField(max_length=255)
     middle_name=serializers.CharField(max_length=255)
     last_name=serializers.CharField(max_length=255)
-    date_of_birth=serializers.CharField(max_length=255)
-    
+    date_of_birth=serializers.CharField(max_length=255)    
     city=serializers.CharField(max_length=255)
     state=serializers.CharField(max_length=255)
     pincode=serializers.CharField(max_length=255)   
@@ -242,3 +244,38 @@ class UserFilterSerializer(serializers.Serializer):
     user_admin=serializers.CharField(max_length=255)
     device_registration_id=serializers.CharField(max_length=255)
     created=serializers.IntegerField()
+        
+    
+class SpinSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Spin
+        fields = '__all__'
+    
+
+
+class SpinFilterSerializer(serializers.Serializer):
+    user = serializers.CharField(max_length=255)
+    prize = serializers.CharField(max_length=255)
+    created_date = serializers.CharField(max_length=255)
+    
+    
+    
+class DeclareSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Declare
+        fields = '__all__'
+        
+        
+class FinishSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Finish
+        fields = '__all__'
+        
+class SortItSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SortIt
+        fields = '__all__'
+
+
+
+

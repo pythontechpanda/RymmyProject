@@ -37,7 +37,7 @@ class RegisterView(generics.GenericAPIView):
         get_admin = User.objects.get(refer_code=serializer.data["join_by_refer"])
         # here get refer by admin code
         usr_admin = get_admin.user_admin
-        
+        print("usr_admin>>>", usr_admin)
         random_string = ''.join(random.choices(string.ascii_letters + string.digits, k=6))
 
         # Create the refer_code using the first 4 characters of the username and the random string
@@ -510,6 +510,55 @@ class GetWalletAmountView(APIView):
 #         return JsonResponse(response_data)
 
 
+# class start_game(APIView):
+#     permission_classes = (permissions.IsAuthenticated,)
+
+#     def get(self, request, num_players):
+#         if num_players < 2 or num_players > 6:
+#             response_data = {
+#                 "message": "Invalid number of players. Allowed range: 2 to 6 players.",
+#             }
+#             return JsonResponse(response_data, status=400)
+
+#         all_users = list(User.objects.filter(is_user=True))
+        
+#         if len(all_users) < num_players:
+#             response_data = {
+#                 "message": "Not enough users available for the requested number of players.",
+#             }
+#             return JsonResponse(response_data, status=400)
+
+#         selected_users = random.sample(all_users, num_players)
+
+#         game = Game.objects.create(num_players=num_players)
+#         players = []
+
+#         for selected_user in selected_users:
+#             player = Player.objects.create(user=selected_user)
+#             players.append(player)
+
+#         game.players.set(players)
+
+#         # Create two decks
+#         deck1 = create_deck()
+#         deck2 = create_deck()
+        
+#         # Concatenate the decks
+#         combined_deck = deck1 + deck2
+
+#         draw_pile = [Card.objects.create(rank=card['rank'], suit=card['suit']) for card in combined_deck]
+#         game.draw_pile.set(draw_pile)
+
+#         response_data = {
+#             "message": "Game started successfully!",
+#             "num_players": num_players,
+#             "player_names": [player.user.username for player in players],
+#             "draw_pile": [{"rank": card.rank, "suit": card.suit} for card in draw_pile],
+#         }
+
+#         return JsonResponse(response_data)
+
+
 class start_game(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
@@ -531,13 +580,7 @@ class start_game(APIView):
         selected_users = random.sample(all_users, num_players)
 
         game = Game.objects.create(num_players=num_players)
-        players = []
-
-        for selected_user in selected_users:
-            player = Player.objects.create(user=selected_user)
-            players.append(player)
-
-        game.players.set(players)
+        game.players.set(selected_users)  # Use set to associate users with the game
 
         # Create two decks
         deck1 = create_deck()
@@ -552,11 +595,13 @@ class start_game(APIView):
         response_data = {
             "message": "Game started successfully!",
             "num_players": num_players,
-            "player_names": [player.user.username for player in players],
+            "player_names": [player.username for player in selected_users],  # Use 'username' instead of 'user.username'
             "draw_pile": [{"rank": card.rank, "suit": card.suit} for card in draw_pile],
         }
 
         return JsonResponse(response_data)
+    
+    
 
 
 def create_deck():
@@ -576,16 +621,15 @@ def deal_hands(request, game_id):
     for _ in range(13):
         for player in game.players.all():
             card = game.draw_pile.first()
-            print("player>>>>>>>>>>", player.user.first_name)
             # Check if there is a card available
             if card:
                 game.draw_pile.remove(card)
                 round_hand = RoundHand.objects.create(round=game_round, player=player, card=card)
                 
-                if player.user.first_name not in hands_data:
-                    hands_data[player.user.first_name] = []
+                if player.first_name not in hands_data:
+                    hands_data[player.first_name] = []
 
-                hands_data[player.user.first_name].append({
+                hands_data[player.first_name].append({
                     'card_id': round_hand.card.id,
                     'card_suit': round_hand.card.suit,
                     'card_rank': round_hand.card.rank,
@@ -603,7 +647,7 @@ def display_hands(request, game_id):
     game_round = GameRound.objects.filter(game_id=game_id).latest('round_number')
     hands = {}
     for hand in RoundHand.objects.filter(round=game_round):
-        player_name = hand.player.user.username
+        player_name = hand.player.username
         card_info = {'rank': hand.card.rank, 'suit': hand.card.suit}
         if player_name not in hands:
             hands[player_name] = [card_info]
@@ -615,7 +659,7 @@ def display_hands(request, game_id):
 @api_view(['POST'])
 def draw_card(request, game_id, player_id):
     game = Game.objects.get(pk=game_id)
-    player = Player.objects.get(pk=player_id)
+    player = User.objects.get(pk=player_id)
     game_round = GameRound.objects.filter(game_id=game_id).latest('round_number')
 
     if not game.draw_pile.exists():
@@ -625,7 +669,7 @@ def draw_card(request, game_id, player_id):
     game.draw_pile.remove(card)
     RoundHand.objects.create(round=game_round, player=player, card=card)
 
-    return JsonResponse({"message": f"{player.user} drew a card: {card.rank} of {card.suit}"})
+    return JsonResponse({"message": f"{player.username} drew a card: {card.rank} of {card.suit}"})
 
 
 
@@ -699,7 +743,7 @@ class WithdrawalRequestView(viewsets.ViewSet):
         serializer = WithdrawalRequestSerializer(data = request.data)  # form data conviert in json data
         if serializer.is_valid():
             serializer.save()
-            
+            print("Data stored")
             return Response({'msg': 'Data Created'}, status= status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -726,6 +770,25 @@ class WithdrawalRequestView(viewsets.ViewSet):
         stu = WithdrawalRequest.objects.get(pk=id)
         stu.delete()
         return Response({'msg': 'Data deleted'})
+
+
+class WithdrawalAmountByUserFilterView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, id):
+
+        if User.objects.filter(id=id).exists():
+            obj = WithdrawalRequest.objects.filter(user=id,payment_status=True)
+            print(obj)
+            amt = 0
+            for i in obj:
+                amt = amt + i.amount
+            
+
+            return Response({'WithdrawAmount': amt})
+        else:
+            raise AuthenticationFailed('Invalid ID, try again')
+
 
 
 
@@ -1183,7 +1246,7 @@ class UserFilterView(APIView):
                 'last_name': user.last_name,
                 'date_of_birth': user.date_of_birth,
                 'city': user.city,
-                'state': user.state.name,
+                'state': user.state,
                 'pincode': user.pincode,
                 'gender': user.gender,
                 'is_verified': user.is_verified,
@@ -1225,3 +1288,240 @@ class UserFilterView(APIView):
 
         except User.DoesNotExist:
             raise AuthenticationFailed('Invalid ID, try again')
+        
+        
+
+class SpinView(viewsets.ViewSet):
+    permission_classes = (permissions.IsAuthenticated,)
+    def list(self, request):      # list - get all record
+        stu = Spin.objects.all()
+        serializer = SpinSerializer(stu, many=True)    # many use for bulk data come 
+        return Response(serializer.data)
+
+
+    def retrieve(self, request, pk=None):
+        id = pk
+        if id is not None:
+            stu = Spin.objects.get(id=id)
+            serializer = SpinSerializer(stu)
+            return Response(serializer.data)
+
+    def create(self, request):
+        serializer = SpinSerializer(data = request.data)  # form data conviert in json data
+        if serializer.is_valid():
+            serializer.save()
+            
+            return Response({'msg': 'Data Created'}, status= status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def update(self, request, pk):
+        id = pk
+        stu = Spin.objects.get(pk=id)
+        serializer = SpinSerializer(stu, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'msg': 'Complete Data Update'})
+        return Response(serializer.errors)
+
+    def partial_update(self, request, pk):
+        id = pk
+        stu = Spin.objects.get(pk=id)
+        serializer = SpinSerializer(stu, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'msg': 'Partial Data Update'})
+        return Response(serializer.errors)
+
+    def destroy(self, request, pk):
+        id = pk
+        stu = Spin.objects.get(pk=id)
+        stu.delete()
+        return Response({'msg': 'Data deleted'})        
+        
+
+class SpinFilterView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, id):
+
+        if User.objects.filter(id=id).exists():
+            # Filter Follow objects where followed is the specified user and muted is True
+            obj = Spin.objects.filter(user=id)
+            created_serializer = SpinFilterSerializer(obj, many=True)
+
+            return Response({'Spin-Prizes': created_serializer.data})
+        else:
+            raise AuthenticationFailed('Invalid ID, try again')
+
+
+
+class ReferLinkFilterView(APIView):
+    permission_classes = (IsAuthenticated,)
+    
+    def get(self, request, id):
+
+        if User.objects.filter(id=id).exists():
+            # Filter Follow objects where followed is the specified user and muted is True
+            obj = ReferLinkSender.objects.filter(user=id)
+            print(obj)
+            created_serializer = ReferLinkFilterSenderSerializer(obj, many=True)
+
+            return Response({'Refer-filter': created_serializer.data})
+        else:
+            raise AuthenticationFailed('Invalid ID, try again')
+
+
+
+
+class DeclareView(viewsets.ViewSet):
+    permission_classes = (permissions.IsAuthenticated,)
+    def list(self, request):      # list - get all record
+        stu = Declare.objects.all()
+        serializer = DeclareSerializer(stu, many=True)    # many use for bulk data come 
+        return Response(serializer.data)
+
+
+    def retrieve(self, request, pk=None):
+        id = pk
+        if id is not None:
+            stu = Declare.objects.get(id=id)
+            serializer = DeclareSerializer(stu)
+            return Response(serializer.data)
+
+    def create(self, request):
+        serializer = DeclareSerializer(data = request.data)  # form data conviert in json data
+        if serializer.is_valid():
+            serializer.save()
+            
+            return Response({'msg': 'Data Created'}, status= status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def update(self, request, pk):
+        id = pk
+        stu = Declare.objects.get(pk=id)
+        serializer = DeclareSerializer(stu, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'msg': 'Complete Data Update'})
+        return Response(serializer.errors)
+
+    def partial_update(self, request, pk):
+        id = pk
+        stu = Declare.objects.get(pk=id)
+        serializer = DeclareSerializer(stu, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'msg': 'Partial Data Update'})
+        return Response(serializer.errors)
+
+    def destroy(self, request, pk):
+        id = pk
+        stu = Declare.objects.get(pk=id)
+        stu.delete()
+        return Response({'msg': 'Data deleted'}) 
+    
+    
+class FinishView(viewsets.ViewSet):
+    permission_classes = (permissions.IsAuthenticated,)
+    def list(self, request):      # list - get all record
+        stu = Finish.objects.all()
+        serializer = FinishSerializer(stu, many=True)    # many use for bulk data come 
+        return Response(serializer.data)
+
+
+    def retrieve(self, request, pk=None):
+        id = pk
+        if id is not None:
+            stu = Finish.objects.get(id=id)
+            serializer = FinishSerializer(stu)
+            return Response(serializer.data)
+
+    def create(self, request):
+        serializer = FinishSerializer(data = request.data)  # form data conviert in json data
+        if serializer.is_valid():
+            serializer.save()
+            
+            return Response({'msg': 'Data Created'}, status= status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def update(self, request, pk):
+        id = pk
+        stu = Finish.objects.get(pk=id)
+        serializer = FinishSerializer(stu, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'msg': 'Complete Data Update'})
+        return Response(serializer.errors)
+
+    def partial_update(self, request, pk):
+        id = pk
+        stu = Finish.objects.get(pk=id)
+        serializer = FinishSerializer(stu, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'msg': 'Partial Data Update'})
+        return Response(serializer.errors)
+
+    def destroy(self, request, pk):
+        id = pk
+        stu = Finish.objects.get(pk=id)
+        stu.delete()
+        return Response({'msg': 'Data deleted'}) 
+    
+    
+class SortItView(viewsets.ViewSet):
+    permission_classes = (permissions.IsAuthenticated,)
+    def list(self, request):      # list - get all record
+        stu = SortIt.objects.all()
+        serializer = SortItSerializer(stu, many=True)    # many use for bulk data come 
+        return Response(serializer.data)
+
+
+    def retrieve(self, request, pk=None):
+        id = pk
+        if id is not None:
+            stu = SortIt.objects.get(id=id)
+            serializer = SortItSerializer(stu)
+            return Response(serializer.data)
+
+    def create(self, request):
+        serializer = SortItSerializer(data = request.data)  # form data conviert in json data
+        if serializer.is_valid():
+            # Access and manipulate the serialized data before saving
+            serialized_data = serializer.validated_data
+            print("Serialized Data:", serialized_data)
+            
+
+            # Sort the list of cards based on the card_suit sequence
+            sorted_cards = sorted(serialized_data['listofcards'], key=lambda card: card['card_suit'])
+
+            # Update the serialized data with the sorted cards
+            serialized_data['listofcards'] = sorted_cards
+            serializer.save()
+            
+            return Response({'msg': 'Data Created'}, status= status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def update(self, request, pk):
+        id = pk
+        stu = SortIt.objects.get(pk=id)
+        serializer = SortItSerializer(stu, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'msg': 'Complete Data Update'})
+        return Response(serializer.errors)
+
+    def partial_update(self, request, pk):
+        id = pk
+        stu = SortIt.objects.get(pk=id)
+        serializer = SortItSerializer(stu, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'msg': 'Partial Data Update'})
+        return Response(serializer.errors)
+
+    def destroy(self, request, pk):
+        id = pk
+        stu = SortIt.objects.get(pk=id)
+        stu.delete()
+        return Response({'msg': 'Data deleted'}) 

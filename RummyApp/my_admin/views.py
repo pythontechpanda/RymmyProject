@@ -32,12 +32,54 @@ def logout_call(request):
     return redirect('/admin-panel/')
 
 
+def ProfileInfo(request, id):
+    get_data = User.objects.get(id=request.user.id)
+    return render(request, "myadmin/profile.html", {"get_data":get_data})
+
+
+@login_required(login_url="/admin-panel/")
+def EditAdminProfile(request, id):
+    upleid = User.objects.get(id=id)
+    if request.method == 'POST':
+        fname = request.POST["fname"]
+        uname = request.POST["contact"]
+        active = request.POST["actv"]
+        contact = request.POST["contact"]
+        dob = request.POST["dob"]
+        gender = request.POST["gender"]
+        verify = request.POST['verificat']
+        yourin = request.POST['goto']
+        sts = request.POST['state']
+        cty = request.POST['city']
+        pcd = request.POST['pincode']
+        eml = request.POST['email']
+        
+        if len(request.FILES) !=0:
+            if len(upleid.profile_picture) > 0:
+                os.remove(upleid.profile_picture.path)
+                print(upleid.profile_picture.path)
+            upleid.profile_picture = request.FILES['profile_pic']
+            
+            upleid.save()
+        
+        uplead = User.objects.filter(id=id)
+        
+        uplead.update(first_name=fname, username=uname, is_active=active, mobile_no=contact,date_of_birth=dob, gender=gender, is_verified=verify,is_above18=yourin,state_id=sts,city=cty,pincode=pcd,email=eml)
+        messages.success(request, f"{fname}, profile updated successfully")
+        return redirect(f"/admin-panel/profile/{request.user.id}/")
+    else:
+        getUser = User.objects.get(id=id) 
+        getState = State.objects.all()   
+        return render(request, "myadmin/edituser.html", {'user':getUser, 'state':getState})
+
+
+
 @login_required(login_url="/admin-panel/")
 def DashboardPage(request):
     notify = User.objects.filter(is_user=True, user_admin=request.user.refer_code).count()
-    my_user = User.objects.filter(user_admin=request.user.refer_code).count
+    my_user = User.objects.filter(user_admin=request.user.refer_code).count()
     num_help = HelpAndSupport.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
-    num_withdraw = WithdrawRequest.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
+    num_withdraw = WithdrawalRequest.objects.filter(payment_status=False,user__user_admin=request.user.refer_code).count()
     num_notif = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code).count()
     notification = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code)
     
@@ -127,6 +169,10 @@ def EditUser(request, id):
         gender = request.POST["gender"]
         verify = request.POST['verificat']
         yourin = request.POST['goto']
+        sts = request.POST['state']
+        cty = request.POST['city']
+        pcd = request.POST['pincode']
+        eml = request.POST['email']
         
         
         if len(request.FILES) !=0:
@@ -139,7 +185,7 @@ def EditUser(request, id):
         
         uplead = User.objects.filter(id=id)
         
-        uplead.update(first_name=fname, username=uname, is_active=active, mobile_no=contact,date_of_birth=dob, gender=gender, is_verified=verify,is_above18=yourin)
+        uplead.update(first_name=fname, username=uname, is_active=active, mobile_no=contact,date_of_birth=dob, gender=gender, is_verified=verify,is_above18=yourin,state_id=sts,city=cty,pincode=pcd,email=eml)
         messages.success(request, f"{fname}, profile updated successfully")
         return redirect("/admin-panel/users-table/")
     else:
@@ -162,7 +208,7 @@ def StateCreate(request):
             return redirect("/admin-panel/state-table/")
     else:
         num_help = HelpAndSupport.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
-        num_withdraw = WithdrawRequest.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
+        num_withdraw = WithdrawalRequest.objects.filter(payment_status=False,user__user_admin=request.user.refer_code).count()
         num_notif = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code).count()
         notification = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code)
         return render(request, "myadmin/create-state.html", {'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
@@ -172,7 +218,7 @@ def StateCreate(request):
 def StateTablePage(request):
     get_state = State.objects.all()
     num_help = HelpAndSupport.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
-    num_withdraw = WithdrawRequest.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
+    num_withdraw = WithdrawalRequest.objects.filter(payment_status=False,user__user_admin=request.user.refer_code).count()
     num_notif = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code).count()
     notification = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code)
     return render(request, "myadmin/state-table.html", {'get_state':get_state,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
@@ -200,7 +246,7 @@ def EditState(request, id):
     else:
         getState = State.objects.get(id=id)   
         num_help = HelpAndSupport.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
-        num_withdraw = WithdrawRequest.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
+        num_withdraw = WithdrawalRequest.objects.filter(payment_status=False,user__user_admin=request.user.refer_code).count()
         num_notif = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code).count()
         notification = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code)
         return render(request, "myadmin/create-state.html", {'state':getState,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
@@ -222,7 +268,7 @@ def WalletAddCreate(request):
     else:
         getUser = User.objects.filter(is_superuser=False,is_staff=False,user_admin=request.user.refer_code)
         num_help = HelpAndSupport.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
-        num_withdraw = WithdrawRequest.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
+        num_withdraw = WithdrawalRequest.objects.filter(payment_status=False,user__user_admin=request.user.refer_code).count()
         num_notif = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code).count()
         notification = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code)
         return render(request, "myadmin/create-wallet-add.html", {'getUser':getUser,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
@@ -235,7 +281,7 @@ def WalletAddTablePage(request):
     
     
     num_help = HelpAndSupport.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
-    num_withdraw = WithdrawRequest.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
+    num_withdraw = WithdrawalRequest.objects.filter(payment_status=False,user__user_admin=request.user.refer_code).count()
     num_notif = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code).count()
     notification = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code)
     return render(request, "myadmin/wallet-add-table.html", {'get_wallet':get_wallet,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
@@ -263,7 +309,7 @@ def EditWalletAdd(request, id):
         getWallet = WalletAdd.objects.get(id=id)    
         getUser = User.objects.filter(is_superuser=False,is_staff=False,user_admin=request.user.refer_code)
         num_help = HelpAndSupport.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
-        num_withdraw = WithdrawRequest.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
+        num_withdraw = WithdrawalRequest.objects.filter(payment_status=False,user__user_admin=request.user.refer_code).count()
         num_notif = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code).count()
         notification = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code)
         return render(request, "myadmin/edit-wallet-add.html", {'getWallet':getWallet, 'getUser':getUser,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
@@ -290,7 +336,7 @@ def WalletAmtCreate(request):
         getWallet = WalletAdd.objects.filter(user__user_admin=request.user.refer_code)
         getUser = User.objects.filter(is_superuser=False,is_staff=False,user_admin=request.user.refer_code)
         num_help = HelpAndSupport.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
-        num_withdraw = WithdrawRequest.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
+        num_withdraw = WithdrawalRequest.objects.filter(payment_status=False,user__user_admin=request.user.refer_code).count()
         num_notif = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code).count()
         notification = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code)
         return render(request, "myadmin/create-wallet-amount.html", {'getUser':getUser,'getWallet':getWallet,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
@@ -302,7 +348,7 @@ def WalletAmtTablePage(request):
     get_wallet = WalletAmt.objects.filter(user__user_admin=request.user.refer_code)
     
     num_help = HelpAndSupport.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
-    num_withdraw = WithdrawRequest.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
+    num_withdraw = WithdrawalRequest.objects.filter(payment_status=False,user__user_admin=request.user.refer_code).count()
     num_notif = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code).count()
     notification = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code)
     return render(request, "myadmin/wallet-amount-table.html", {'get_wallet':get_wallet,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
@@ -311,7 +357,7 @@ def WalletAmtTablePage(request):
 def DetailWalletAmt(request, id):
     get_wallet = WalletAmt.objects.get(id=id)
     num_help = HelpAndSupport.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
-    num_withdraw = WithdrawRequest.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
+    num_withdraw = WithdrawalRequest.objects.filter(payment_status=False,user__user_admin=request.user.refer_code).count()
     num_notif = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code).count()
     notification = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code)
     return render(request, "myadmin/wallet-amount-detail.html", {'get_wallet':get_wallet,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
@@ -344,7 +390,7 @@ def EditWalletAmt(request, id):
         getWallet = WalletAmt.objects.get(id=id)    
         getUser = User.objects.filter(is_superuser=False,is_staff=False,user_admin=request.user.refer_code)
         num_help = HelpAndSupport.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
-        num_withdraw = WithdrawRequest.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
+        num_withdraw = WithdrawalRequest.objects.filter(payment_status=False,user__user_admin=request.user.refer_code).count()
         num_notif = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code).count()
         notification = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code)
         return render(request, "myadmin/edit-wallet-amount.html", {'getWallet':getWallet, 'getUser':getUser,'getWalletadd':getWalletadd,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
@@ -364,7 +410,7 @@ def PayByWalletAmountCreate(request):
     else:
         getUser = User.objects.filter(is_superuser=False,is_staff=False,user_admin=request.user.refer_code)
         num_help = HelpAndSupport.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
-        num_withdraw = WithdrawRequest.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
+        num_withdraw = WithdrawalRequest.objects.filter(payment_status=False,user__user_admin=request.user.refer_code).count()
         num_notif = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code).count()
         notification = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code)
         return render(request, "myadmin/create-payby-wallet.html", {'getUser':getUser,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
@@ -375,7 +421,7 @@ def PayByWalletAmountTablePage(request):
     get_wallet = PayByWalletAmount.objects.filter(user__user_admin=request.user.refer_code)
     
     num_help = HelpAndSupport.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
-    num_withdraw = WithdrawRequest.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
+    num_withdraw = WithdrawalRequest.objects.filter(payment_status=False,user__user_admin=request.user.refer_code).count()
     num_notif = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code).count()
     notification = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code)
     return render(request, "myadmin/pay-by-wallet-table.html", {'get_wallet':get_wallet,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
@@ -402,7 +448,7 @@ def EditPayByWalletAmount(request, id):
         getWallet = PayByWalletAmount.objects.get(id=id)    
         getUser = User.objects.filter(is_superuser=False,is_staff=False,user_admin=request.user.refer_code)
         num_help = HelpAndSupport.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
-        num_withdraw = WithdrawRequest.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
+        num_withdraw = WithdrawalRequest.objects.filter(payment_status=False,user__user_admin=request.user.refer_code).count()
         num_notif = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code).count()
         notification = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code)
         return render(request, "myadmin/edit-pay-by-wallet.html", {'getWallet':getWallet, 'getUser':getUser,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
@@ -412,19 +458,19 @@ def EditPayByWalletAmount(request, id):
 
 
 @login_required(login_url="/admin-panel/")   
-def WithdrawRequestCreate(request):
+def WithdrawalRequestCreate(request):
     if request.method == 'POST':
         usr = request.POST["user"]
         am = request.POST["amount"]  
         act = request.POST["actv"]      
         
-        usr = WithdrawRequest(user_id=usr, amount=am, is_completed=act,created_at=datetime.now())
+        usr = WithdrawalRequest(user_id=usr, amount=am, payment_status=act,timestamp=datetime.now())
         usr.save()
         return redirect("/admin-panel/withdraw-request-table/")
     else:
         getUser = User.objects.filter(is_superuser=False,is_staff=False,user_admin=request.user.refer_code)
         num_help = HelpAndSupport.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
-        num_withdraw = WithdrawRequest.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
+        num_withdraw = WithdrawalRequest.objects.filter(payment_status=False,user__user_admin=request.user.refer_code).count()
         num_notif = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code).count()
         notification = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code)
         return render(request, "myadmin/create-withdraw-request.html", {'getUser':getUser,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
@@ -432,11 +478,11 @@ def WithdrawRequestCreate(request):
     
     
 @login_required(login_url="/admin-panel/")    
-def WithdrawRequestTablePage(request):
-    get_withd = WithdrawRequest.objects.filter(user__user_admin=request.user.refer_code)
-    
+def WithdrawalRequestTablePage(request):
+    get_withd = WithdrawalRequest.objects.filter(user__user_admin=request.user.refer_code)
+    print("get_withd",get_withd, "Refer", request.user.refer_code)
     num_help = HelpAndSupport.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
-    num_withdraw = WithdrawRequest.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
+    num_withdraw = WithdrawalRequest.objects.filter(payment_status=False,user__user_admin=request.user.refer_code).count()
     num_notif = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code).count()
     notification = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code)
     return render(request, "myadmin/withdraw-request-table.html", {'get_withd':get_withd,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
@@ -444,27 +490,27 @@ def WithdrawRequestTablePage(request):
 
 
 @login_required(login_url="/admin-panel/")
-def DeleteWithdrawRequest(request, id):
-    cty = WithdrawRequest.objects.get(id=id)
+def DeleteWithdrawalRequest(request, id):
+    cty = WithdrawalRequest.objects.get(id=id)
     cty.delete()
     return redirect("/admin-panel/withdraw-request-table/")
 
 
 @login_required(login_url="/admin-panel/")
-def EditWithdrawRequest(request, id):
+def EditWithdrawalRequest(request, id):
     if request.method == 'POST':
         usr = request.POST["user"]
         am = request.POST["amount"]
         act = request.POST["actv"]
 
           
-        uplead = WithdrawRequest.objects.filter(id=id)   
-        uplead.update(user_id=usr, amount=am, is_completed=act, created_at=datetime.now())
-        updated_withdrawal = WithdrawRequest.objects.get(id=id)
+        uplead = WithdrawalRequest.objects.filter(id=id)   
+        uplead.update(user_id=usr, amount=am, payment_status=act, timestamp=datetime.now())
+        updated_withdrawal = WithdrawalRequest.objects.get(id=id)
 
-        print("updated_withdrawal.is_completed", updated_withdrawal.is_completed)
+        print("updated_withdrawal.payment_status", updated_withdrawal.payment_status)
 
-        if updated_withdrawal.is_completed == True:
+        if updated_withdrawal.payment_status == True:
             tokens = [updated_withdrawal.user.device_registration_id]
             name = updated_withdrawal.user.first_name
             amt = updated_withdrawal.amount
@@ -484,8 +530,9 @@ def EditWithdrawRequest(request, id):
             
             # response = messaging.send_multicast(message)
             # print("++++++++++",message.notification.body)
-            my_nitif = Notification(user_id=uid,title=message.notification.title, body=message.notification.body, image=message.notification.image)
-            my_nitif.save()
+            
+            # my_nitif = Notification(user_id=uid,title=message.notification.title, body=message.notification.body, image=message.notification.image)
+            # my_nitif.save()
             
             messages.success(request, "Withdraw request updated successfully")
             return redirect("/admin-panel/withdraw-request-table/")
@@ -494,10 +541,10 @@ def EditWithdrawRequest(request, id):
         messages.success(request, "Withdraw request updated successfully")
         return redirect("/admin-panel/withdraw-request-table/") 
     else:
-        getWit = WithdrawRequest.objects.get(id=id)    
+        getWit = WithdrawalRequest.objects.get(id=id)    
         getUser = User.objects.filter(is_superuser=False,is_staff=False,user_admin=request.user.refer_code)
         num_help = HelpAndSupport.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
-        num_withdraw = WithdrawRequest.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
+        num_withdraw = WithdrawalRequest.objects.filter(payment_status=False,user__user_admin=request.user.refer_code).count()
         num_notif = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code).count()
         notification = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code)
         return render(request, "myadmin/edit-withdraw-request.html", {'getWit':getWit, 'getUser':getUser,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
@@ -524,7 +571,7 @@ def KYCDetailsCreate(request):
     else:
         getUser = User.objects.filter(is_superuser=False,is_staff=False,user_admin=request.user.refer_code)
         num_help = HelpAndSupport.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
-        num_withdraw = WithdrawRequest.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
+        num_withdraw = WithdrawalRequest.objects.filter(payment_status=False,user__user_admin=request.user.refer_code).count()
         num_notif = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code).count()
         notification = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code)
         return render(request, "myadmin/create-kyc-detail.html", {'getUser':getUser,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
@@ -534,7 +581,7 @@ def KYCDetailsCreate(request):
 def KYCDetailsTablePage(request):
     get_kyc = KYCDetails.objects.filter(user__user_admin=request.user.refer_code)
     num_help = HelpAndSupport.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
-    num_withdraw = WithdrawRequest.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
+    num_withdraw = WithdrawalRequest.objects.filter(payment_status=False,user__user_admin=request.user.refer_code).count()
     num_notif = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code).count()
     notification = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code)
     return render(request, "myadmin/kyc-detail-table.html", {'get_kyc':get_kyc,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
@@ -573,7 +620,7 @@ def EditKYCDetailse(request, id):
         getKyc = KYCDetails.objects.get(id=id)    
         getUser = User.objects.filter(is_superuser=False,is_staff=False,user_admin=request.user.refer_code)
         num_help = HelpAndSupport.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
-        num_withdraw = WithdrawRequest.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
+        num_withdraw = WithdrawalRequest.objects.filter(payment_status=False,user__user_admin=request.user.refer_code).count()
         num_notif = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code).count()
         notification = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code)
         return render(request, "myadmin/edit-kyc-detail.html", {'kyc_detail':getKyc, 'getUser':getUser,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
@@ -594,7 +641,7 @@ def HelpAndSupportCreate(request):
     else:
         getUser = User.objects.filter(user_admin=request.user.refer_code)
         num_help = HelpAndSupport.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
-        num_withdraw = WithdrawRequest.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
+        num_withdraw = WithdrawalRequest.objects.filter(payment_status=False,user__user_admin=request.user.refer_code).count()
         num_notif = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code).count()
         notification = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code)
         return render(request, "myadmin/create-help-support.html",{'getUser':getUser,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
@@ -604,7 +651,7 @@ def HelpAndSupportCreate(request):
 def HelpAndSupportTablePage(request):
     get_rule = HelpAndSupport.objects.filter(user__user_admin=request.user.refer_code)
     num_help = HelpAndSupport.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
-    num_withdraw = WithdrawRequest.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
+    num_withdraw = WithdrawalRequest.objects.filter(payment_status=False,user__user_admin=request.user.refer_code).count()
     num_notif = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code).count()
     notification = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code)
     return render(request, "myadmin/help-support-table.html", {'get_rule':get_rule,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
@@ -667,7 +714,7 @@ def EditHelpAndSupport(request, id):
         getHelp = HelpAndSupport.objects.get(id=id)    
         getUser = User.objects.all()
         num_help = HelpAndSupport.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
-        num_withdraw = WithdrawRequest.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
+        num_withdraw = WithdrawalRequest.objects.filter(payment_status=False,user__user_admin=request.user.refer_code).count()
         num_notif = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code).count()
         notification = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code)
         return render(request, "myadmin/edit-help-support.html", {'getHelp':getHelp,'getUser':getUser,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
@@ -690,7 +737,7 @@ def NotificationCreate(request):
     else:
         getUser = User.objects.filter(is_superuser=False,is_staff=False,user_admin=request.user.refer_code)
         num_help = HelpAndSupport.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
-        num_withdraw = WithdrawRequest.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
+        num_withdraw = WithdrawalRequest.objects.filter(payment_status=False,user__user_admin=request.user.refer_code).count()
         num_notif = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code).count()
         notification = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code)
         return render(request, "myadmin/create-notification.html", {'getUser':getUser,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
@@ -701,7 +748,7 @@ def NotificationCreate(request):
 def NotificationTablePage(request):
     get_notif = Notification.objects.filter(user__user_admin=request.user.refer_code)
     num_help = HelpAndSupport.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
-    num_withdraw = WithdrawRequest.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
+    num_withdraw = WithdrawalRequest.objects.filter(payment_status=False,user__user_admin=request.user.refer_code).count()
     num_notif = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code).count()
     notification = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code)
     return render(request, "myadmin/notification-table.html", {'get_notif':get_notif,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
@@ -753,7 +800,7 @@ def EditNotification(request, id):
             # Create a message
             if title == "Withdrawal Request":
                 # withdraw request status update
-                updated_withdraw = WithdrawRequest.objects.filter(id=updated_notification.withdraw_req.id)
+                updated_withdraw = WithdrawalRequest.objects.filter(id=updated_notification.withdraw_req.id)
                 updated_withdraw.update(is_completed=True)
                 print("updated_withdraw>>>>>>>>>")
                 # message = messaging.MulticastMessage(
@@ -805,7 +852,7 @@ def EditNotification(request, id):
         getNot = Notification.objects.get(id=id)    
         getUser = User.objects.filter(is_superuser=False,is_staff=False,join_by_refer=request.user.refer_code)
         num_help = HelpAndSupport.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
-        num_withdraw = WithdrawRequest.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
+        num_withdraw = WithdrawalRequest.objects.filter(payment_status=False,user__user_admin=request.user.refer_code).count()
         num_notif = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code).count()
         notification = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code)
         return render(request, "myadmin/edit-notification.html", {'getNot':getNot, 'getUser':getUser,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
@@ -826,7 +873,7 @@ def ReferLinkSenderCreate(request):
         getUser = User.objects.filter(is_superuser=False,is_staff=False,join_by_refer=request.user.refer_code)
         getGame = Game.objects.filter(user__user_admin=request.user.refer_code)
         num_help = HelpAndSupport.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
-        num_withdraw = WithdrawRequest.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
+        num_withdraw = WithdrawalRequest.objects.filter(payment_status=False,user__user_admin=request.user.refer_code).count()
         num_notif = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code).count()
         notification = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code)
         return render(request, "myadmin/create-refer-link.html", {'getUser':getUser,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif,'getGame':getGame})
@@ -834,9 +881,9 @@ def ReferLinkSenderCreate(request):
     
 @login_required(login_url="/admin-panel/")    
 def ReferLinkSenderTablePage(request):
-    get_refer = ReferLinkSender.objects.all()
+    get_refer = ReferLinkSender.objects.filter(user__user_admin=request.user.refer_code)
     num_help = HelpAndSupport.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
-    num_withdraw = WithdrawRequest.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
+    num_withdraw = WithdrawalRequest.objects.filter(payment_status=False,user__user_admin=request.user.refer_code).count()
     num_notif = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code).count()
     notification = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code)
     return render(request, "myadmin/refer-link-table.html", {'get_refer':get_refer,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
@@ -866,7 +913,7 @@ def ReferLinkSenderEdit(request, id):
         getGame = Game.objects.filter(user__user_admin=request.user.refer_code)
         ref_link = ReferLinkSender.objects.get(id=id) 
         num_help = HelpAndSupport.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
-        num_withdraw = WithdrawRequest.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
+        num_withdraw = WithdrawalRequest.objects.filter(payment_status=False,user__user_admin=request.user.refer_code).count()
         num_notif = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code).count()
         notification = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code)
         return render(request, "myadmin/edit-refer-link.html", {'getUser':getUser,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif,'getGame':getGame,'ref_link':ref_link})
@@ -887,7 +934,7 @@ def FollowCreate(request):
     else:
         getUser = User.objects.all()
         num_help = HelpAndSupport.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
-        num_withdraw = WithdrawRequest.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
+        num_withdraw = WithdrawalRequest.objects.filter(payment_status=False,user__user_admin=request.user.refer_code).count()
         num_notif = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code).count()
         notification = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code)
         return render(request, "myadmin/create-follow.html", {'getUser':getUser,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
@@ -896,9 +943,9 @@ def FollowCreate(request):
 
 @login_required(login_url="/admin-panel/")    
 def FollowTablePage(request):
-    get_flow = Follow.objects.all()
+    get_flow = Follow.objects.filter(user__user_admin=request.user.refer_code)
     num_help = HelpAndSupport.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
-    num_withdraw = WithdrawRequest.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
+    num_withdraw = WithdrawalRequest.objects.filter(payment_status=False,user__user_admin=request.user.refer_code).count()
     num_notif = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code).count()
     notification = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code)
     
@@ -927,7 +974,7 @@ def FollowEdit(request, id):
         getUser = User.objects.all()
         follow = Follow.objects.get(id=id) 
         num_help = HelpAndSupport.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
-        num_withdraw = WithdrawRequest.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
+        num_withdraw = WithdrawalRequest.objects.filter(payment_status=False,user__user_admin=request.user.refer_code).count()
         num_notif = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code).count()
         notification = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code)
         return render(request, "myadmin/edit-follow.html", {'getUser':getUser,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif,'follow':follow})
@@ -950,7 +997,7 @@ def AddLanguageCreate(request):
             return redirect("/admin-panel/language-table/")
     else:
         num_help = HelpAndSupport.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
-        num_withdraw = WithdrawRequest.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
+        num_withdraw = WithdrawalRequest.objects.filter(payment_status=False,user__user_admin=request.user.refer_code).count()
         num_notif = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code).count()
         notification = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code)
         return render(request, "myadmin/create-language.html", {'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
@@ -960,7 +1007,7 @@ def AddLanguageCreate(request):
 def AddLanguageTablePage(request):
     get_lang = AddLanguage.objects.all()
     num_help = HelpAndSupport.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
-    num_withdraw = WithdrawRequest.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
+    num_withdraw = WithdrawalRequest.objects.filter(payment_status=False,user__user_admin=request.user.refer_code).count()
     num_notif = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code).count()
     notification = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code)
     return render(request, "myadmin/language-table.html", {'get_lang':get_lang,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
@@ -984,7 +1031,7 @@ def AddLanguageEdit(request, id):
     else:
         getLang = AddLanguage.objects.get(id=id)   
         num_help = HelpAndSupport.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
-        num_withdraw = WithdrawRequest.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
+        num_withdraw = WithdrawalRequest.objects.filter(payment_status=False,user__user_admin=request.user.refer_code).count()
         num_notif = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code).count()
         notification = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code)
         return render(request, "myadmin/create-language.html", {'getLang':getLang,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
@@ -1006,7 +1053,7 @@ def CardDetailCreate(request):
     else:
         getUser = User.objects.all()
         num_help = HelpAndSupport.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
-        num_withdraw = WithdrawRequest.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
+        num_withdraw = WithdrawalRequest.objects.filter(payment_status=False,user__user_admin=request.user.refer_code).count()
         num_notif = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code).count()
         notification = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code)
         return render(request, "myadmin/create-card-detail.html", {'getUser':getUser,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
@@ -1015,9 +1062,9 @@ def CardDetailCreate(request):
 
 @login_required(login_url="/admin-panel/")
 def CardDetailTablePage(request):
-    get_card = CardDetail.objects.all()
+    get_card = CardDetail.objects.filter(user__user_admin=request.user.refer_code)
     num_help = HelpAndSupport.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
-    num_withdraw = WithdrawRequest.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
+    num_withdraw = WithdrawalRequest.objects.filter(payment_status=False,user__user_admin=request.user.refer_code).count()
     num_notif = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code).count()
     notification = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code)
     return render(request, "myadmin/card-detail-table.html", {'get_card':get_card,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
@@ -1046,13 +1093,11 @@ def CardDetailEdit(request, id):
     else:
         getCard = CardDetail.objects.get(id=id)   
         num_help = HelpAndSupport.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
-        num_withdraw = WithdrawRequest.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
+        num_withdraw = WithdrawalRequest.objects.filter(payment_status=False,user__user_admin=request.user.refer_code).count()
         num_notif = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code).count()
         notification = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code)
         return render(request, "myadmin/edit-card-detail.html", {'getCard':getCard,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
-    
-    
-    
+        
     
     
 @login_required(login_url="/admin-panel/")   
@@ -1070,7 +1115,7 @@ def GameCreate(request):
     else:
         getUser = User.objects.all()
         num_help = HelpAndSupport.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
-        num_withdraw = WithdrawRequest.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
+        num_withdraw = WithdrawalRequest.objects.filter(payment_status=False,user__user_admin=request.user.refer_code).count()
         num_notif = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code).count()
         notification = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code)
         return render(request, "myadmin/create-game.html", {'getUser':getUser,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
@@ -1078,9 +1123,9 @@ def GameCreate(request):
     
 @login_required(login_url="/admin-panel/")   
 def GameTablePage(request):
-    get_Game = Game1.objects.filter(user=request.user.id)
+    get_Game = Game1.objects.filter(user__user_admin=request.user.refer_code)
     num_help = HelpAndSupport.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
-    num_withdraw = WithdrawRequest.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
+    num_withdraw = WithdrawalRequest.objects.filter(payment_status=False,user__user_admin=request.user.refer_code).count()
     num_notif = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code).count()
     notification = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code)
     return render(request, "myadmin/game-table.html", {'get_Game':get_Game,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
@@ -1109,8 +1154,71 @@ def EditGame(request, id):
         getply = Game1.objects.get(id=id)    
         getUser = User.objects.filter(is_superuser=False)
         num_help = HelpAndSupport.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
-        num_withdraw = WithdrawRequest.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
+        num_withdraw = WithdrawalRequest.objects.filter(payment_status=False,user__user_admin=request.user.refer_code).count()
         num_notif = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code).count()
         notification = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code)
         return render(request, "myadmin/edit-game.html", {'getply':getply, 'getUser':getUser,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
+    
+    
+
+@login_required(login_url="/admin-panel/")   
+def SetCashLimitCreate(request):
+    if request.method == 'POST':
+        mina = request.POST["min_amount"]
+        mont = request.POST["monthly_limit"]
+        usr = request.POST["user"] 
+        
+        usr = SetCashLimit(min_amount=mina, monthly_limit=mont, user_id=usr)
+        usr.save()
+        return redirect("/admin-panel/cash-limit-table/")
+    else:
+        getUser = User.objects.all()
+        num_help = HelpAndSupport.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
+        num_withdraw = WithdrawalRequest.objects.filter(payment_status=False,user__user_admin=request.user.refer_code).count()
+        num_notif = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code).count()
+        notification = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code)
+        return render(request, "myadmin/create-cash-limit.html", {'getUser':getUser,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
+
+
+
+@login_required(login_url="/admin-panel/")
+def SetCashLimitTablePage(request):
+    get_cash = SetCashLimit.objects.filter(user__user_admin=request.user.refer_code)
+    num_help = HelpAndSupport.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
+    num_withdraw = WithdrawalRequest.objects.filter(payment_status=False,user__user_admin=request.user.refer_code).count()
+    num_notif = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code).count()
+    notification = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code)
+    return render(request, "myadmin/cash-limit-table.html", {'get_cash':get_cash,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
+
+
+
+@login_required(login_url="/admin-panel/")
+def DeleteSetCashLimit(request, id):
+    card = SetCashLimit.objects.get(id=id)
+    card.delete()
+    return redirect("/admin-panel/cash-limit-table/")
+
+
+@login_required(login_url="/admin-panel/")
+def SetCashLimitEdit(request, id):
+    if request.method == 'POST':
+        mina = request.POST["min_amount"]
+        mont = request.POST["monthly_limit"]
+        usr = request.POST["user"] 
+                
+        uplead = SetCashLimit.objects.filter(id=id)        
+        uplead.update(min_amount=mina, monthly_limit=mont, user_id=usr)
+        messages.success(request, "Card updated successfully")
+        return redirect("/admin-panel/cash-limit-table/") 
+    else:
+        getcashlimit = SetCashLimit.objects.get(id=id)   
+        num_help = HelpAndSupport.objects.filter(is_completed=False,user__user_admin=request.user.refer_code).count()
+        num_withdraw = WithdrawalRequest.objects.filter(payment_status=False,user__user_admin=request.user.refer_code).count()
+        num_notif = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code).count()
+        notification = Notification.objects.filter(is_completed=False, read_status=False,user__user_admin=request.user.refer_code)
+        return render(request, "myadmin/edit-cash-limit.html", {'getCash':getcashlimit,'notification':notification, 'num_help':num_help, 'num_withdraw':num_withdraw,'num_notif':num_notif})
+    
+
+
+
     

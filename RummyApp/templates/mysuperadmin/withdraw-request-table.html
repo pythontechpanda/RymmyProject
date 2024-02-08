@@ -21,20 +21,28 @@
                                         <thead>
                                             <tr>
                                                 <th>User</th>
-                                                <th>Amount</th>                                                
+                                                <th>Amount</th>     
+                                                <th>Payment Status</th>                                          
                                                 <th>Opration</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {% for clam in get_withd %}
+                                            {% for wtdr in get_withd %}
                                             <tr>
-                                                <td>{{ clam.user.first_name }}</td>
-                                                <td>{{ clam.amount }}</td>                                          
+                                                <td>{{ wtdr.user.first_name }}</td>
+                                                <td>{{ wtdr.amount }}</td>     
+                                                <td>
+                                                    {% if wtdr.payment_status == True %}
+                                                    <h5>Pay Success</h5>
+                                                    {% elif  wtdr.payment_status == False %}
+                                                    <h5>Pending</h5>
+                                                    {% endif %}
+                                                </td>                                             
                                                 <td>
                                                     <span>
                                                         
-                                                        <a href="{% url 'wtdr_edit' id=clam.id %}" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil color-muted m-r-5"></i> </a> | 
-                                                        <a href="{% url 'wtdr_del' id=clam.id %}" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash-o color-danger"></i></a></span>
+                                                        <a href="{% url 'wtdr_edit' id=wtdr.id %}" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil color-muted m-r-5"></i> </a> | 
+                                                        <a href="{% url 'wtdr_del' id=wtdr.id %}" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash-o color-danger"></i></a></span>
                                                 </td>
                                             </tr>      
                                             {% endfor %}                                      
@@ -42,7 +50,8 @@
                                         <tfoot>
                                             <tr>
                                                 <th>User</th>
-                                                <th>Amount</th>                                                
+                                                <th>Amount</th>      
+                                                <th>Payment Status</th>                                          
                                                 <th>Opration</th>
                                             </tr>
                                         </tfoot>

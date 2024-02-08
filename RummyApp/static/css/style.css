@@ -14745,3 +14745,70 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
 }
 
 
+.spc{
+  padding-right: 20%;
+  text-align: justify;
+}
+
+.spc2{
+  padding-right: 21%;
+  text-align: justify;
+}
+.spc3{
+  padding-right: 16%;
+  text-align: justify;
+}
+.spc4{
+  padding-right: 20%;
+  text-align: justify;
+}
+.spc5{
+  padding-right: 22%;
+  text-align: justify;
+}
+.spc6{
+  padding-right: 19%;
+  text-align: justify;
+}
+.spc7{
+  padding-right: 16%;
+  text-align: justify;
+}
+.spc8{
+  padding-right: 15%;
+  text-align: justify;
+}
+.spc9{
+  padding-right: 19%;
+  text-align: justify;
+}
+.spc10{
+  padding-right: 20%;
+  text-align: justify;
+}
+.spc11{
+  padding-right: 19%;
+  text-align: justify;
+}
+.spc12{
+  padding-right: 20%;
+  text-align: justify;
+}
+
+.spc13{
+  padding-right: 17%;
+  text-align: justify;
+}
+
+.sys li{
+  padding: 10px;
+}
+
+
+.container2 {
+  text-align: right;
+}
+
+.container2 button{
+  color: #9A0101;
+}

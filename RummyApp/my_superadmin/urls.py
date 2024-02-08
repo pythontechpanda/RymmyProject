@@ -43,10 +43,10 @@ urlpatterns = [
     path('pay-by-wallet-remove/<int:id>/', views.DeletePayByWalletAmount, name="wallet_pay_del"),
     path('pay-by-wallet-edit/<int:id>/', views.EditPayByWalletAmount, name="wallet_pay_edit"),
     
-    path('withdraw-request-create/', views.WithdrawRequestCreate),
-    path('withdraw-request-table/', views.WithdrawRequestTablePage),
-    path('withdraw-request-remove/<int:id>/', views.DeleteWithdrawRequest, name="wtdr_del"),
-    path('withdraw-request-edit/<int:id>/', views.EditWithdrawRequest, name="wtdr_edit"),
+    path('withdraw-request-create/', views.WithdrawalRequestCreate),
+    path('withdraw-request-table/', views.WithdrawalRequestTablePage),
+    path('withdraw-request-remove/<int:id>/', views.DeleteWithdrawalRequest, name="wtdr_del"),
+    path('withdraw-request-edit/<int:id>/', views.EditWithdrawalRequest, name="wtdr_edit"),
     
     path('palyer-create/', views.PlayerCreate),
     path('palyer-table/', views.PlayerTablePage),

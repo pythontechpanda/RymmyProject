@@ -1,0 +1,116 @@
+{% extends "myadmin/index.html" %}
+{% load static %}
+{% block content %}
+
+        <!--**********************************
+            Content body start
+        ***********************************-->
+        <div class="content-body">
+
+            
+            <!-- row -->
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-4 col-xl-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="media align-items-center mb-4">
+                                    <img class="mr-3" src="/media/{{ get_data.profile_picture }}" width="80" height="80" alt="">
+                                    <div class="media-body">
+                                        <h3 class="mb-0">{{ get_data.first_name }} {{ get_data.last_name }}</h3>
+                                        <p class="text-muted mb-0">{{ get_data.state.name }}</p>
+                                    </div>
+                                </div>
+                                
+                                {% comment %} <div class="row mb-5">
+                                    <div class="col">
+                                        <div class="card card-profile text-center">
+                                            <span class="mb-1 text-primary"><i class="icon-people"></i></span>
+                                            <h3 class="mb-0">263</h3>
+                                            <p class="text-muted px-4">Following</p>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="card card-profile text-center">
+                                            <span class="mb-1 text-warning"><i class="icon-user-follow"></i></span>
+                                            <h3 class="mb-0">263</h3>
+                                            <p class="text-muted">Followers</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 text-center">
+                                        <button class="btn btn-danger px-5">Follow Now</button>
+                                    </div>
+                                </div> {% endcomment %}
+
+                                <h4>Username</h4>
+                                <p class="text">{{ get_data.username }}</p>
+                                <ul class="card-profile__info sys">
+                                    <li class="mb-1"><strong class="text-dark mr-4 spc">Mobile</strong> <span>{{get_data.mobile_no}}</span></li>
+                                    <li><strong class="text-dark mr-4 spc2">Email</strong> <span>{{ get_data.email }}</span></li>
+                                    <li><strong class="text-dark mr-4 spc3">Date of Birth</strong> <span>{{ get_data.date_of_birth }}</span></li>
+                                    <li><strong class="text-dark mr-4 spc4">Gender</strong> <span>{{ get_data.gender }}</span></li>
+                                    <li><strong class="text-dark mr-4 spc5">City</strong> <span>{{ get_data.city }}</span></li>
+                                    <li><strong class="text-dark mr-4 spc6">Pincode</strong> <span>{{ get_data.pincode }}</span></li>
+                                    <li><strong class="text-dark mr-4 spc7">Device Token</strong> <span>{{ get_data.device_registration_id }}</span></li>
+                                    <li><strong class="text-dark mr-4 spc8">My Refer code</strong> <span>{{ get_data.refer_code }}</span></li>
+                                    
+                                    <li id="ali"><strong class="text-dark mr-4 spc9">Is Active</strong> <span>
+                                        
+                                        <label class="css-control css-control-primary css-checkbox" for="val-terms">
+                                        {% if get_data.is_active == True %}
+                                        <input type="checkbox" class="css-control-input" id="val-terms" name="actv" value="1" checked disabled>
+                                        <input type="text" style="display: none;" id="act-result"  name="actv" value="1" disabled>
+                                        {% elif get_data.is_active == False %}
+                                        <input type="checkbox" class="css-control-input" id="val-terms" name="actv" value="1" disabled></label>
+                                        <input type="text" style="display: none;" id="act-result"  name="actv" value="0" disabled>
+                                         {% endif %}
+                                        
+                                    </span></li>
+                                    <li><strong class="text-dark mr-4 spc10">Verified</strong> <span>
+                                        <label class="css-control css-control-primary css-checkbox" for="val-terms">
+                                            {% if get_data.is_verified == True %}
+                                            <input type="checkbox" class="css-control-input" id="val-terms" name="verificat" value="1" checked disabled></label>
+                                            <input type="text" style="display: none;" id="ver-result" name="verificat" value="1" disabled>
+                                            {% elif get_user.is_verified == False %}
+                                            <input type="checkbox" class="css-control-input" id="val-terms" name="verificat" value="1" disabled>
+                                            <input type="text" style="display: none;" id="ver-result" name="verificat" value="0" disabled>
+                                            {% endif %}
+                                    </span></li>
+                                    <li><strong class="text-dark mr-4 spc11">Above 18</strong> <span>
+                                        <label class="css-control css-control-primary css-checkbox" for="val-terms">
+                                            {% if get_data.is_above18 == True %}
+                                            <input type="checkbox" class="css-control-input" id="val-terms" name="goto" value="1" checked disabled>
+                                        
+                                            <input type="text" style="display: none;" id="result"  name="goto" value="1" disabled>
+                                            {% elif get_data.is_above18 == False %}
+                                            <input type="checkbox" class="css-control-input" id="val-terms" name="goto" value="1" disabled> <span class="css-control-indicator"></span></label>
+                                            <input type="text" style="display: none;" id="result"  name="goto" value="0" disabled>
+                                            {% endif %}
+                                    </span></li>
+
+                                    <li><strong class="text-dark mr-4 spc12">Join By</strong> <span>{{ get_data.join_by_refer }}</span></li>
+                                    <li><strong class="text-dark mr-4 spc13">User Admin</strong> <span>{{ get_data.user_admin }}</span></li>
+                                </ul>
+
+                                <div class="container2">
+                                    <a href="{% url 'user_edit_by_admin' id=request.user.id %}" data-toggle="tooltip" data-placement="top" title="Edit"><button class="btn btn-primary"><i class="fa fa-pencil color-muted m-r-5"></i> Edit Profile</button></a>
+                                </div>
+                            </div>
+                        </div>  
+                    </div>
+                    
+                            
+                           
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- #/ container -->
+        </div>
+        <!--**********************************
+            Content body end
+        ***********************************-->
+        
+{% endblock content %}

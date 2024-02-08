@@ -48,14 +48,14 @@
                                         
 
                                         <div class="form-group row">
-                                            <label class="col-lg-4 col-form-label"><a href="#">Is Completed</a>  <span class="text-danger">*</span>
+                                            <label class="col-lg-4 col-form-label"><a href="#">Payment Status</a>  <span class="text-danger">*</span>
                                             </label>
                                             <div class="col-lg-8">
                                                 <label class="css-control css-control-primary css-checkbox" for="val-terms">
-                                                {% if getWit.is_completed == True %}
+                                                {% if getWit.payment_status == True %}
                                                 <input type="checkbox" class="css-control-input" id="val-terms" name="actv" value="1" checked>
                                                 <input type="text" style="display: none;" id="act-result"  name="actv" value="1">
-                                                {% elif getWit.is_completed == False %}
+                                                {% elif getWit.payment_status == False %}
                                                 <input type="checkbox" class="css-control-input" id="val-terms" name="actv" value="1"></label>
                                                 <input type="text" style="display: none;" id="act-result"  name="actv" value="0">
                                                  

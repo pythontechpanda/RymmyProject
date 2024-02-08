@@ -16,10 +16,13 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="form-validation">
+                                    <div class="container2">
+                                        <a href="/admin-panel/users-table/" data-toggle="tooltip" data-placement="top" title="Back"><button class="btn btn-primary">Back</button></a>
+                                    </div>
                                     <form class="form-valide" method="post" enctype="multipart/form-data">
                                         {% csrf_token %}
                                         <div class="form-group row">
-                                            <label class="col-lg-4 col-form-label" for="val-fullname">Full name <span class="text-danger">*</span>
+                                            <label class="col-lg-4 col-form-label" for="val-fullname">Full name 
                                             </label>
                                             <div class="col-lg-6">
                                                 <input type="text" class="form-control" id="val-fullname" name="fname" value="{{ user.first_name }}" placeholder="Enter a first name..">
@@ -27,7 +30,7 @@
                                         </div>
 
                                         <div class="form-group row">
-                                            <label class="col-lg-4 col-form-label" for="val-currency">Contact number <span class="text-danger">*</span>
+                                            <label class="col-lg-4 col-form-label" for="val-currency">Contact number 
                                             </label>
                                             <div class="col-lg-6">
                                                 <input type="number" class="form-control" id="val-currency" name="contact" value="{{ user.mobile_no }}" placeholder="Enter 10 digit contact number" required>
@@ -35,7 +38,7 @@
                                         </div>
 
                                         <div class="form-group row">
-                                            <label class="col-lg-4 col-form-label" for="val-username">Username <span class="text-danger">*</span>
+                                            <label class="col-lg-4 col-form-label" for="val-username">Username 
                                             </label>
                                             <div class="col-lg-6">
                                                 <input type="text" class="form-control" id="val-username" name="username" value="{{ user.username }}" placeholder="Enter a username.." readonly>
@@ -44,14 +47,14 @@
                                         
                                         
                                         <div class="form-group row">
-                                            <label class="col-lg-4 col-form-label" for="val-confirm-password">Date of Birth <span class="text-danger">*</span>
+                                            <label class="col-lg-4 col-form-label" for="val-confirm-password">Date of Birth 
                                             </label>
                                             <div class="col-lg-6">
                                                 <input type="text" class="form-control" id="val-confirm-password" name="dob" value="{{ user.date_of_birth }}" placeholder="Date of birth.." required>
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-lg-4 col-form-label" for="val-suggestions">Gender <span class="text-danger">*</span>
+                                            <label class="col-lg-4 col-form-label" for="val-suggestions">Gender 
                                             </label>
                                             <div class="col-lg-6">
                                                 <select class="form-control" name="gender">
@@ -63,7 +66,7 @@
                                         </div>
 
                                         <div class="form-group row">
-                                            <label class="col-lg-4 col-form-label" for="val-fullname">Profile Picture<span class="text-danger">*</span>
+                                            <label class="col-lg-4 col-form-label" for="val-fullname">Profile Picture
                                             </label>
                                             <div class="col-lg-6">
                                                 <input type="file" class="form-control" id="" name="profile_pic" >
@@ -73,7 +76,7 @@
                                         
                                         
                                         <div class="form-group row">
-                                            <label class="col-lg-4 col-form-label" for="val-website">Select State <span class="text-danger">*</span>
+                                            <label class="col-lg-4 col-form-label" for="val-website">Select State 
                                             </label>
                                             <div class="col-lg-6">
                                                 <select class="form-control" name="state">
@@ -90,16 +93,32 @@
                                         </div>
 
                                         <div class="form-group row">
-                                            <label class="col-lg-4 col-form-label" for="val-website">City <span class="text-danger">*</span>
+                                            <label class="col-lg-4 col-form-label" for="val-website">City 
                                             </label>
                                             <div class="col-lg-6">
-                                                <input type="text" class="form-control" id="" name="city" placeholder="Enter your city" value={{ user.city }} required>
+                                                <input type="text" class="form-control" id="" name="city" placeholder="Enter your city" value="{{ user.city }}" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="val-website">Pincode 
+                                            </label>
+                                            <div class="col-lg-6">
+                                                <input type="text" class="form-control" id="" name="pincode" placeholder="Enter your pincode" value="{{ user.pincode }}" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="val-website">Email 
+                                            </label>
+                                            <div class="col-lg-6">
+                                                <input type="text" class="form-control" id="" name="email" placeholder="Enter your email" value="{{ user.email }}" required>
                                             </div>
                                         </div>
 
 
                                         <div class="form-group row">
-                                            <label class="col-lg-4 col-form-label"><a href="#">Active</a>  <span class="text-danger">*</span>
+                                            <label class="col-lg-4 col-form-label"><a href="#">Active</a>  
                                             </label>
                                             <div class="col-lg-8">
                                                 <label class="css-control css-control-primary css-checkbox" for="val-terms">
@@ -115,7 +134,7 @@
                                         </div>
                                         
                                         <div class="form-group row">
-                                            <label class="col-lg-4 col-form-label"><a href="#">Verified</a>  <span class="text-danger">*</span>
+                                            <label class="col-lg-4 col-form-label"><a href="#">Verified</a>  
                                             </label>
                                             
                                             <div class="col-lg-8">
@@ -132,7 +151,7 @@
                                         </div>
 
                                         <div class="form-group row">
-                                            <label class="col-lg-4 col-form-label"><a href="#">Above 18</a>  <span class="text-danger">*</span>
+                                            <label class="col-lg-4 col-form-label"><a href="#">Above 18</a>  
                                             </label>
                                             <div class="col-lg-8">
                                                 <label class="css-control css-control-primary css-checkbox" for="val-terms">
@@ -148,7 +167,7 @@
                                         </div>
                                         
                                         <div class="form-group row">
-                                            <label class="col-lg-4 col-form-label" for="val-website">Refer Code <span class="text-danger">*</span>
+                                            <label class="col-lg-4 col-form-label" for="val-website">Refer Code 
                                             </label>
                                             <div class="col-lg-6">
                                                 <input type="text" class="form-control" id="" name="refer_code" value="{{ user.refer_code }}" readonly>
@@ -156,7 +175,7 @@
                                         </div>
                                         
                                         <div class="form-group row">
-                                            <label class="col-lg-4 col-form-label" for="val-website">User Admin <span class="text-danger">*</span>
+                                            <label class="col-lg-4 col-form-label" for="val-website">User Admin 
                                             </label>
                                             <div class="col-lg-6">
                                                 <input type="text" class="form-control" id="" name="user_admin" value="{{ user.user_admin }}" readonly>
@@ -164,7 +183,7 @@
                                         </div>
                                         
                                         <div class="form-group row">
-                                            <label class="col-lg-4 col-form-label" for="val-website">Join By Refer Code <span class="text-danger">*</span>
+                                            <label class="col-lg-4 col-form-label" for="val-website">Join By Refer Code 
                                             </label>
                                             <div class="col-lg-6">
                                                 <input type="text" class="form-control" id="" name="join_by_refer" value="{{ user.join_by_refer }}" readonly>

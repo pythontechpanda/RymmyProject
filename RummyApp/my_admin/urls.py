@@ -6,6 +6,8 @@ urlpatterns = [
     path('index/', views.DashboardPage),
     # path('changepassword/<int:id>/',views.ForgotPassword, name='changepass'),
     path('logout/', views.logout_call, name='logout'),
+    path('profile/<int:id>/', views.ProfileInfo, name='profile'),
+    path('edit-profile/<int:id>/', views.EditAdminProfile, name='user_edit_by_admin'),
     
     path('new-user/', views.UserCreatePage),
     path('users-table/',views.UserTablePage),
@@ -34,10 +36,10 @@ urlpatterns = [
     path('pay-by-wallet-remove/<int:id>/', views.DeletePayByWalletAmount, name="wallet_pay_del_by_ad"),
     path('pay-by-wallet-edit/<int:id>/', views.EditPayByWalletAmount, name="wallet_pay_edit_by_ad"),
     
-    path('withdraw-request-create/', views.WithdrawRequestCreate),
-    path('withdraw-request-table/', views.WithdrawRequestTablePage),
-    path('withdraw-request-remove/<int:id>/', views.DeleteWithdrawRequest, name="wtdr_del_by_ad"),
-    path('withdraw-request-edit/<int:id>/', views.EditWithdrawRequest, name="wtdr_edit_by_ad"),    
+    path('withdraw-request-create/', views.WithdrawalRequestCreate),
+    path('withdraw-request-table/', views.WithdrawalRequestTablePage),
+    path('withdraw-request-remove/<int:id>/', views.DeleteWithdrawalRequest, name="wtdr_del_by_ad"),
+    path('withdraw-request-edit/<int:id>/', views.EditWithdrawalRequest, name="wtdr_edit_by_ad"),    
     
     path('new-kyc-detail/', views.KYCDetailsCreate),
     path('kyc-detail-table/', views.KYCDetailsTablePage),
@@ -80,4 +82,10 @@ urlpatterns = [
     path('game-table/', views.GameTablePage),    
     path('game-remove/<int:id>/', views.DeleteGame, name="game_del_by_ad"),
     path('game-edit/<int:id>/', views.EditGame, name="game_edit_by_ad"),
+    
+    
+    path('cash-limit-create/', views.SetCashLimitCreate),
+    path('cash-limit-table/', views.SetCashLimitTablePage),    
+    path('cash-limit-remove/<int:id>/', views.DeleteSetCashLimit, name="cash_limit_del_by_ad"),
+    path('cash-limit-edit/<int:id>/', views.SetCashLimitEdit, name="cash_limit_edit_by_ad"),
 ]

@@ -1,4 +1,4 @@
-{% extends "mysuperadmin/index.html" %}
+{% extends "myadmin/index.html" %}
 {% load static %}
 {% block content %}
 
@@ -7,6 +7,7 @@
         ***********************************-->
         <div class="content-body">
 
+           
             <!-- row -->
 
             <div class="container-fluid">
@@ -25,12 +26,34 @@
                                     {% endfor %} 
                                     <form class="form-valide" method="post" enctype="multipart/form-data">
                                         {% csrf_token %}
+                                        
+                                        
                                         <div class="form-group row">
-                                            <label class="col-lg-4 col-form-label" for="val-website">User <span class="text-danger">*</span>
+                                            <label class="col-lg-4 col-form-label" for="val">Minimum Amount 
+                                            </label>
+                                            <div class="col-lg-6">
+                                                <input type="text" class="form-control" id="val" name="min_amount" placeholder="Enter minimum amount.." >
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="val">Monthly Limit
+                                            </label>
+                                            <div class="col-lg-6">
+                                                <input type="text" class="form-control" id="val" name="monthly_limit" placeholder="Enter monthly limit.." required>
+                                            </div>
+                                        </div>
+                                        
+                                        
+                                        
+                                        
+
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="val-website">User 
                                             </label>
                                             <div class="col-lg-6">
                                                 <select class="form-control" name="user">
-                                                    <option value="{{ getWit.user.id }}">{{ getWit.user.first_name}}</option>
+                                                    <option value="">Please select</option>
                                                     {% for usr in getUser %}
                                                     <option value="{{ usr.id }}">{{ usr.first_name}}</option>
                                                     {% endfor %}
@@ -38,31 +61,6 @@
                                             </div>
                                         </div>
 
-                                        <div class="form-group row">
-                                            <label class="col-lg-4 col-form-label" for="val">Amount <span class="text-danger">*</span>
-                                            </label>
-                                            <div class="col-lg-6">
-                                                <input class="form-control" id="val" name="amount" value="{{ getWit.amount }}">
-                                            </div>
-                                        </div>
-                                        
-
-                                        <div class="form-group row">
-                                            <label class="col-lg-4 col-form-label"><a href="#">Payment Status</a>  <span class="text-danger">*</span>
-                                            </label>
-                                            <div class="col-lg-8">
-                                                <label class="css-control css-control-primary css-checkbox" for="val-terms">
-                                                {% if getWit.payment_status == True %}
-                                                <input type="checkbox" class="css-control-input" id="val-terms" name="actv" value="1" checked>
-                                                <input type="text" style="display: none;" id="act-result"  name="actv" value="1">
-                                                {% elif getWit.payment_status == False %}
-                                                <input type="checkbox" class="css-control-input" id="val-terms" name="actv" value="1"></label>
-                                                <input type="text" style="display: none;" id="act-result"  name="actv" value="0">
-                                                 
-                                                    {% endif %}
-                                                </div>
-                                        </div>
-                                        
                                         <div class="form-group row">
                                             <div class="col-lg-8 ml-auto">
                                                 <button type="submit" class="btn btn-primary">Submit</button>

@@ -18,5 +18,10 @@ urlpatterns = [
     path('follow-request-filter/<int:id>/',views.FollowRequestFilterView.as_view(),name="follow-request-filter"),
     path('follow-request-accept-filter/<int:id>/',views.FollowRequestAcceptFilterView.as_view(),name="follow-request-accept-filter"),
     path('userfilter/<int:id>/', views.UserFilterView.as_view(), name='userfilter'),
+    path('spinprize-filter/<int:id>/', views.SpinFilterView.as_view(), name='spinprize-filter'),
+    
+    path('withdraw-filter/<int:id>/', views.WithdrawalAmountByUserFilterView.as_view(), name='withdraw-filter'),
+    path('refer-link-filter/<int:id>/', views.ReferLinkFilterView.as_view(), name='refer-link-filter'),
     
 ]
+    

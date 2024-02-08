@@ -12,7 +12,7 @@
 
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-lg-4 col-xl-3">
+                    <div class="col-lg-4 col-xl-12">
                         <div class="card">
                             <div class="card-body">
                                 <div class="media align-items-center mb-4">
@@ -45,16 +45,17 @@
 
                                 <h4 style="color:#E0C38B;">Username</h4>
                                 <p class="text">{{ get_user.username }}</p>
-                                <ul class="card-profile__info">
-                                    <li class="mb-1" id="ali"><strong class="text-dark mr-4">Date of Birth</strong> <span>{{ get_user.date_of_birth }}</span></li>
-                                    <li class="mb-1" id="ali"><strong class="text-dark mr-4">Mobile No</strong> <span>{{ get_user.mobile_no }}</span></li>
-                                    <li id="ali"><strong class="text-dark mr-4">Gender</strong> <span>{{ get_user.gender }}</span></li>
-                                    <li><strong class="text-dark mr-4">State</strong> <span>{{ get_user.state.name }}</span></li>
-                                    <li><strong class="text-dark mr-4">City</strong> <span>{{ get_user.city }}</span></li>
-                                    <li id="ali"><strong class="text-dark mr-4">User Admin</strong> <span>{{ get_user.user_admin }}</span></li>
-                                    <li id="ali"><strong class="text-dark mr-4">Refer By Code</strong> <span>{{ get_user.join_by_refer }}</span></li>
-                                    <li id="ali"><strong class="text-dark mr-4">My Refer</strong> <span>{{ get_user.refer_code }}</span></li>
-                                    <li id="ali"><strong class="text-dark mr-4">Is Active</strong> <span>
+                                <ul class="card-profile__info sys">
+                                    <li class="mb-1"><strong class="text-dark mr-4 spc">Mobile</strong> <span>{{get_user.mobile_no}}</span></li>
+                                    <li><strong class="text-dark mr-4 spc2">Email</strong> <span>{{ get_user.email }}</span></li>
+                                    <li><strong class="text-dark mr-4 spc3">Date of Birth</strong> <span>{{ get_user.date_of_birth }}</span></li>
+                                    <li><strong class="text-dark mr-4 spc4">Gender</strong> <span>{{ get_user.gender }}</span></li>
+                                    <li><strong class="text-dark mr-4 spc5">City</strong> <span>{{ get_user.city }}</span></li>
+                                    <li><strong class="text-dark mr-4 spc6">Pincode</strong> <span>{{ get_user.pincode }}</span></li>
+                                    <li><strong class="text-dark mr-4 spc7">Device Token</strong> <span>{{ get_user.device_registration_id }}</span></li>
+                                    <li><strong class="text-dark mr-4 spc8">My Refer code</strong> <span>{{ get_user.refer_code }}</span></li>
+                                    
+                                    <li id="ali"><strong class="text-dark mr-4 spc9">Is Active</strong> <span>
                                         
                                         <label class="css-control css-control-primary css-checkbox" for="val-terms">
                                         {% if get_user.is_active == True %}
@@ -66,7 +67,7 @@
                                          {% endif %}
                                         
                                     </span></li>
-                                    <li><strong class="text-dark mr-4">Verified</strong> <span>
+                                    <li><strong class="text-dark mr-4 spc10">Verified</strong> <span>
                                         <label class="css-control css-control-primary css-checkbox" for="val-terms">
                                             {% if get_user.is_verified == True %}
                                             <input type="checkbox" class="css-control-input" id="val-terms" name="verificat" value="1" checked disabled></label>
@@ -76,7 +77,7 @@
                                             <input type="text" style="display: none;" id="ver-result" name="verificat" value="0" disabled>
                                             {% endif %}
                                     </span></li>
-                                    <li><strong class="text-dark mr-4">Above 18</strong> <span>
+                                    <li><strong class="text-dark mr-4 spc11">Above 18</strong> <span>
                                         <label class="css-control css-control-primary css-checkbox" for="val-terms">
                                             {% if get_user.is_above18 == True %}
                                             <input type="checkbox" class="css-control-input" id="val-terms" name="goto" value="1" checked disabled>
@@ -87,11 +88,18 @@
                                             <input type="text" style="display: none;" id="result"  name="goto" value="0" disabled>
                                             {% endif %}
                                     </span></li>
+
+                                    <li><strong class="text-dark mr-4 spc12">Join By</strong> <span>{{ get_user.join_by_refer }}</span></li>
+                                    <li><strong class="text-dark mr-4 spc13">User Admin</strong> <span>{{ get_user.user_admin }}</span></li>
                                 </ul>
+
+                                <div class="container2">
+                                    <a href="/admin-panel/users-table/" data-toggle="tooltip" data-placement="top" title="Back"><button class="btn btn-primary">Back</button></a>
+                                </div>
                             </div>
                         </div>  
                     </div>
-                    <div class="col-lg-8 col-xl-9">
+                    <div class="col-lg-8 col-xl-12">
                         <div class="card">
                             <div class="card-body">
                                 <form action="#" class="form-profile">

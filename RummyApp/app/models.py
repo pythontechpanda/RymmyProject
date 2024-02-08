@@ -8,6 +8,7 @@ import string
 import random
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+
 class State(models.Model):
     name  = models.CharField(max_length=300, null=True)
 
@@ -130,7 +131,7 @@ class Hand(models.Model):
 
 class Game(models.Model):
     num_players = models.IntegerField()
-    players = models.ManyToManyField(Player)
+    players = models.ManyToManyField(User)
     draw_pile = models.ManyToManyField(Card, related_name='draw_pile')
     discard_pile = models.ManyToManyField(Card, related_name='discard_pile')
     
@@ -142,7 +143,7 @@ class GameRound(models.Model):
 
 class RoundHand(models.Model):
     round = models.ForeignKey(GameRound, on_delete=models.CASCADE)
-    player = models.ForeignKey(Player, on_delete=models.CASCADE)
+    player = models.ForeignKey(User, on_delete=models.CASCADE)
     card = models.ForeignKey(Card, on_delete=models.CASCADE)
     
     # def __str__(self):
@@ -274,3 +275,33 @@ class TimeLimite(models.Model):
 class SetDailtTimeLimit(models.Model):
     daily_time = models.ForeignKey(TimeLimite, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    
+    
+    
+class Spin(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    prize = models.CharField(max_length=100,null=True)
+    created_date = models.DateTimeField(auto_now_add=True) 
+    
+    
+    
+
+
+class Declare(models.Model):
+    listofcards = models.JSONField(default=[])
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    game = models.ForeignKey(Game,on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+
+class Finish(models.Model):
+    discard = models.CharField(max_length=100)
+    listofcards = models.JSONField(default=[])
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    game = models.ForeignKey(Game,on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+class SortIt(models.Model):
+    listofcards = models.JSONField(default=[])
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    game = models.ForeignKey(Game,on_delete=models.CASCADE)

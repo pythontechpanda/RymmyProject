@@ -43,6 +43,10 @@ router.register('card-detail', views.CardDetailView, basename='card-detail')
 router.register('set-cash-limit', views.SetCashLimitView, basename='set-cash-limit')
 router.register('time-limit', views.TimeLimiteView, basename='time-limit')
 router.register('set-time-limit', views.SetDailtTimeLimitView, basename='set-time-limit')
+router.register('spin-prize', views.SpinView, basename='spin-prize')
+router.register('declare', views.DeclareView, basename='declare')
+router.register('finish', views.FinishView, basename='finish')
+router.register('sort', views.SortItView, basename='sort')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
